@@ -1,0 +1,37 @@
+$border-color_1: #6b7280;
+
+.dashboard :global {
+  @apply flex flex-row;
+  header {
+    @apply bg-transparent;
+  }
+  .bg {
+    @apply w-full h-auto absolute block h-full w-full object-cover;
+    background-size: 100% auto;
+    background-position: left top;
+    top: -56px;
+    z-index: -1;
+  }
+  .sidebar {
+    width: calc(164px);
+    h3 {
+      @apply text-white uppercase font-semibold opacity-70;
+    }
+    ul {
+      li {
+        @apply flex flex-row gap-3;
+        span {
+          @apply text-white;
+        }
+      }
+    }
+  }
+  .content {
+    width: calc(100% - 164px);
+    .content-wrap {
+      @apply bg-white rounded-md;
+      height: 100%;
+      width: 100%;
+    }
+  }
+}

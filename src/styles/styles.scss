@@ -1,0 +1,23 @@
+@import './base/typography.scss';
+@import './base/colors.scss';
+
+.container {
+  @apply mx-auto block max-w-xl;
+}
+
+.Home {
+  @apply m-0 flex flex-col justify-center;
+  min-height: 700px;
+  @media (max-width: 640px) {
+    @apply min-h-screen;
+  }
+  main {
+    @apply flex flex-col gap-5;
+  }
+  h1 {
+    @apply text-green-900;
+  }
+  p {
+    @apply font-thin;
+  }
+}

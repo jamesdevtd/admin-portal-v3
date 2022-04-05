@@ -1,0 +1,17 @@
+.bg-blue-gradient {
+  background: rgb(47, 190, 255);
+  background: linear-gradient(
+    180deg,
+    rgba(47, 190, 255, 1) 0%,
+    rgba(35, 149, 255, 1) 100%
+  );
+}
+
+.bg-grey-gradient {
+  background: rgb(125, 125, 125);
+  background: linear-gradient(
+    180deg,
+    rgba(125, 125, 125, 1) 0%,
+    rgba(87, 86, 86, 1) 100%
+  );
+}
