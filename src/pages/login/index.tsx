@@ -28,7 +28,7 @@ export default function LoginPage() {
     if (await handleLogin({ email, password })) {
       router.push('/dashboard');
     } else {
-      setMessage('Ivalid Credentials!');
+      setMessage('Invalid Credentials!');
     }
     // router.push('/dashboard');
   };
