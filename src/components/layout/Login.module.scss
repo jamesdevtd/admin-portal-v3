@@ -17,7 +17,7 @@ $border-color_1: #6b7280;
         &.active {
           @apply font-bold text-blue-dark opacity-100;
           &:after {
-            content: "";
+            content: '';
             @apply absolute left-0 bottom-0 block w-full bg-blue-dark;
             height: 4px;
             border-radius: 3px 3px 0 0;
@@ -112,7 +112,7 @@ $border-color_1: #6b7280;
       @apply relative cursor-pointer;
       &:after {
         @apply ml-2 inline-block bg-contain bg-center bg-no-repeat;
-        content: "";
+        content: '';
         width: 7px;
         height: 8px;
         background-image: url(/images/backgrounds/caret-down-blue.svg);

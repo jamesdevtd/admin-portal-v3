@@ -1,6 +1,6 @@
 import type { AppProps } from 'next/app';
-import { Provider } from 'react-redux';
 import Head from 'next/head';
+import { Provider } from 'react-redux';
 
 import '../styles/globals.scss';
 import '../styles/styles.scss';
@@ -16,9 +16,16 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
       <Head>
-        <link rel="icon" href="/favicon/favicon-16x16.png" type="image/png" sizes="16x16" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-
+        <link
+          rel='icon'
+          href='/favicon/favicon-16x16.png'
+          type='image/png'
+          sizes='16x16'
+        />
+        <meta
+          name='viewport'
+          content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
+        />
       </Head>
       <Component {...pageProps} />
     </Provider>

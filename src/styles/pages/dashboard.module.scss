@@ -6,7 +6,7 @@ $border-color_1: #6b7280;
     @apply bg-transparent;
   }
   .bg {
-    @apply w-full h-auto absolute block h-full w-full object-cover;
+    @apply absolute block h-auto h-full w-full w-full object-cover;
     background-size: 100% auto;
     background-position: left top;
     top: -56px;
@@ -15,7 +15,7 @@ $border-color_1: #6b7280;
   .sidebar {
     width: calc(164px);
     h3 {
-      @apply text-white uppercase font-semibold opacity-70;
+      @apply font-semibold uppercase text-white opacity-70;
     }
     ul {
       li {
@@ -29,7 +29,7 @@ $border-color_1: #6b7280;
   .content {
     width: calc(100% - 164px);
     .content-wrap {
-      @apply bg-white rounded-md;
+      @apply rounded-md bg-white;
       height: 100%;
       width: 100%;
     }

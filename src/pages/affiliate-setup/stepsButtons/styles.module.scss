@@ -5,7 +5,7 @@
     align-self: center;
     &:not(.arrow) {
       @apply w-auto flex-grow gap-1;
-      @apply py-1 px-1 m-auto;
+      @apply m-auto py-1 px-1;
       background: #9ca5b4;
       text-indent: -9999px;
       height: 10px;

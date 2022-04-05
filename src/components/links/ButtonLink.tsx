@@ -4,14 +4,15 @@ import styles from './ButtonLink.module.scss';
 
 type ButtonLinkProps = {
   href: string;
-  className: string;
+  className?: string;
   variant?: string;
+  isDarkBg?: boolean;
   children: React.ReactNode;
 };
 
 const ButtonLink = ({
   href,
-  className,
+  className = '',
   variant = 'default',
   children,
 }: ButtonLinkProps) => {

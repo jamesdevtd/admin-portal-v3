@@ -5,14 +5,15 @@ import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FiMinusCircle } from 'react-icons/fi';
 
+import styles from './styles.module.scss';
+
 import Button from '@/components/buttons/Button';
 import DropzoneInput from '@/components/forms/DropzoneInput';
 import Input from '@/components/forms/Input';
 import Layout from '@/components/layout/Layout';
 import NextImage from '@/components/NextImage';
-import StepsButtons from "./stepsButtons/StepsButtons";
 
-import styles from './styles.module.scss';
+import StepsButtons from './stepsButtons/StepsButtons';
 
 import TagxLogo from '~/svg/tagx.svg';
 
@@ -230,8 +231,6 @@ export default function AffiliateSetupPage() {
               </FormProvider>
             </>
           )}
-
-
         </div>
       </div>
     </Layout>

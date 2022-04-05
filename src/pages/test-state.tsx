@@ -18,9 +18,7 @@ const TestState: React.FC = () => {
     <Layout>
       <main>
         <section className='my-10 mx-auto flex max-w-md flex-col gap-5'>
-          <h2 className='text-3xl'>
-            The current number is:  {count}
-          </h2>
+          <h2 className='text-3xl'>The current number is: {count}</h2>
           <div className='flex flex-col gap-5'>
             <input
               className='rounded-md'
@@ -56,7 +54,6 @@ const TestState: React.FC = () => {
       </main>
     </Layout>
   );
-}
-
+};
 
 export default TestState;

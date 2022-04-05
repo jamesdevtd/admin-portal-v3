@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useForm, FormProvider } from "react-hook-form";
+import React, { useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import Button from '@/components/buttons/Button';
 import Input from '@/components/forms/Input';
 import Layout from '@/components/layout/Layout';
 import UnstyledLink from '@/components/links/UnstyledLink';
+
 import { handleLogin } from '../../services/login';
 
 import TagxLogo from '~/svg/tagx.svg';
 
 export default function LoginPage() {
-  const [message, setMessage] = useState<string>("");
+  const [message, setMessage] = useState<string>('');
   const router = useRouter();
   //#region  //*=========== Form ===========
   const methods = useForm({
@@ -21,9 +22,9 @@ export default function LoginPage() {
   //#endregion  //*======== Form ===========
 
   //#region  //*=========== Form Submit ===========
-  const onSubmit = async (data: unknown) => {
-    const email = getValues("email");
-    const password = getValues("password");
+  const onSubmit = async () => {
+    const email = getValues('email');
+    const password = getValues('password');
     if (await handleLogin({ email, password })) {
       router.push('/dashboard');
     } else {
@@ -73,7 +74,7 @@ export default function LoginPage() {
               }}
             />
             {message && (
-              <div className="form-group">
+              <div className='form-group'>
                 <span className='text-red-500'>{message}</span>
               </div>
             )}
@@ -86,7 +87,6 @@ export default function LoginPage() {
               </Button>
             </div>
           </form>
-
         </FormProvider>
 
         <div className='text-center text-gray-600'>

@@ -55,8 +55,9 @@ export default function Input({
         )}
       </div>
       <div
-        className={`input-group pw ${type === 'password' && !passwordShown ? 'pw pw-hidden' : 'pw pw-shown'
-          }`}
+        className={`input-group pw ${
+          type === 'password' && !passwordShown ? 'pw pw-hidden' : 'pw pw-shown'
+        }`}
       >
         <input
           {...register(id, validation)}
@@ -69,8 +70,8 @@ export default function Input({
             readOnly
               ? 'cursor-not-allowed border-gray-300 bg-gray-100 focus:border-gray-300 focus:ring-0'
               : errors[id]
-                ? 'border-red-500'
-                : 'border-gray-500',
+              ? 'border-red-500'
+              : 'border-gray-500',
             'block w-full rounded-md shadow-sm'
           )}
           placeholder={placeholder}

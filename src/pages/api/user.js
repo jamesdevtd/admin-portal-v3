@@ -5,7 +5,7 @@ export default async function (req, res) {
   const jwt = cookies.OursiteJWT;
 
   if (!jwt) {
-    return res.json({ message: "Invalid token!" });
+    return res.json({ message: 'Invalid token!' });
   }
 
   // TODO: return res.json({ data: "Top secret data!" });

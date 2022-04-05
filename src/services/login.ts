@@ -3,7 +3,6 @@ import axios from 'axios';
 export interface userLoginInterface {
   email: string;
   password: string;
-  [x: string]: any;
 }
 
 export const handleLogin = async ({ email, password }: userLoginInterface) => {
@@ -18,11 +17,12 @@ export const handleLogin = async ({ email, password }: userLoginInterface) => {
 
 export const handleGetUser = async () => {
   const user = await axios.get('/api/user');
+  // eslint-disable-next-line
   console.log(user);
 };
 
 export const handleLogOut = async () => {
   const user = await axios.get('/api/auth/logout');
-
+  // eslint-disable-next-line
   console.log(user);
 };
