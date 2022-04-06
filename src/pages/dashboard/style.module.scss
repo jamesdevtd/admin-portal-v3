@@ -1,14 +1,16 @@
 $sidebarWidth: 180px;
+$sidebarCollapsedWidth: 65px;
 
 .dashboard :global {
-  @apply flex flex-row;
+  @apply flex flex-row overflow-hidden;
   header {
     @apply bg-transparent;
   }
   .bg {
-    @apply absolute block h-full w-full object-contain object-left-top;
-    top: -56px;
-    max-height: 90vh;
+    @apply absolute block h-full w-full object-contain object-left-top
+    transition-all duration-500 ease-in-out;
+    max-height: 900px;
+    max-width: none;
     z-index: -1;
     @media (min-width: 1600px) {
       @apply object-fill;
@@ -17,8 +19,29 @@ $sidebarWidth: 180px;
       @apply object-cover;
       max-height: 80vh;
     }
+    @media (max-width: 1024px) and (max-height: 1024px) {
+      object-position: left top;
+    }
+    @media (max-width: 901px) {
+      object-fit: fill !important;
+      object-position: top !important;
+      height: 140%;
+      width: 140%;
+    }
+    @media (max-width: 600px) {
+    }
+    @media (max-height: 1200px) {
+      @apply object-cover max-h-screen object-bottom;
+    }
+    @media (max-height: 1024px) {
+      @apply object-cover;
+      max-height: none;
+      object-position: top;
+      max-width: none;
+      height: 140%;
+    }
   }
-  .sidebar {
+  .sidebar.outer {
     @apply p-5 transition-all duration-500 ease-in-out;
     width: calc($sidebarWidth);
     .logo {
@@ -52,16 +75,13 @@ $sidebarWidth: 180px;
         }
       }
     }
-
-    &.collapsed {
-      width: 65px;
+    &.collapsed.outer {
+      width: $sidebarCollapsedWidth;
       .logo {
         transform: rotate(-90deg) scale(2.5);
         margin: 20px auto 30px;
       }
       .nav {
-        .menu-group {
-        }
         h3 {
           text-indent: -9999px;
           @apply border-b-2 border-b-white;
@@ -86,12 +106,53 @@ $sidebarWidth: 180px;
       }
     }
   }
+
   .content {
+    @apply transition-all duration-500 ease-in-out;
     width: calc(100% - $sidebarWidth - 15px);
     .content-wrap {
       @apply rounded-md bg-white;
       height: 100%;
       width: 100%;
+    }
+    &.collapsed {
+      width: calc(100% - $sidebarCollapsedWidth - 15px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .sidebar.outer {
+      width: $sidebarCollapsedWidth;
+      .logo {
+        transform: rotate(-90deg) scale(2.5);
+        margin: 20px auto 30px;
+      }
+      .nav {
+        h3 {
+          text-indent: -9999px;
+          @apply border-b-2 border-b-white;
+        }
+        ul {
+          @apply p-0;
+          li {
+            a {
+              @apply flex flex-nowrap;
+              width: 100px;
+              .icon-box {
+              }
+              span {
+                @apply hidden;
+              }
+            }
+          }
+        }
+        > button {
+          @apply hidden;
+        }
+      }
+    }
+    .content {
+      width: calc(100% - $sidebarCollapsedWidth - 15px);
     }
   }
 

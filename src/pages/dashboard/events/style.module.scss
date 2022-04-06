@@ -14,13 +14,14 @@ $sidebarWidth: 180px;
       font-size: 10px;
     }
   }
-  .content-wrap {
+  .content-main {
     @apply flex flex-row gap-0;
-    .sidebar {
+    > .sidebar {
       @apply relative m-0 pl-3 pr-0;
       width: $sidebarWidth;
       .nav {
         ul {
+          @apply flex flex-col gap-3 mt-2;
           li {
             @apply block pr-5;
             &.current {
@@ -35,6 +36,7 @@ $sidebarWidth: 180px;
               }
             }
             a {
+              @apply flex flex-row gap-2;
               .icon-box {
                 font-size: 8px;
                 line-height: 14px;
@@ -44,7 +46,7 @@ $sidebarWidth: 180px;
                 text-center text-white drop-shadow-md;
                 &:after {
                   @apply absolute block;
-                  content: '';
+                  content: "";
                   bottom: 100%;
                   width: 1px;
                   height: 15px;

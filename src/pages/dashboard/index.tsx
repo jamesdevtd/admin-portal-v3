@@ -39,9 +39,7 @@ export default function Dashboard() {
           className='bg'
         />
         <div
-          className={`${
-            sidebarCollapse ? 'collapsed' : 'expanded'
-          } sidebar relative h-60 md:h-screen`}
+          className={`${sidebarCollapse ? 'collapsed' : 'expanded'} sidebar outer relative h-60 md:h-screen`}
         >
           <TagxLogoWhite className='logo' />
           <div className='nav'>
@@ -70,7 +68,7 @@ export default function Dashboard() {
             </button>
           </div>
         </div>
-        <div className='content'>
+        <div className={`${sidebarCollapse ? 'collapsed' : 'expanded'} content`}>
           <Header />
           <div className='content-wrap'>
             <Events />

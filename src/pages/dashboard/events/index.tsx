@@ -33,7 +33,7 @@ export default function Events() {
         <h2>New Open Series</h2>
         <button className='draft'>Draft</button>
       </header>
-      <div className='content-wrap'>
+      <div className='content-main'>
         <div className='sidebar'>
           <div className='nav'>
             {menuItems &&
@@ -44,9 +44,8 @@ export default function Events() {
                       group.items.map((item, i) => (
                         <li
                           key={i}
-                          className={`${i > 3 ? 'inactive' : 'active'} ${
-                            i < 1 ? 'current' : ''
-                          }`}
+                          className={`${i > 3 ? 'inactive' : 'active'} ${i < 1 ? 'current' : ''
+                            }`}
                         >
                           <Link href={item.url}>
                             <a>
