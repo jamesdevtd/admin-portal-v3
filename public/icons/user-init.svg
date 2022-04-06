@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Admin Icon - Nav</title>
+    <g id="APPROVED-SCREENS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Affiliate-Admin-Dashboard-|-EVENTS-|-Create-New-1" transform="translate(-924.000000, -13.000000)">
+            <g id="Top-Bar" transform="translate(144.000000, 8.000000)">
+                <g id="Admin-Icon---Nav" transform="translate(780.000000, 5.000000)">
+                    <circle id="Oval" stroke="#FFFFFF" stroke-width="0.673684211" fill="#FC6767" cx="8" cy="8" r="7.66315789"></circle>
+                    <text id="SP" font-family="Blinker-Bold, Blinker" font-size="6.4" font-weight="bold" line-spacing="8.42105263" fill="#FFFFFF">
+                        <tspan x="5.14" y="10">SP</tspan>
+                    </text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

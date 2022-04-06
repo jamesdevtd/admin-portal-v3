@@ -1,4 +1,4 @@
-$border-color_1: #6b7280;
+$sidebarWidth: 180px;
 
 .dashboard :global {
   @apply flex flex-row;
@@ -10,47 +10,125 @@ $border-color_1: #6b7280;
     top: -56px;
     max-height: 90vh;
     z-index: -1;
-    @media (max-width: 1024px) {
+    @media (min-width: 1600px) {
+      @apply object-fill;
+    }
+    @media (max-width: 1400px) {
       @apply object-cover;
       max-height: 80vh;
     }
   }
   .sidebar {
-    @apply p-5;
-    width: calc(164px);
+    @apply p-5 transition-all duration-500 ease-in-out;
+    width: calc($sidebarWidth);
     .logo {
-      @apply my-3 block h-auto w-full;
+      @apply my-3 block h-auto w-full
+      transition-all duration-500 ease-in-out;
       max-height: 40px;
     }
     .nav {
-      @apply relative my-5 mx-1 flex flex-col gap-4;
+      @apply flex flex-col gap-7;
+      .menu-group {
+        @apply relative my-0 mx-1 flex flex-col gap-4;
+      }
+      h3 {
+        @apply font-semibold uppercase text-white opacity-70;
+      }
       ul {
-        @apply flex flex-col gap-3 pl-2;
+        @apply flex flex-col gap-3 pl-1;
         li {
-          @apply flex items-center;
-          svg {
+          a {
+            @apply flex items-center flex-row gap-4;
+            span {
+              @apply text-white whitespace-nowrap;
+            }
           }
         }
       }
+      > button {
+        @apply mr-0 block ml-auto mt-7;
+        .icon-box {
+          @apply w-5 h-5;
+        }
+      }
     }
-    h3 {
-      @apply font-semibold uppercase text-white opacity-70;
-    }
-    ul {
-      li {
-        @apply flex flex-row gap-3;
-        span {
-          @apply text-white;
+
+    &.collapsed {
+      width: 65px;
+      .logo {
+        transform: rotate(-90deg) scale(2.5);
+        margin: 20px auto 30px;
+      }
+      .nav {
+        .menu-group {
+        }
+        h3 {
+          text-indent: -9999px;
+          @apply border-b-2 border-b-white;
+        }
+        ul {
+          @apply p-0;
+          li {
+            a {
+              @apply flex flex-nowrap;
+              width: 100px;
+              .icon-box {
+              }
+              span {
+                @apply hidden;
+              }
+            }
+          }
+        }
+        > button {
+          @apply transform rotate-180 mx-auto;
         }
       }
     }
   }
   .content {
-    width: calc(100% - 164px);
+    width: calc(100% - $sidebarWidth);
     .content-wrap {
       @apply rounded-md bg-white;
       height: 100%;
       width: 100%;
+    }
+  }
+
+  .icon-box {
+    width: 14px;
+    height: 14px;
+    background-image: url(/icons/dashboard.svg);
+    @apply bg-no-repeat bg-center bg-contain;
+    &.calendar {
+      background-image: url(/icons/calendar.svg);
+    }
+    &.reports {
+      background-image: url(/icons/reports.svg);
+    }
+    &.settings {
+      background-image: url(/icons/settings.svg);
+    }
+    &.account {
+      background-image: url(/icons/account.svg);
+    }
+    &.referee {
+      background-image: url(/icons/referee.svg);
+    }
+    &.overview {
+      background-image: url(/icons/overview.svg);
+    }
+    &.fees {
+      background-image: url(/icons/fees.svg);
+    }
+    &.transactions {
+      background-image: url(/icons/transactions.svg);
+    }
+    &.calculator {
+      background-image: url(/icons/calculator.svg);
+    }
+    &.collapse-toggle {
+      background-image: url(/icons/collapse-toggle.svg);
     }
   }
 }

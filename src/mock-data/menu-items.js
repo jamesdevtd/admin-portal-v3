@@ -1,10 +1,10 @@
-export const menuItems = [
+export const mockMenuItems = [
   {
     heading: 'TX Affiliate',
     items: [
       {
-        icon: 'grid',
-        test: 'Dashboard',
+        icon: 'dashboard',
+        label: 'Dashboard',
         url: '/dashboard',
       },
     ],
@@ -14,17 +14,17 @@ export const menuItems = [
     items: [
       {
         icon: 'calendar',
-        test: 'Events',
+        label: 'Events',
         url: '/events',
       },
       {
-        icon: 'calendar',
-        test: 'Reports',
+        icon: 'reports',
+        label: 'Reports',
         url: '#',
       },
       {
-        icon: 'calendar',
-        test: 'Settings',
+        icon: 'settings',
+        label: 'Settings',
         url: '#',
       },
     ],
@@ -33,13 +33,13 @@ export const menuItems = [
     heading: 'Users',
     items: [
       {
-        icon: 'user',
-        test: 'Staff',
+        icon: 'account',
+        label: 'Staff',
         url: '/',
       },
       {
         icon: 'referee',
-        test: 'Referees',
+        label: 'Referees',
         url: '#',
       },
     ],
@@ -48,23 +48,23 @@ export const menuItems = [
     heading: 'Accounts',
     items: [
       {
-        icon: 'document',
-        test: 'Overview',
+        icon: 'overview',
+        label: 'Overview',
         url: '/',
       },
       {
-        icon: 'money',
-        test: 'TX Fees',
+        icon: 'fees',
+        label: 'TX Fees',
         url: '#',
       },
       {
         icon: 'transactions',
-        test: 'Transactions',
+        label: 'Transactions',
         url: '#',
       },
       {
         icon: 'calculator',
-        test: 'Budget Calculator',
+        label: 'Budget Calculator',
         url: '#',
       },
     ],

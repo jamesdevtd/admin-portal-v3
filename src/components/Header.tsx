@@ -2,7 +2,8 @@ import * as React from 'react';
 
 import styles from './Header.module.scss';
 
-import BellIcon from '~/icons/nav-icon.svg';
+import BellIcon from '~/icons/bell.svg';
+import UserInitials from '~/icons/user-init.svg';
 
 export default function Header() {
   return (
@@ -31,7 +32,7 @@ export default function Header() {
               <BellIcon />
             </button>
             <button>
-              <BellIcon />
+              <UserInitials />
             </button>
             <button>
               <span className='text-sm font-semibold'>Sean P</span>

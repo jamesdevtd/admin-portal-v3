@@ -1,7 +1,7 @@
 /* eslint-disable no-return-assign, no-param-reassign */
 
-import { verify } from 'jsonwebtoken';
 import { NextResponse } from 'next/server';
+import { verify } from 'jsonwebtoken';
 
 const secret = process.env.SECRET;
 
@@ -11,7 +11,7 @@ export default function middleware(req) {
   const jwt = cookies.TagxJWT;
   const url = req.url;
 
-  const loginUrl = req.nextUrl.clone();
+  const loginUrl = req.nextUrl.clone()
   loginUrl.pathname = '/login';
 
   //TODO: refactor to modularize route protection per page file

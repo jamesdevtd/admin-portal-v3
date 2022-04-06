@@ -18,9 +18,11 @@
       @apply absolute h-4  w-4 text-white;
     }
     input {
-      @apply block w-full border-0 border-b-white bg-transparent
-      py-2 pl-6 text-white placeholder-white outline-none;
-      border-bottom-width: 1px;
+      @apply block w-full border-0 bg-transparent
+      py-2 pl-6 text-white placeholder-white outline-none
+      bg-no-repeat bg-left-bottom bg-cover;
+      background-image: url(/images/faded-line.png);
+      background-size: 130% 4px;
     }
   }
 }
