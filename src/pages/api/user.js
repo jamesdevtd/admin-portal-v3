@@ -1,4 +1,3 @@
-
 //TODO: convert to typscript once once http only cookie token is ready
 
 /* eslint-disable import/no-anonymous-default-export */

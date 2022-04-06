@@ -7,19 +7,19 @@
     @apply mr-0;
     button {
       svg {
-        @apply w-4 h-4;
+        @apply h-4 w-4;
       }
     }
   }
   .search-input {
-    @apply flex items-center flex-row flex-1 relative p-0;
+    @apply relative flex flex-1 flex-row items-center p-0;
     width: 100%;
     svg {
-      @apply w-4 h-4  text-white absolute;
+      @apply absolute h-4  w-4 text-white;
     }
     input {
-      @apply block w-full bg-transparent text-white placeholder-white
-      py-2 border-0 border-b-white outline-none pl-6;
+      @apply block w-full border-0 border-b-white bg-transparent
+      py-2 pl-6 text-white placeholder-white outline-none;
       border-bottom-width: 1px;
     }
   }

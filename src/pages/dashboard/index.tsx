@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
+
 import styles from '@/pages/dashboard/style.module.scss';
 
 import Header from '@/components/Header';
 import Layout from '@/components/layout/Layout';
 
+import { menuItems } from '../../mock-data/menu-items.js';
+
 import Icon1 from '~/icons/nav-icon.svg';
 import TagxLogoWhite from '~/svg/tagx-logo-white.svg';
-
-import { menuItems } from "../../mock-data/menu-items.js";
 
 export default function Dashboard() {
   useEffect(() => {
@@ -15,7 +16,7 @@ export default function Dashboard() {
     // return () => {
     //   second
     // }
-  }, [])
+  }, []);
 
   return (
     <Layout>

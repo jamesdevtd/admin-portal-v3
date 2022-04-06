@@ -1,72 +1,72 @@
 export const menuItems = [
   {
-    "heading": "TX Affiliate",
-    "items": [
+    heading: 'TX Affiliate',
+    items: [
       {
-        "icon": "grid",
-        "test": "Dashboard",
-        "url": "/dashboard"
-      }
-    ]
+        icon: 'grid',
+        test: 'Dashboard',
+        url: '/dashboard',
+      },
+    ],
   },
   {
-    "heading": "General",
-    "items": [
+    heading: 'General',
+    items: [
       {
-        "icon": "calendar",
-        "test": "Events",
-        "url": "/events"
+        icon: 'calendar',
+        test: 'Events',
+        url: '/events',
       },
       {
-        "icon": "calendar",
-        "test": "Reports",
-        "url": "#"
+        icon: 'calendar',
+        test: 'Reports',
+        url: '#',
       },
       {
-        "icon": "calendar",
-        "test": "Settings",
-        "url": "#"
+        icon: 'calendar',
+        test: 'Settings',
+        url: '#',
       },
-    ]
+    ],
   },
   {
-    "heading": "Users",
-    "items": [
+    heading: 'Users',
+    items: [
       {
-        "icon": "user",
-        "test": "Staff",
-        "url": "/"
+        icon: 'user',
+        test: 'Staff',
+        url: '/',
       },
       {
-        "icon": "referee",
-        "test": "Referees",
-        "url": "#"
-      }
-    ]
+        icon: 'referee',
+        test: 'Referees',
+        url: '#',
+      },
+    ],
   },
   {
-    "heading": "Accounts",
-    "items": [
+    heading: 'Accounts',
+    items: [
       {
-        "icon": "document",
-        "test": "Overview",
-        "url": "/"
+        icon: 'document',
+        test: 'Overview',
+        url: '/',
       },
       {
-        "icon": "money",
-        "test": "TX Fees",
-        "url": "#"
+        icon: 'money',
+        test: 'TX Fees',
+        url: '#',
       },
       {
-        "icon": "transactions",
-        "test": "Transactions",
-        "url": "#"
+        icon: 'transactions',
+        test: 'Transactions',
+        url: '#',
       },
       {
-        "icon": "calculator",
-        "test": "Budget Calculator",
-        "url": "#"
+        icon: 'calculator',
+        test: 'Budget Calculator',
+        url: '#',
       },
-    ]
-  }
+    ],
+  },
 ];
