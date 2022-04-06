@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 import styles from '@/pages/dashboard/style.module.scss';
 
@@ -8,22 +8,21 @@ import Layout from '@/components/layout/Layout';
 
 import { mockMenuItems } from '../../mock-data/menu-items.js';
 
-import Icon1 from '~/icons/dashboard.svg';
 import TagxLogoWhite from '~/svg/tagx-logo-white.svg';
 
 interface MenuSubItems {
-  icon: string,
-  label: string,
-  url: string,
+  icon: string;
+  label: string;
+  url: string;
 }
 interface MenuItems {
-  heading: string,
+  heading: string;
   items: MenuSubItems[];
 }
 
 export default function Dashboard() {
   const [menuItems, setMenuItems] = useState<MenuItems[]>([]);
-  const [sidebarCollapse, setSidebarCollapse] = useState<Boolean>(false);
+  const [sidebarCollapse, setSidebarCollapse] = useState<boolean>(false);
   useEffect(() => {
     console.log(mockMenuItems);
     setMenuItems(mockMenuItems);
@@ -37,29 +36,34 @@ export default function Dashboard() {
           alt='affiliate signup background'
           className='bg'
         />
-        <div className={`${sidebarCollapse ? 'collapsed' : 'expanded'} sidebar relative h-60 md:h-screen`}>
+        <div
+          className={`${
+            sidebarCollapse ? 'collapsed' : 'expanded'
+          } sidebar relative h-60 md:h-screen`}
+        >
           <TagxLogoWhite className='logo' />
           <div className='nav'>
-            {menuItems && menuItems.map((group, i) => (
-              <div className='menu-group' key={i}>
-                <h3>{group.heading}</h3>
-                <ul>
-                  {group.items && group.items.map((item, i) => (
-                    <li key={i}>
-
-                      <Link href={item.url}>
-                        <a>
-                          <div className={`icon-box ${item.icon}`}></div>
-                          <span>{item.label}</span>
-                        </a>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            {menuItems &&
+              menuItems.map((group, i) => (
+                <div className='menu-group' key={i}>
+                  <h3>{group.heading}</h3>
+                  <ul>
+                    {group.items &&
+                      group.items.map((item, i) => (
+                        <li key={i}>
+                          <Link href={item.url}>
+                            <a>
+                              <div className={`icon-box ${item.icon}`}></div>
+                              <span>{item.label}</span>
+                            </a>
+                          </Link>
+                        </li>
+                      ))}
+                  </ul>
+                </div>
+              ))}
             <button onClick={() => setSidebarCollapse(!sidebarCollapse)}>
-              <div className="icon-box collapse-toggle"></div>
+              <div className='icon-box collapse-toggle'></div>
               <span className='sr-only'></span>
             </button>
           </div>

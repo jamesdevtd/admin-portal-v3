@@ -19,8 +19,8 @@
     }
     input {
       @apply block w-full border-0 bg-transparent
-      py-2 pl-6 text-white placeholder-white outline-none
-      bg-no-repeat bg-left-bottom bg-cover;
+      bg-cover bg-left-bottom bg-no-repeat py-2 pl-6
+      text-white placeholder-white outline-none;
       background-image: url(/images/faded-line.png);
       background-size: 130% 4px;
     }
