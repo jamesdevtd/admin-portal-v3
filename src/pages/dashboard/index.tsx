@@ -6,6 +6,8 @@ import styles from '@/pages/dashboard/style.module.scss';
 import Header from '@/components/Header';
 import Layout from '@/components/layout/Layout';
 
+import Events from '@/pages/dashboard/events';
+
 import { mockMenuItems } from '../../mock-data/menu-items.js';
 
 import TagxLogoWhite from '~/svg/tagx-logo-white.svg';
@@ -23,8 +25,8 @@ interface MenuItems {
 export default function Dashboard() {
   const [menuItems, setMenuItems] = useState<MenuItems[]>([]);
   const [sidebarCollapse, setSidebarCollapse] = useState<boolean>(false);
+
   useEffect(() => {
-    console.log(mockMenuItems);
     setMenuItems(mockMenuItems);
   }, []);
 
@@ -71,13 +73,7 @@ export default function Dashboard() {
         <div className='content'>
           <Header />
           <div className='content-wrap'>
-            <div className='m-auto flex w-full flex-col gap-5'>
-              <section className='my-40 flex flex-col items-center'>
-                <h3 className='text-lg'>
-                  Affiliate Dashboard content goes here...
-                </h3>
-              </section>
-            </div>
+            <Events />
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 .header :global {
-  @apply bg-transparent pr-5 pb-3 text-white;
+  @apply bg-transparent pr-5 pt-1 pb-3 text-white;
   .wrap {
     @apply flex items-center justify-between gap-4;
   }
@@ -15,12 +15,13 @@
     @apply relative flex flex-1 flex-row items-center p-0;
     width: 100%;
     svg {
-      @apply absolute h-4  w-4 text-white;
+      @apply absolute h-3 w-3 text-white;
     }
     input {
       @apply block w-full border-0 bg-transparent
-      bg-cover bg-left-bottom bg-no-repeat py-2 pl-6
-      text-white placeholder-white outline-none;
+      bg-cover bg-left-bottom bg-no-repeat pl-6
+      text-sm text-white placeholder-white
+      outline-none;
       background-image: url(/images/faded-line.png);
       background-size: 130% 4px;
     }

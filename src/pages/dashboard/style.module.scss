@@ -27,7 +27,7 @@ $sidebarWidth: 180px;
       max-height: 40px;
     }
     .nav {
-      @apply flex flex-col gap-7;
+      @apply flex flex-col gap-6;
       .menu-group {
         @apply relative my-0 mx-1 flex flex-col gap-4;
       }
@@ -87,7 +87,7 @@ $sidebarWidth: 180px;
     }
   }
   .content {
-    width: calc(100% - $sidebarWidth);
+    width: calc(100% - $sidebarWidth - 15px);
     .content-wrap {
       @apply rounded-md bg-white;
       height: 100%;

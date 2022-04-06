@@ -24,7 +24,7 @@ export default function Header() {
               d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
             />
           </svg>
-          <input type='text' name='name' placeholder='search' className='' />
+          <input type='text' name='name' placeholder='Search' className='' />
         </div>
         <nav className='ml-auto mr-0 block'>
           <ul className='flex flex-row items-center justify-between space-x-4'>

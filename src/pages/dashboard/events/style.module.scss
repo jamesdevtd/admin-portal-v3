@@ -1,0 +1,109 @@
+$sidebarWidth: 180px;
+
+.basicInfo :global {
+  .content-header {
+    @apply flex flex-row items-center gap-3 p-5;
+    svg {
+      @apply h-5 w-5;
+    }
+    h2 {
+      @apply text-xl font-bold text-blue-dark;
+    }
+    button {
+      @apply rounded-xl bg-orange py-1 px-5 uppercase text-white;
+      font-size: 10px;
+    }
+  }
+  .content-wrap {
+    @apply flex flex-row gap-0;
+    .sidebar {
+      @apply relative m-0 pl-3 pr-0;
+      width: $sidebarWidth;
+      .nav {
+        ul {
+          li {
+            @apply block pr-5;
+            &.current {
+              @apply -mr-3 rounded-l-lg bg-blue-brand;
+              a {
+                .icon-box {
+                  @apply border-0 bg-transparent drop-shadow-none;
+                }
+                span {
+                  @apply text-white;
+                }
+              }
+            }
+            a {
+              .icon-box {
+                font-size: 8px;
+                line-height: 14px;
+                border: 1px solid white;
+                background-image: none !important;
+                @apply relative h-4 w-4 rounded-full bg-gray-500
+                text-center text-white drop-shadow-md;
+                &:after {
+                  @apply absolute block;
+                  content: '';
+                  bottom: 100%;
+                  width: 1px;
+                  height: 15px;
+                  left: 7px;
+                  z-index: -1;
+                  border-right: 1px solid gray;
+                }
+              }
+              span {
+                @apply relative z-20 font-semibold text-blue-dark;
+              }
+            }
+            &:first-child {
+              a {
+                .icon-box:after {
+                  content: none;
+                }
+              }
+            }
+            &.inactive {
+              a {
+                .icon-box {
+                  @apply bg-gray-300;
+                  &:after {
+                    content: none;
+                  }
+                }
+                span {
+                  @apply font-normal text-gray-400;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .main {
+      @apply relative rounded-md border-gray-200 bg-white py-4 px-5;
+      min-height: 80vh;
+      border-width: 1px;
+      width: calc(100% - $sidebarWidth - 15px);
+      h3 {
+        @apply text-base font-semibold text-blue-dark;
+      }
+      .form-group {
+        @apply relative mb-2 flex flex-col gap-2 pl-8;
+        svg {
+          @apply absolute left-0 h-5 w-5;
+          top: 17px;
+        }
+        .label {
+          span {
+            @apply text-base font-semibold text-blue-brand;
+          }
+        }
+        .instructions {
+          @apply text-gray-500;
+        }
+      }
+    }
+  }
+}
