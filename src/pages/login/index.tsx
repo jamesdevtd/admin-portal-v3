@@ -26,11 +26,11 @@ export default function LoginPage() {
     const email = getValues('email');
     const password = getValues('password');
     if (await handleLogin({ email, password })) {
+      // TODO: set as protected route
       router.push('/dashboard');
     } else {
       setMessage('Invalid Credentials!');
     }
-    // router.push('/dashboard');
   };
   //#endregion  //*======== Form Submit ===========
 

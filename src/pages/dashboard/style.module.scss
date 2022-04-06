@@ -6,14 +6,33 @@ $border-color_1: #6b7280;
     @apply bg-transparent;
   }
   .bg {
-    @apply absolute block h-auto h-full w-full w-full object-cover;
-    background-size: 100% auto;
-    background-position: left top;
+    @apply absolute block object-contain object-left-top w-full h-full;
     top: -56px;
+    max-height: 90vh;
     z-index: -1;
+    @media (max-width: 1024px) {
+      @apply object-cover;
+      max-height: 80vh;
+    }
   }
   .sidebar {
+    @apply p-5;
     width: calc(164px);
+    .logo {
+      @apply block w-full h-auto my-3;
+      max-height: 40px;
+    }
+    .nav {
+      @apply relative my-5 mx-1 flex flex-col gap-4;
+      ul {
+        @apply flex flex-col gap-3 pl-2;
+        li {
+          @apply flex items-center;
+          svg {
+          }
+        }
+      }
+    }
     h3 {
       @apply font-semibold uppercase text-white opacity-70;
     }

@@ -1,3 +1,6 @@
+
+//TODO: convert to typscript once once http only cookie token is ready
+
 /* eslint-disable import/no-anonymous-default-export */
 export default async function (req, res) {
   const { cookies } = req;

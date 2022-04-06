@@ -18,7 +18,7 @@ export default async function (req, res) {
       secret
     );
 
-    const serialised = serialize('tagxJWT', token, {
+    const serialised = serialize('TagxJWT', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV !== 'development',
       sameSite: 'strict',

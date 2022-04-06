@@ -1,15 +1,24 @@
-import styles from '../styles/pages/dashboard.module.scss';
+import { useEffect } from 'react';
+import styles from '@/pages/dashboard/style.module.scss';
 
-import Header from '@/components/layout/Header';
+import Header from '@/components/Header';
 import Layout from '@/components/layout/Layout';
 
 import Icon1 from '~/icons/nav-icon.svg';
 import TagxLogoWhite from '~/svg/tagx-logo-white.svg';
 
+import { menuItems } from "../../mock-data/menu-items.js";
+
 export default function Dashboard() {
+  useEffect(() => {
+    console.log(menuItems);
+    // return () => {
+    //   second
+    // }
+  }, [])
+
   return (
     <Layout>
-      <Header />
       <div className={`${styles.dashboard}`}>
         <img
           src='/images/backgrounds/dashboard-bg-cone.png'
@@ -17,8 +26,8 @@ export default function Dashboard() {
           className='bg'
         />
         <div className='sidebar relative h-60 md:h-screen'>
-          <TagxLogoWhite className='logo absolute top-5 left-5 h-9 w-11' />
-          <div className='text relative m-16 max-w-xs'>
+          <TagxLogoWhite className='logo' />
+          <div className='nav'>
             <h3>TX Affiliate</h3>
             <ul>
               <li>
@@ -44,6 +53,7 @@ export default function Dashboard() {
           </div>
         </div>
         <div className='content'>
+          <Header />
           <div className='content-wrap'>
             <div className='m-auto flex w-full flex-col gap-5'>
               <section className='my-40 flex flex-col items-center'>
