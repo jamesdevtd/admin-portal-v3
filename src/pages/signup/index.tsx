@@ -8,30 +8,47 @@ import Input from '@/components/forms/Input';
 import Layout from '@/components/layout/Layout';
 import UnstyledLink from '@/components/links/UnstyledLink';
 
+import { handleSignUp } from '../../services/signup';
+
 import TagxLogo from '~/svg/tagx.svg';
 
 export default function SignUpPage() {
   const [showReferralCode, setShowReferralCode] = useState<boolean>(false);
+  const [referralCode, setReferralCode] = useState<string>('');
 
   const router = useRouter();
   //#region  //*=========== Form ===========
   const methods = useForm({
     mode: 'onTouched',
   });
-  const { handleSubmit } = methods;
+  const { getValues, handleSubmit } = methods;
   //#endregion  //*======== Form ===========
 
   //#region  //*=========== Form Submit ===========
   const onSubmit = (_data: unknown) => {
     // eslint-disable-next-line no-console
-    // console.log(data);
-    router.push('/affiliate-setup');
+    const firstName = getValues('firstName');
+    const lastName = getValues('lastName');
+    const username = getValues('username');
+    const password = getValues('password');
+    const submitData = {
+      firstName, lastName, username, password, referralCode
+    };
+    handleSignUp(submitData);
+    // if (await handleLogin({ username, password })) {
+    //   // TODO: set as protected route
+    //   router.push('/dashboard');
+    // } else {
+    //   setMessage('Invalid Credentials!');
+    // }
+    //router.push('/affiliate-setup');
   };
   //#endregion  //*======== Form Submit ===========
 
   const handleOutput = (_code: string) => {
     // Do something with the string
-    // console.log(code);
+    console.log(_code);
+    setReferralCode(_code);
   };
 
   return (
@@ -64,7 +81,7 @@ export default function SignUpPage() {
               validation={{ required: 'Last Name is required.' }}
             />
             <Input
-              id='email'
+              id='username'
               label='Email'
               type='email'
               validation={{
@@ -92,9 +109,8 @@ export default function SignUpPage() {
             />
             <p
               onClick={() => setShowReferralCode(!showReferralCode)}
-              className={`-mb-3 cursor-pointer text-blue-brand ${
-                showReferralCode ? 'with-caret' : 'underline'
-              }`}
+              className={`-mb-3 cursor-pointer text-blue-brand ${showReferralCode ? 'with-caret' : 'underline'
+                }`}
             >
               Enter a referral code
             </p>
@@ -108,8 +124,7 @@ export default function SignUpPage() {
                     { style: { color: 'gray', fontSize: 'small' } },
                     { style: { color: 'gray', fontSize: 'small' } },
                     { style: { color: 'gray', fontSize: 'small' } },
-                    { style: { color: 'gray', fontSize: 'small' } },
-                    { style: { color: 'gray', fontSize: 'small' } },
+                    { style: { color: 'gray', fontSize: 'small' } }
                   ]}
                   inputRegExp={/^[0-9]$/}
                 />

@@ -23,9 +23,9 @@ export default function LoginPage() {
 
   //#region  //*=========== Form Submit ===========
   const onSubmit = async () => {
-    const email = getValues('email');
+    const username = getValues('username');
     const password = getValues('password');
-    if (await handleLogin({ email, password })) {
+    if (await handleLogin({ username, password })) {
       // TODO: set as protected route
       router.push('/dashboard');
     } else {
@@ -54,7 +54,7 @@ export default function LoginPage() {
             className='flex flex-col gap-5'
           >
             <Input
-              id='email'
+              id='username'
               type='email'
               label='Email'
               validation={{

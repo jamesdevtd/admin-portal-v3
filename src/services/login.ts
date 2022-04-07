@@ -1,12 +1,15 @@
 import axios from 'axios';
 
 export interface userLoginInterface {
-  email: string;
+  username: string;
   password: string;
 }
 
-export const handleLogin = async ({ email, password }: userLoginInterface) => {
-  const credentials = { email, password };
+export const handleLogin = async ({
+  username,
+  password,
+}: userLoginInterface) => {
+  const credentials = { username, password };
   const reponse = await axios.post('/api/auth/login', credentials);
   if (reponse.data.message === 'Success!') {
     return true;

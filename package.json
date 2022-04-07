@@ -17,7 +17,7 @@
     "release": "standard-version",
     "push-release": "git push --follow-tags origin main",
     "postbuild": "next-sitemap",
-    "prepare": "husky install"
+    "prepare": "cd .. && husky install admin-portal/.husky"
   },
   "dependencies": {
     "@hookform/resolvers": "^2.8.8",

@@ -46,4 +46,14 @@ module.exports = {
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
   },
+
+  //TODO: add next-http-proxy-middleware
+  async rewrites() {
+    return [
+      {
+        source: '/:path*',
+        destination: 'http://localhost:8080/:path*',
+      },
+    ]
+  }
 };

@@ -1,3 +1,38 @@
 body {
   @apply font-body text-xs;
 }
+
+h1,
+h2,
+h3,
+h4 {
+  @apply font-title;
+}
+
+ul {
+  li {
+    > a {
+      @apply font-title;
+    }
+  }
+}
+
+label,
+.label {
+  span {
+    @apply font-title;
+  }
+  @apply font-title;
+}
+
+button,
+.button {
+  @apply font-title;
+  span {
+    @apply font-title;
+  }
+}
+
+[class*="ButtonLink_"] {
+  @apply font-title;
+}

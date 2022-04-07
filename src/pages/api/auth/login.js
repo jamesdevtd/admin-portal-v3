@@ -5,15 +5,15 @@ import { sign } from 'jsonwebtoken';
 const secret = process.env.SECRET;
 
 export default async function (req, res) {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
   // Check in the database
   // if a user with this username
   // and password exists
-  if (email === 'affiliate@test.com' && password === 'affiliate') {
+  if ((username === 'affiliate@test.com' || username === 'affiliate') && password === 'affiliate') {
     const token = sign(
       {
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, // 30 days
-        email: email,
+        username: username,
       },
       secret
     );

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import styles from '@/pages/dashboard/events/style.module.scss';
 
-import { mockMenuItems } from '../../../mock-data/events-menu-items.js';
+import { mockMenuItems } from '../../../mock-data/events-menu-items';
 
 import CalendarIcon from '~/icons/blue/calendar.svg';
 import WarningIcon from '~/icons/blue/warning.svg';
@@ -20,9 +20,7 @@ interface MenuItems {
 
 export default function Events() {
   const [menuItems, setMenuItems] = useState<MenuItems[]>([]);
-  const [sidebarCollapse, setSidebarCollapse] = useState<boolean>(false);
   useEffect(() => {
-    console.log(mockMenuItems);
     setMenuItems(mockMenuItems);
   }, []);
 

@@ -7,12 +7,17 @@ module.exports = {
         'blue-start': '#2FBEFF',
         'blue-end': '#2395FF',
         'blue-dark': '#022F59',
-        orange: '#FFCB30',
+        'orange': '#FFCB30',
       },
       fontFamily: {
         title: ['Blinker', 'sans-serif'],
         body: ['Source Sans Pro', 'sans-serif'],
       },
+      fontSize: {
+        'xs': '12px',
+        'sm': '13px',
+        'base': '14px'
+      }
     },
   },
   plugins: [

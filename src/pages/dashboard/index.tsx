@@ -8,7 +8,7 @@ import Layout from '@/components/layout/Layout';
 
 import Events from '@/pages/dashboard/events';
 
-import { mockMenuItems } from '../../mock-data/menu-items.js';
+import { mockMenuItems } from '../../mock-data/menu-items';
 
 import TagxLogoWhite from '~/svg/tagx-logo-white.svg';
 
