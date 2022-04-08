@@ -61,9 +61,8 @@ export default function Events() {
                       group.items.map((item, i) => (
                         <li
                           key={i}
-                          className={`${i > 3 ? 'inactive' : 'active'} ${
-                            i < 1 ? 'current' : ''
-                          }`}
+                          className={`${i > 3 ? 'inactive' : 'active'} ${i < 1 ? 'current' : ''
+                            }`}
                         >
                           <Link href={item.url}>
                             <a>
@@ -98,7 +97,6 @@ export default function Events() {
                   id='name'
                   type='text'
                   autoComplete='name'
-                  value=''
                   placeholder='NY Sevens'
                   required
                 />
@@ -140,7 +138,6 @@ export default function Events() {
                   id='eventStartDate'
                   type='text'
                   autoComplete='name'
-                  value=''
                   placeholder='September 14, 2022'
                   required
                 />
@@ -151,7 +148,6 @@ export default function Events() {
                   id='eventStartDate'
                   type='text'
                   autoComplete='name'
-                  value=''
                   placeholder='4:00 PM'
                   required
                 />
@@ -162,7 +158,6 @@ export default function Events() {
                   id='eventEndDate'
                   type='text'
                   autoComplete='name'
-                  value=''
                   placeholder='September 18, 2022'
                   required
                 />
@@ -187,7 +182,6 @@ export default function Events() {
                   id='eventStartDate'
                   type='text'
                   autoComplete='name'
-                  value=''
                   placeholder='September 14, 2022'
                   required
                 />
@@ -198,7 +192,6 @@ export default function Events() {
                   id='eventEndDate'
                   type='text'
                   autoComplete='name'
-                  value=''
                   placeholder='September 18, 2022'
                   required
                 />
