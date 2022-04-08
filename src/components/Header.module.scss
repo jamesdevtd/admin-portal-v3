@@ -6,14 +6,19 @@
   nav {
     @apply mr-0;
     button {
+      @apply block;
       svg {
-        @apply h-4 w-4;
+        @apply h-5 w-5;
       }
+    }
+    .user-name {
+      @apply text-md;
     }
   }
   .search-input {
     @apply relative flex flex-1 flex-row items-center p-0;
     width: 100%;
+    margin-left: 7px;
     svg {
       @apply absolute h-3 w-3 text-white;
     }

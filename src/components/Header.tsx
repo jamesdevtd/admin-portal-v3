@@ -35,7 +35,7 @@ export default function Header() {
               <UserInitials />
             </button>
             <button>
-              <span className='text-sm font-semibold'>Sean P</span>
+              <span className='user-name'>Sean P</span>
             </button>
           </ul>
         </nav>

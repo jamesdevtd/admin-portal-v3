@@ -1,11 +1,32 @@
+// @import "../../styles/base/animations.scss";
+
 $sidebarWidth: 180px;
 $sidebarCollapsedWidth: 65px;
 
-.dashboard :global {
-  @apply flex flex-row overflow-hidden;
-  header {
-    @apply bg-transparent;
+.dashboardLayout :global {
+  @apply relative flex flex-row overflow-hidden bg-offWhite;
+  .wall-bg {
+    @apply fixed top-0 h-screen w-full bg-white;
+    height: 900px;
+    svg {
+      @apply absolute left-0 bottom-0 block w-full;
+      height: 25vw;
+    }
   }
+  .bottom-bg {
+    @apply bg-left-bottom bg-no-repeat;
+    background-image: url(/svg/bottom-white-curve.svg);
+    height: 120px;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    background-size: auto 100%;
+  }
+  header {
+    @apply relative bg-transparent;
+  }
+
   .bg {
     @apply absolute block h-full w-full object-contain object-left-top
     transition-all duration-500 ease-in-out;
@@ -31,7 +52,7 @@ $sidebarCollapsedWidth: 65px;
     @media (max-width: 600px) {
     }
     @media (max-height: 1200px) {
-      @apply object-cover max-h-screen object-bottom;
+      @apply max-h-screen object-cover object-bottom;
     }
     @media (max-height: 1024px) {
       @apply object-cover;
@@ -41,30 +62,38 @@ $sidebarCollapsedWidth: 65px;
       height: 140%;
     }
   }
+
   .sidebar.outer {
-    @apply p-5 transition-all duration-500 ease-in-out;
+    @apply relative p-5 transition-all duration-500 ease-in-out;
     width: calc($sidebarWidth);
     .logo {
-      @apply my-3 block h-auto w-full
-      transition-all duration-500 ease-in-out;
+      @apply my-3 block h-auto w-full;
+      @apply transition-all duration-200 ease-in;
+      // animation: rotate-shrink 1.5s ease-in-out both;
       max-height: 40px;
     }
     .nav {
       @apply flex flex-col gap-6;
       .menu-group {
         @apply relative my-0 mx-1 flex flex-col gap-4;
+        margin-right: -5px;
       }
       h3 {
         @apply font-semibold uppercase text-white opacity-70;
       }
       ul {
-        @apply flex flex-col gap-3 pl-1;
+        @apply flex flex-col gap-2;
         li {
+          @apply py-1 px-2 pr-2;
+          border-radius: 5px;
           a {
             @apply flex flex-row items-center gap-4;
             span {
-              @apply whitespace-nowrap text-white;
+              @apply whitespace-nowrap text-sm text-white;
             }
+          }
+          &.current {
+            @apply bg-blue-dark;
           }
         }
       }
@@ -78,8 +107,9 @@ $sidebarCollapsedWidth: 65px;
     &.collapsed.outer {
       width: $sidebarCollapsedWidth;
       .logo {
-        transform: rotate(-90deg) scale(2.5);
         margin: 20px auto 30px;
+        transform: rotate(-90deg) scale(2.5);
+        // animation: rotate-shrink 1.5s ease-in-out both;
       }
       .nav {
         h3 {
@@ -89,11 +119,10 @@ $sidebarCollapsedWidth: 65px;
         ul {
           @apply p-0;
           li {
+            padding-left: 6px;
             a {
               @apply flex flex-nowrap;
               width: 100px;
-              .icon-box {
-              }
               span {
                 @apply hidden;
               }
@@ -111,12 +140,21 @@ $sidebarCollapsedWidth: 65px;
     @apply transition-all duration-500 ease-in-out;
     width: calc(100% - $sidebarWidth - 15px);
     .content-wrap {
-      @apply rounded-md bg-white;
-      height: 100%;
-      width: 100%;
+      @apply mt-1 w-full bg-white drop-shadow-lg;
+      border-radius: 10px;
     }
     &.collapsed {
       width: calc(100% - $sidebarCollapsedWidth - 15px);
+    }
+  }
+
+  .footer-nav {
+    @apply fixed bottom-0 w-full bg-white py-5 px-8;
+    box-shadow: 0px -1px 5px 1px rgba(0, 0, 0, 0.1);
+    .wrap {
+      @apply flex w-full flex-row justify-end gap-6;
+    }
+    button {
     }
   }
 
@@ -124,8 +162,8 @@ $sidebarCollapsedWidth: 65px;
     .sidebar.outer {
       width: $sidebarCollapsedWidth;
       .logo {
-        transform: rotate(-90deg) scale(2.5);
         margin: 20px auto 30px;
+        transform: rotate(-90deg) scale(2.5);
       }
       .nav {
         h3 {
@@ -155,6 +193,8 @@ $sidebarCollapsedWidth: 65px;
       width: calc(100% - $sidebarCollapsedWidth - 15px);
     }
   }
+
+  // ICONS
 
   .icon-box {
     width: 14px;
@@ -191,5 +231,17 @@ $sidebarCollapsedWidth: 65px;
     &.collapse-toggle {
       background-image: url(/icons/collapse-toggle.svg);
     }
+  }
+}
+
+@keyframes rotate-shrink {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.5) rotate(-90deg);
+  }
+  100% {
+    transform: scale(2.5) rotate(-90deg);
   }
 }

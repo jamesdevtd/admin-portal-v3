@@ -15,3 +15,8 @@
     rgba(87, 86, 86, 1) 100%
   );
 }
+
+.wall-blue-gradient {
+  background: #26a1ff;
+  background: linear-gradient(to bottom, #26a1ff 0%, #2f3a5c 100%);
+}

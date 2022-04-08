@@ -16,16 +16,46 @@ $sidebarWidth: 180px;
   }
   .content-main {
     @apply flex flex-row gap-0;
+    min-height: 85vh;
     > .sidebar {
-      @apply relative m-0 pl-3 pr-0;
+      @apply relative m-0 pl-5 pr-1;
       width: $sidebarWidth;
       .nav {
         ul {
-          @apply flex flex-col gap-3 mt-2;
+          @apply mt-2 flex flex-col gap-3;
           li {
             @apply block pr-5;
+            a {
+              @apply flex flex-row gap-2;
+              .icon-box {
+                @apply relative rounded-full bg-gray-400
+                text-center text-white drop-shadow-md;
+                height: 18px;
+                width: 18px;
+                font-size: 10px;
+                border: 1px solid white;
+                background-image: none !important;
+                &:after {
+                  @apply absolute block;
+                  content: '';
+                  bottom: 100%;
+                  width: 1px;
+                  height: 15px;
+                  left: 7.5px;
+                  z-index: -1;
+                  border-right: 1px solid gray;
+                }
+              }
+              span {
+                @apply relative z-20 font-semibold text-blue-dark;
+              }
+            }
             &.current {
-              @apply -mr-3 rounded-l-lg bg-blue-brand;
+              @apply rounded-l-full rounded-r-2xl border border-white bg-blue-brand shadow;
+              padding-top: 2px;
+              padding-bottom: 2px;
+              padding-left: 2px;
+              margin-left: -2px;
               a {
                 .icon-box {
                   @apply border-0 bg-transparent drop-shadow-none;
@@ -33,30 +63,6 @@ $sidebarWidth: 180px;
                 span {
                   @apply text-white;
                 }
-              }
-            }
-            a {
-              @apply flex flex-row gap-2;
-              .icon-box {
-                font-size: 8px;
-                line-height: 14px;
-                border: 1px solid white;
-                background-image: none !important;
-                @apply relative h-4 w-4 rounded-full bg-gray-500
-                text-center text-white drop-shadow-md;
-                &:after {
-                  @apply absolute block;
-                  content: "";
-                  bottom: 100%;
-                  width: 1px;
-                  height: 15px;
-                  left: 7px;
-                  z-index: -1;
-                  border-right: 1px solid gray;
-                }
-              }
-              span {
-                @apply relative z-20 font-semibold text-blue-dark;
               }
             }
             &:first-child {
@@ -84,27 +90,20 @@ $sidebarWidth: 180px;
       }
     }
     .main {
-      @apply relative rounded-md border-gray-200 bg-white py-4 px-5;
-      min-height: 80vh;
+      @apply relative flex flex-col gap-8 overflow-auto
+      bg-white py-4 px-5;
+      box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      height: 100%;
+      min-height: 83vh;
+      max-height: calc(100vh - 170px);
       border-width: 1px;
       width: calc(100% - $sidebarWidth - 15px);
-      h3 {
-        @apply text-base font-semibold text-blue-dark;
+      > h3 {
+        @apply mb-1 text-lg font-semibold text-blue-dark;
       }
-      .form-group {
-        @apply relative mb-2 flex flex-col gap-2 pl-8;
-        svg {
-          @apply absolute left-0 h-5 w-5;
-          top: 17px;
-        }
-        .label {
-          span {
-            @apply text-base font-semibold text-blue-brand;
-          }
-        }
-        .instructions {
-          @apply text-gray-500;
-        }
+      > p {
+        @apply mb-10 pl-5;
       }
     }
   }

@@ -7,17 +7,22 @@ module.exports = {
         'blue-start': '#2FBEFF',
         'blue-end': '#2395FF',
         'blue-dark': '#022F59',
-        'orange': '#FFCB30',
+        orange: '#FFCB30',
+        offWhite: '#EBEDF7',
+        'gray-brand': '#5E656F',
+        'gray-light': '#9ca5b4',
       },
       fontFamily: {
         title: ['Blinker', 'sans-serif'],
         body: ['Source Sans Pro', 'sans-serif'],
       },
       fontSize: {
-        'xs': '12px',
-        'sm': '13px',
-        'base': '14px'
-      }
+        xxs: '11px',
+        xs: '12px',
+        sm: '13px',
+        base: '14px',
+        md: '15px',
+      },
     },
   },
   plugins: [

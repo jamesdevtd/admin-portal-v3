@@ -32,7 +32,11 @@ export default function SignUpPage() {
     const username = getValues('username');
     const password = getValues('password');
     const submitData = {
-      firstName, lastName, username, password, referralCode
+      firstName,
+      lastName,
+      username,
+      password,
+      referralCode,
     };
     handleSignUp(submitData);
     // if (await handleLogin({ username, password })) {
@@ -109,8 +113,9 @@ export default function SignUpPage() {
             />
             <p
               onClick={() => setShowReferralCode(!showReferralCode)}
-              className={`-mb-3 cursor-pointer text-blue-brand ${showReferralCode ? 'with-caret' : 'underline'
-                }`}
+              className={`-mb-3 cursor-pointer text-blue-brand ${
+                showReferralCode ? 'with-caret' : 'underline'
+              }`}
             >
               Enter a referral code
             </p>
@@ -124,7 +129,7 @@ export default function SignUpPage() {
                     { style: { color: 'gray', fontSize: 'small' } },
                     { style: { color: 'gray', fontSize: 'small' } },
                     { style: { color: 'gray', fontSize: 'small' } },
-                    { style: { color: 'gray', fontSize: 'small' } }
+                    { style: { color: 'gray', fontSize: 'small' } },
                   ]}
                   inputRegExp={/^[0-9]$/}
                 />

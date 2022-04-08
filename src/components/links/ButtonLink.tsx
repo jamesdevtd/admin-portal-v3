@@ -19,7 +19,7 @@ const ButtonLink = ({
   return (
     <a
       href={href}
-      className={`${className} 
+      className={`${styles.buttonLink} ${className} 
         ${styles[variant]}`}
     >
       {children}

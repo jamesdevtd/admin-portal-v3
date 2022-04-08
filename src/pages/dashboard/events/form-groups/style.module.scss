@@ -1,0 +1,40 @@
+.formGroup :global {
+  @apply relative mb-2 flex flex-col gap-2 pl-8;
+  max-width: 600px;
+  svg {
+    @apply absolute left-0 h-5 w-5 opacity-60;
+    top: 0px;
+  }
+  .label {
+    span {
+      @apply text-md font-semibold text-blue-brand;
+    }
+  }
+  .instructions {
+    @apply text-gray-500;
+  }
+  .fields-group {
+    @apply flex flex-row flex-wrap border-b border-gray-300 pb-7;
+    gap: 20px;
+    > div {
+      @apply -mb-2 flex flex-col justify-between;
+      width: calc(50% - 10px);
+      input,
+      select,
+      option {
+        @apply p-0 py-1 text-blue-dark placeholder-blue-dark;
+        @apply border-0 border-b-2 border-gray-400;
+        &:focus {
+          outline: none;
+          box-shadow: none;
+        }
+      }
+    }
+    @media (max-width: 1024px) {
+      @apply flex-col;
+      > div {
+        @apply w-full;
+      }
+    }
+  }
+}

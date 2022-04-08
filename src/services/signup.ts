@@ -1,6 +1,3 @@
-import axios from 'axios';
-import { string } from 'yup';
-
 export interface userSignupInterface {
   username: string;
   firstName: string;

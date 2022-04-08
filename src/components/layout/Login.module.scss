@@ -2,7 +2,7 @@ $border-color_1: #6b7280;
 
 .layoutLogin :global {
   .form-wrap {
-    max-width: 280px;
+    max-width: 321px;
     &.setup {
       max-width: 450px;
       margin-top: 60px;
@@ -17,7 +17,7 @@ $border-color_1: #6b7280;
         &.active {
           @apply font-bold text-blue-dark opacity-100;
           &:after {
-            content: "";
+            content: '';
             @apply absolute left-0 bottom-0 block w-full bg-blue-dark;
             height: 4px;
             border-radius: 3px 3px 0 0;
@@ -45,7 +45,7 @@ $border-color_1: #6b7280;
       @apply rounded-sm p-2 text-sm focus:border-none focus:border-blue-900 focus:outline-none focus:ring-1;
     }
     .input-helper-text {
-      font-size: 9.5px;
+      @apply text-xxs;
     }
   }
   .pw-toggle {
@@ -112,7 +112,7 @@ $border-color_1: #6b7280;
       @apply relative cursor-pointer;
       &:after {
         @apply ml-2 inline-block bg-contain bg-center bg-no-repeat;
-        content: "";
+        content: '';
         width: 7px;
         height: 8px;
         background-image: url(/images/backgrounds/caret-down-blue.svg);

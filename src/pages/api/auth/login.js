@@ -9,7 +9,10 @@ export default async function (req, res) {
   // Check in the database
   // if a user with this username
   // and password exists
-  if ((username === 'affiliate@test.com' || username === 'affiliate') && password === 'affiliate') {
+  if (
+    (username === 'affiliate@test.com' || username === 'affiliate') &&
+    password === 'affiliate'
+  ) {
     const token = sign(
       {
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, // 30 days

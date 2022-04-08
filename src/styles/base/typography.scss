@@ -1,5 +1,5 @@
 body {
-  @apply font-body text-xs;
+  @apply font-body text-xs text-gray-brand;
 }
 
 h1,
@@ -33,6 +33,6 @@ button,
   }
 }
 
-[class*="ButtonLink_"] {
+[class*='ButtonLink_'] {
   @apply font-title;
 }

@@ -48,12 +48,12 @@ module.exports = {
   },
 
   //TODO: add next-http-proxy-middleware
-  async rewrites() {
-    return [
-      {
-        source: '/:path*',
-        destination: 'http://localhost:8080/:path*',
-      },
-    ]
-  }
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: '/:path*',
+  //       destination: 'http://localhost:8080/:path*',
+  //     },
+  //   ]
+  // }
 };

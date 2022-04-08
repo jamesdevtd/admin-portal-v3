@@ -1,8 +1,8 @@
 import * as React from 'react';
 
+import Dashboard from './Dashbaord';
 import Home from './Home';
 import Login from './Login';
-import Dashboard from './Login';
 export default function Layout(props: {
   children: React.ReactNode;
   layoutName: string;
