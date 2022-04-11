@@ -8,7 +8,7 @@ import ButtonLink from '@/components/links/ButtonLink';
 import { Events } from '@/pages/dashboard/events';
 
 import SubmitButton from './SubmitButton';
-import { eventsMenuItems } from './events/data/eventsMenuItems';
+import { mockMenuItems } from '../../mock-data/menu-items';
 
 import TagxLogoWhite from '~/svg/tagx-logo-white.svg';
 
@@ -28,7 +28,7 @@ export default function Dashboard() {
   const eventFormRef = useRef<any>();
 
   useEffect(() => {
-    setMenuItems(eventsMenuItems);
+    setMenuItems(mockMenuItems);
   }, []);
 
   const submitEventsForm = () => {
