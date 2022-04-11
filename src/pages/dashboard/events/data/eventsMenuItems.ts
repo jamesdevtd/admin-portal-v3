@@ -1,4 +1,7 @@
-export const mockMenuItems = [
+
+//TODO pupulate from DB
+
+export const eventsMenuItems = [
   {
     heading: 'New Open Series',
     items: [

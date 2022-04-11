@@ -1,49 +1,52 @@
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import React, { forwardRef, useImperativeHandle } from 'react';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
 
 import formStyles from '@/pages/dashboard/events/form-groups/style.module.scss';
 import styles from '@/pages/dashboard/events/style.module.scss';
 
-import { mockMenuItems } from '../../../mock-data/events-menu-items';
+import EventsMenu from './components/EventsMenu';
+import SeriesCheckBoxes from './components/SeriesCheckboxes';
+import { seriesNames } from './data/seriesNames';
 
 import CalendarIcon from '~/icons/blue/calendar.svg';
 import EventIcon from '~/icons/grey/event.svg';
 import RegIcon from '~/icons/grey/registration.svg';
 import WarningIcon from '~/icons/grey/warning.svg';
 
-interface MenuSubItems {
-  icon: string;
-  label: string;
-  url: string;
-}
-interface MenuItems {
-  heading: string;
-  items: MenuSubItems[];
-}
+const schema = yup
+  .object({
+    eventName: yup.string().required(),
+    eventYear: yup.number().positive().integer().required(),
+    seriesName: yup.string().required(),
+  })
+  .required();
 
-//TODO: convert series names from db
-const seriesNames = [
-  'Series 1 - January',
-  'Series 2 - February',
-  'Series 3 - March',
-  'Series 4 - April',
-  'Series 5 - May',
-  'Series 7 - July',
-  'Series 8 - August',
-  'Series 9 - September',
-  'Series 10 - October',
-  'Series 11 - November',
-  'Series 12 - December',
-];
 
-export default function Events() {
-  const [menuItems, setMenuItems] = useState<MenuItems[]>([]);
-  useEffect(() => {
-    setMenuItems(mockMenuItems);
-  }, []);
+export const Events = forwardRef((props, ref) => {
+  const {
+    handleSubmit,
+    register,
+    clearErrors,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    mode: 'onSubmit',
+  });
+
+  const onSubmit = (data: unknown) => {
+    console.log(data);
+  }
+
+  const submitForm = () => {
+    handleSubmit(onSubmit)();
+  };
+
+  useImperativeHandle(ref, () => ({ submitForm }));
 
   return (
-    <div className={`${styles.basicInfo}`}>
+    <form {...ref} {...props} className={`${styles.basicInfo} test`} onSubmit={handleSubmit(onSubmit)} >
       <header className='content-header'>
         <CalendarIcon />
         <h2>New Open Series</h2>
@@ -52,33 +55,9 @@ export default function Events() {
 
       <div className='content-main'>
         <div className='sidebar'>
-          <div className='nav'>
-            {menuItems &&
-              menuItems.map((group, i) => (
-                <div key={i}>
-                  <ul>
-                    {group.items &&
-                      group.items.map((item, i) => (
-                        <li
-                          key={i}
-                          className={`${i > 3 ? 'inactive' : 'active'} ${i < 1 ? 'current' : ''
-                            }`}
-                        >
-                          <Link href={item.url}>
-                            <a>
-                              <div className={`icon-box ${item.icon}`}>
-                                {++i}
-                              </div>
-                              <span>{item.label}</span>
-                            </a>
-                          </Link>
-                        </li>
-                      ))}
-                  </ul>
-                </div>
-              ))}
-          </div>
+          <EventsMenu />
         </div>
+
         <div className='main'>
           <h3>Basic Info</h3>
 
@@ -94,31 +73,45 @@ export default function Events() {
             <div className='fields-group'>
               <div>
                 <input
-                  id='name'
                   type='text'
                   autoComplete='name'
-                  placeholder='NY Sevens'
                   required
+                  {...register('eventName')}
+                  onChange={() => clearErrors('eventName')}
                 />
-                <label htmlFor='name'>Event Name</label>
+                {errors.eventName ?
+                  <span className='error'>Event Name is required</span>
+                  :
+                  <label>Event Name</label>
+                }
               </div>
               <div>
-                <select id='year' name='year'>
+                <select {...register('eventYear')} onChange={() => clearErrors('eventYear')}>
+                  <option value='' hidden></option>
                   <option value='2022'>2022</option>
                   <option value='2023'>2023</option>
                   <option value='2023'>2024</option>
                 </select>
-                <label htmlFor='name'>Yer</label>
+                {errors.eventYear ?
+                  <span className='error'>Event Year is required</span>
+                  :
+                  <label>Year</label>
+                }
               </div>
               <div>
-                <select id='seriesNames' name='seriesNames'>
+                <select {...register('seriesName')}>
+                  <option value='' hidden></option>
                   {seriesNames.map((name, i) => (
                     <option key={i} value={i}>
                       {name}
                     </option>
                   ))}
                 </select>
-                <label htmlFor='name'>Series</label>
+                {errors.seriesName ?
+                  <span className='error'>Series Name is required</span>
+                  :
+                  <label>Series</label>
+                }
               </div>
             </div>
           </div>
@@ -130,7 +123,7 @@ export default function Events() {
             </div>
             <p className='instructions'>
               Specify the date your event will begin and end. This date must be
-              at least XXX days after you’ve completed Registration.
+              at least XXX days after you&apos;ve completed Registration.
             </p>
             <div className='fields-group'>
               <div>
@@ -140,18 +133,20 @@ export default function Events() {
                   autoComplete='name'
                   placeholder='September 14, 2022'
                   required
+                  {...register('eventStartDate')}
                 />
                 <label htmlFor='eventStartDate'>Event Start Date</label>
               </div>
               <div>
                 <input
-                  id='eventStartDate'
+                  id='eventStartTime'
                   type='text'
                   autoComplete='name'
                   placeholder='4:00 PM'
                   required
+                  {...register('eventStartTime')}
                 />
-                <label htmlFor='eventStartDate'>Event Start Time</label>
+                <label htmlFor='eventStartTime'>Event Start Time</label>
               </div>
               <div>
                 <input
@@ -160,6 +155,7 @@ export default function Events() {
                   autoComplete='name'
                   placeholder='September 18, 2022'
                   required
+                  {...register('eventEndDate')}
                 />
                 <label htmlFor='eventEndDate'>Event End Date</label>
               </div>
@@ -179,28 +175,39 @@ export default function Events() {
             <div className='fields-group'>
               <div>
                 <input
-                  id='eventStartDate'
+                  id='registrationStartDate'
                   type='text'
                   autoComplete='name'
                   placeholder='September 14, 2022'
                   required
+                  {...register('registrationStartDate')}
                 />
-                <label htmlFor='eventStartDate'>Event Start Date</label>
+                <label htmlFor='registrationStartDate'>
+                  Registration Start Date
+                </label>
               </div>
               <div>
                 <input
-                  id='eventEndDate'
+                  id='registrationEndDate'
                   type='text'
                   autoComplete='name'
                   placeholder='September 18, 2022'
                   required
+                  {...register('registrationStartDate')}
                 />
-                <label htmlFor='eventEndDate'>Event End Date</label>
+                <label htmlFor='registrationEndDate'>
+                  Registration End Date
+                </label>
               </div>
             </div>
+            <p className="instructions">
+              <strong>OPTIONAL:</strong> Based on these dates, additional Events can be created automatically. These Events will be created as Drafts, and will not be published automatically.  <a href='#'>CREATE ADDITIONAL EVENTS</a> 
+            </p>
+
+            <SeriesCheckBoxes />
           </div>
         </div>
       </div>
-    </div>
+    </form >
   );
-}
+});

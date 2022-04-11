@@ -51,7 +51,7 @@
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
     "@types/react": "^17.0.40",
-    "@types/react-datepicker": "^4.3.4",
+    "@types/react-datepicker": "^4.4.0",
     "@types/tailwindcss": "^2.2.4",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",

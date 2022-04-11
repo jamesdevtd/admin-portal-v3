@@ -8,14 +8,10 @@ export interface userSignupInterface {
 
 export const handleSignUp = async (data: userSignupInterface) => {
   // const credentials = { username, firstName, lastName, password, referralCode};
+  // TODO: clear these logs after confirming fetch requests work in staging
   console.log('init handleSignUp:');
   console.log(data);
-  // const reponse = await axios.post('/api/auth/login', credentials);
-  // if (reponse.data.message === 'Success!') {
-  //   return true;
-  // } else {
-  //   return false;
-  // }
+
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

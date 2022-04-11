@@ -42,7 +42,11 @@ $border-color_1: #6b7280;
       max-width: 380px;
     }
     input {
-      @apply rounded-sm p-2 text-sm focus:border-none focus:border-blue-900 focus:outline-none focus:ring-1;
+      @apply rounded-sm p-2 text-sm focus:outline-none focus:ring-1;
+      &:focus {
+        @apply border-black outline-none;
+        box-shadow: none;
+      }
     }
     .input-helper-text {
       @apply text-xxs;

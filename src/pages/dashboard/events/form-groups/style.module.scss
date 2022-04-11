@@ -30,6 +30,9 @@
         }
       }
     }
+    .error {
+      @apply text-red-500;
+    }
     @media (max-width: 1024px) {
       @apply flex-col;
       > div {

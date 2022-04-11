@@ -1,13 +1,14 @@
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Header from '@/components/Header';
 import Layout from '@/components/layout/Layout';
 import ButtonLink from '@/components/links/ButtonLink';
 
-import Events from '@/pages/dashboard/events';
+import { Events } from '@/pages/dashboard/events';
 
-import { mockMenuItems } from '../../mock-data/menu-items';
+import SubmitButton from './SubmitButton';
+import { eventsMenuItems } from './events/data/eventsMenuItems';
 
 import TagxLogoWhite from '~/svg/tagx-logo-white.svg';
 
@@ -24,10 +25,17 @@ interface MenuItems {
 export default function Dashboard() {
   const [menuItems, setMenuItems] = useState<MenuItems[]>([]);
   const [sidebarCollapse, setSidebarCollapse] = useState<boolean>(false);
+  const eventFormRef = useRef<any>();
 
   useEffect(() => {
-    setMenuItems(mockMenuItems);
+    setMenuItems(eventsMenuItems);
   }, []);
+
+  const submitEventsForm = () => {
+    if (eventFormRef && eventFormRef.current) {
+      eventFormRef.current.submitForm();
+    }
+  };
 
   return (
     <Layout layoutName='dashboard'>
@@ -70,15 +78,22 @@ export default function Dashboard() {
       <div className={`content ${sidebarCollapse ? 'collapsed' : 'expanded'}`}>
         <Header />
         <div className='content-wrap'>
-          <Events />
+          <Events ref={eventFormRef} />
         </div>
       </div>
+
       <div className='footer-nav'>
         <div className='wrap'>
           <ButtonLink variant='grey' href='/dashboard'>
             Cancel
           </ButtonLink>
-          <ButtonLink href='#'>Save &amp; Continue</ButtonLink>
+          <SubmitButton
+            formId='basicInfo'
+            clickHander={submitEventsForm}
+            className='test-class'
+          >
+            Save &amp; Continue
+          </SubmitButton>
         </div>
       </div>
     </Layout>
