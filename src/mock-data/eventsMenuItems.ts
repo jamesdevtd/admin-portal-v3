@@ -1,7 +1,6 @@
-
 //TODO pupulate from DB
 
-export const eventsMenuItems = [
+const eventsMenuItems = [
   {
     heading: 'New Open Series',
     items: [
@@ -48,3 +47,5 @@ export const eventsMenuItems = [
     ],
   },
 ];
+
+export default eventsMenuItems;

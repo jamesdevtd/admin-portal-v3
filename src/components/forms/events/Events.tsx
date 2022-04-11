@@ -3,15 +3,17 @@ import React, { forwardRef, useImperativeHandle } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import formStyles from '@/pages/dashboard/events/form-groups/style.module.scss';
-import styles from '@/pages/dashboard/events/style.module.scss';
+import styles from './Events.module.scss';
+import formStyles from '@/components/forms/events/form-groups/style.module.scss';
+
+import seriesNames from '@/mock-data/seriesNames';
 
 import EventsMenu from './components/EventsMenu';
 import SeriesCheckBoxes from './components/SeriesCheckboxes';
-import { seriesNames } from './data/seriesNames';
 
 import CalendarIcon from '~/icons/blue/calendar.svg';
 import EventIcon from '~/icons/grey/event.svg';
+import LocationIcon from '~/icons/grey/location.svg';
 import RegIcon from '~/icons/grey/registration.svg';
 import WarningIcon from '~/icons/grey/warning.svg';
 
@@ -22,7 +24,6 @@ const schema = yup
     seriesName: yup.string().required(),
   })
   .required();
-
 
 export const Events = forwardRef((props, ref) => {
   const {
@@ -37,7 +38,7 @@ export const Events = forwardRef((props, ref) => {
 
   const onSubmit = (data: unknown) => {
     console.log(data);
-  }
+  };
 
   const submitForm = () => {
     handleSubmit(onSubmit)();
@@ -46,11 +47,17 @@ export const Events = forwardRef((props, ref) => {
   useImperativeHandle(ref, () => ({ submitForm }));
 
   return (
-    <form {...ref} {...props} className={`${styles.basicInfo} test`} onSubmit={handleSubmit(onSubmit)} >
+    <form
+      {...ref}
+      {...props}
+      className={`${styles.basicInfo} test`}
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <header className='content-header'>
         <CalendarIcon />
         <h2>New Open Series</h2>
-        <button className='draft'>Draft</button>
+        <button className='btn draft'>Draft</button>
+        <button className='btn ml-auto'>Cancel</button>
       </header>
 
       <div className='content-main'>
@@ -79,24 +86,27 @@ export const Events = forwardRef((props, ref) => {
                   {...register('eventName')}
                   onChange={() => clearErrors('eventName')}
                 />
-                {errors.eventName ?
+                {errors.eventName ? (
                   <span className='error'>Event Name is required</span>
-                  :
+                ) : (
                   <label>Event Name</label>
-                }
+                )}
               </div>
               <div>
-                <select {...register('eventYear')} onChange={() => clearErrors('eventYear')}>
+                <select
+                  {...register('eventYear')}
+                  onChange={() => clearErrors('eventYear')}
+                >
                   <option value='' hidden></option>
                   <option value='2022'>2022</option>
                   <option value='2023'>2023</option>
                   <option value='2023'>2024</option>
                 </select>
-                {errors.eventYear ?
+                {errors.eventYear ? (
                   <span className='error'>Event Year is required</span>
-                  :
+                ) : (
                   <label>Year</label>
-                }
+                )}
               </div>
               <div>
                 <select {...register('seriesName')}>
@@ -107,11 +117,11 @@ export const Events = forwardRef((props, ref) => {
                     </option>
                   ))}
                 </select>
-                {errors.seriesName ?
+                {errors.seriesName ? (
                   <span className='error'>Series Name is required</span>
-                  :
+                ) : (
                   <label>Series</label>
-                }
+                )}
               </div>
             </div>
           </div>
@@ -200,14 +210,76 @@ export const Events = forwardRef((props, ref) => {
                 </label>
               </div>
             </div>
-            <p className="instructions">
-              <strong>OPTIONAL:</strong> Based on these dates, additional Events can be created automatically. These Events will be created as Drafts, and will not be published automatically.  <a href='#'>CREATE ADDITIONAL EVENTS</a> 
+            <p className='instructions'>
+              <strong>OPTIONAL:</strong> Based on these dates, additional Events
+              can be created automatically. These Events will be created as
+              Drafts, and will not be published automatically.{' '}
+              <a href='#'>CREATE ADDITIONAL EVENTS</a>
             </p>
 
             <SeriesCheckBoxes />
           </div>
+
+          <div className={`${formStyles.formGroup}`}>
+            <LocationIcon />
+            <div className='label'>
+              <span>Location</span>
+            </div>
+            <div className='location-group'>
+              <div className='col relative'>
+                <img
+                  src='/images/map-placeholder.jpg'
+                  alt='map placeholder'
+                  className='block'
+                />
+              </div>
+              <div className='col'>
+                <div className='fields-group'>
+                  <div>
+                    <input
+                      type='text'
+                      onChange={() => clearErrors('facilityName')}
+                    />
+                    {errors.eventName ? (
+                      <span className='error'>Facility Name is required</span>
+                    ) : (
+                      <label>Name of Playing Facility</label>
+                    )}
+                  </div>
+                  <div>
+                    <input type='text' autoComplete='name' required />
+                    {errors.eventName ? (
+                      <span className='error'>
+                        Playing Facility Address is required
+                      </span>
+                    ) : (
+                      <label>Playing Facility Address</label>
+                    )}
+                    <span className='icon map'></span>
+                  </div>
+                  <div>
+                    <textarea required {...register('facilityNotes')} />
+                    <label>Notes</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className={`${formStyles.formGroup}`}>
+            <RegIcon />
+            <div className='label'>
+              <span>Contact Details (Optional)</span>
+            </div>
+            <p className='instructions'>
+              Provide any additional contact information here - staff members,
+              other managers, or anyone else that players in your Event should
+              have access to for general questions and assistance.
+            </p>
+            {/* TODO: <ContactDetails /> */}
+          </div>
         </div>
       </div>
-    </form >
+    </form>
   );
 });

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import { eventsMenuItems } from '../data/eventsMenuItems';
+import eventsMenuItems from '@/mock-data/eventsMenuItems';
 
 interface MenuSubItems {
   icon: string;

@@ -1,4 +1,4 @@
-export const mockMenuItems = [
+const mockMenuItems = [
   {
     heading: 'TX Affiliate',
     items: [
@@ -70,3 +70,5 @@ export const mockMenuItems = [
     ],
   },
 ];
+
+export default mockMenuItems;

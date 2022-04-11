@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
+import { Events } from '@/components/forms/events/Events';
 import Header from '@/components/Header';
 import Layout from '@/components/layout/Layout';
 import ButtonLink from '@/components/links/ButtonLink';
 
-import { Events } from '@/pages/dashboard/events';
+import mockMenuItems from '@/mock-data/menuItems';
 
 import SubmitButton from './SubmitButton';
-import { mockMenuItems } from '../../mock-data/menu-items';
 
 import TagxLogoWhite from '~/svg/tagx-logo-white.svg';
 
