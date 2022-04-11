@@ -1,8 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { useForm } from 'react-hook-form';
+import DatePicker from 'react-datepicker';
+import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
+import 'react-datepicker/dist/react-datepicker.css';
 import styles from './Events.module.scss';
 import formStyles from '@/components/forms/events/form-groups/style.module.scss';
 
@@ -30,6 +32,7 @@ export const Events = forwardRef((props, ref) => {
     handleSubmit,
     register,
     clearErrors,
+    control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -137,35 +140,81 @@ export const Events = forwardRef((props, ref) => {
             </p>
             <div className='fields-group'>
               <div>
-                <input
+                {/* <input
                   id='eventStartDate'
                   type='text'
                   autoComplete='name'
                   placeholder='September 14, 2022'
                   required
                   {...register('eventStartDate')}
+                /> */}
+                <Controller
+                  name='eventStartDate'
+                  control={control}
+                  defaultValue={null}
+                  render={({ field }) => (
+                    <DatePicker
+                      onChange={(e) => field.onChange(e)}
+                      className='datepicker-group'
+                      selected={field.value}
+                      placeholderText=''
+                      dateFormat='MMMM d, yyyy'
+                    />
+                  )}
                 />
                 <label htmlFor='eventStartDate'>Event Start Date</label>
               </div>
               <div>
-                <input
+                {/* <input
                   id='eventStartTime'
                   type='text'
                   autoComplete='name'
                   placeholder='4:00 PM'
                   required
                   {...register('eventStartTime')}
+                /> */}
+                <Controller
+                  name='eventStartTime'
+                  control={control}
+                  defaultValue={null}
+                  render={({ field }) => (
+                    <DatePicker
+                      onChange={(e) => field.onChange(e)}
+                      className='datepicker-group'
+                      showTimeSelect
+                      showTimeSelectOnly
+                      selected={field.value}
+                      placeholderText=''
+                      timeIntervals={15}
+                      timeCaption='Time'
+                      dateFormat='h:mm aa'
+                    />
+                  )}
                 />
                 <label htmlFor='eventStartTime'>Event Start Time</label>
               </div>
               <div>
-                <input
+                {/* <input
                   id='eventEndDate'
                   type='text'
                   autoComplete='name'
                   placeholder='September 18, 2022'
                   required
                   {...register('eventEndDate')}
+                /> */}
+                <Controller
+                  name='eventEndDate'
+                  control={control}
+                  defaultValue={null}
+                  render={({ field }) => (
+                    <DatePicker
+                      onChange={(e) => field.onChange(e)}
+                      className='datepicker-group'
+                      selected={field.value}
+                      placeholderText=''
+                      dateFormat='MMMM d, yyyy'
+                    />
+                  )}
                 />
                 <label htmlFor='eventEndDate'>Event End Date</label>
               </div>
@@ -184,26 +233,38 @@ export const Events = forwardRef((props, ref) => {
             </p>
             <div className='fields-group'>
               <div>
-                <input
-                  id='registrationStartDate'
-                  type='text'
-                  autoComplete='name'
-                  placeholder='September 14, 2022'
-                  required
-                  {...register('registrationStartDate')}
+                <Controller
+                  name='registrationStartDate'
+                  control={control}
+                  defaultValue={null}
+                  render={({ field }) => (
+                    <DatePicker
+                      onChange={(e) => field.onChange(e)}
+                      className='datepicker-group'
+                      selected={field.value}
+                      placeholderText=''
+                      dateFormat='MMMM d, yyyy'
+                    />
+                  )}
                 />
                 <label htmlFor='registrationStartDate'>
                   Registration Start Date
                 </label>
               </div>
               <div>
-                <input
-                  id='registrationEndDate'
-                  type='text'
-                  autoComplete='name'
-                  placeholder='September 18, 2022'
-                  required
-                  {...register('registrationStartDate')}
+                <Controller
+                  name='registrationEndDate'
+                  control={control}
+                  defaultValue={null}
+                  render={({ field }) => (
+                    <DatePicker
+                      onChange={(e) => field.onChange(e)}
+                      className='datepicker-group'
+                      selected={field.value}
+                      placeholderText=''
+                      dateFormat='MMMM d, yyyy'
+                    />
+                  )}
                 />
                 <label htmlFor='registrationEndDate'>
                   Registration End Date

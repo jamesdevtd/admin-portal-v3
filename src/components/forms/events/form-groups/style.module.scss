@@ -6,12 +6,13 @@
     top: 0px;
   }
   .label {
+    @apply font-body;
     span {
-      @apply text-md font-semibold text-blue-brand;
+      @apply font-body text-md font-semibold text-blue-brand;
     }
   }
   .instructions {
-    @apply text-gray-500;
+    @apply font-body text-gray-500;
   }
   .fields-group {
     @apply flex flex-row flex-wrap border-b border-gray-300 pb-7;
@@ -24,6 +25,7 @@
       option {
         @apply p-0 py-1 text-blue-dark placeholder-blue-dark;
         @apply border-0 border-b-2 border-gray-400;
+        border-bottom-width: 1px;
         &:focus {
           outline: none;
           box-shadow: none;
@@ -67,6 +69,12 @@
         height: 13px;
         background-image: url(/icons/blue/map-pin.svg);
       }
+    }
+  }
+  .react-datepicker-wrapper {
+    @apply relative;
+    input {
+      @apply w-full;
     }
   }
 }
