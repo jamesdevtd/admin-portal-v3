@@ -25,6 +25,7 @@ interface MenuItems {
 export default function Dashboard() {
   const [menuItems, setMenuItems] = useState<MenuItems[]>([]);
   const [sidebarCollapse, setSidebarCollapse] = useState<boolean>(false);
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const eventFormRef = useRef<any>();
 
   useEffect(() => {

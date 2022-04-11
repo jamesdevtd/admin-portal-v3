@@ -37,6 +37,7 @@ export default function SeriesCheckboxes({
 
   const handleSelectAll = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    console.log(items);
     // TODO:
     // const items = list.map(item => {
     //     if (item.id > 3) {

@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import RICIBs from 'react-individual-character-input-boxes';
@@ -16,7 +16,7 @@ export default function SignUpPage() {
   const [showReferralCode, setShowReferralCode] = useState<boolean>(false);
   const [referralCode, setReferralCode] = useState<string>('');
 
-  const router = useRouter();
+  // TODO: const router = useRouter();
   //#region  //*=========== Form ===========
   const methods = useForm({
     mode: 'onTouched',
