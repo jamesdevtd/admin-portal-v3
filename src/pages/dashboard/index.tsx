@@ -83,7 +83,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className='footer-nav'>
+      <div className='footer-nav hidden'>
         <div className='wrap'>
           <ButtonLink variant='grey' href='/dashboard'>
             Cancel
