@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Path</title>
+    <g id="APPROVED-SCREENS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Affiliate-Admin-Dashboard-|-EVENTS-|-Create-New-1" transform="translate(-850.000000, -1629.000000)" fill="#26A1FF" fill-rule="nonzero">
+            <g id="Accordion" transform="translate(312.000000, 105.000000)">
+                <g id="CONTACT-DETAILS" transform="translate(47.000000, 1270.000000)">
+                    <g id="Add-Contact" transform="translate(0.000000, 57.000000)">
+                        <g id="Add-Contact-CTA" transform="translate(0.000000, 182.000000)">
+                            <path d="M497,15 C496.567948,15 496.217391,15.3505565 496.217391,15.7826087 L496.217391,20.2173913 L491.782609,20.2173913 C491.350557,20.2173913 491,20.5679478 491,21 C491,21.4320522 491.350557,21.7826087 491.782609,21.7826087 L496.217391,21.7826087 L496.217391,26.2173913 C496.217391,26.6494435 496.567948,27 497,27 C497.432052,27 497.782609,26.6494435 497.782609,26.2173913 L497.782609,21.7826087 L502.217391,21.7826087 C502.649443,21.7826087 503,21.4320522 503,21 C503,20.5679478 502.649443,20.2173913 502.217391,20.2173913 L497.782609,20.2173913 L497.782609,15.7826087 C497.782609,15.3505565 497.432052,15 497,15 Z" id="Path"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

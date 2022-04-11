@@ -15,7 +15,7 @@
     @apply font-body text-gray-500;
   }
   .fields-group {
-    @apply flex flex-row flex-wrap border-b border-gray-300 pb-7;
+    @apply flex flex-row flex-wrap pb-10;
     gap: 20px;
     > div {
       @apply -mb-2 flex flex-col justify-between;
@@ -59,7 +59,7 @@
       }
     }
     .fields-group {
-      @apply border-none;
+      @apply gap-4 border-none;
       > div {
         @apply relative w-full;
       }
@@ -77,4 +77,13 @@
       @apply w-full;
     }
   }
+}
+
+.formGroup:after {
+  @apply block h-1 w-full border-b border-gray-300;
+  content: '';
+}
+
+.formGroup:last-child:after {
+  display: none;
 }

@@ -10,6 +10,7 @@ import formStyles from '@/components/forms/events/form-groups/style.module.scss'
 
 import seriesNames from '@/mock-data/seriesNames';
 
+import ContactDetails from './components/ContactDetails';
 import EventsMenu from './components/EventsMenu';
 import SeriesCheckBoxes from './components/SeriesCheckboxes';
 
@@ -231,7 +232,7 @@ export const Events = forwardRef((props, ref) => {
               Registration will automatically close when the maximum number of
               confirmed teams is reached.
             </p>
-            <div className='fields-group'>
+            <div className='fields-group border-none'>
               <div>
                 <Controller
                   name='registrationStartDate'
@@ -327,7 +328,7 @@ export const Events = forwardRef((props, ref) => {
             </div>
           </div>
 
-          <div className={`${formStyles.formGroup}`}>
+          <div className={`${formStyles.formGroup} border-none`}>
             <RegIcon />
             <div className='label'>
               <span>Contact Details (Optional)</span>
@@ -337,7 +338,7 @@ export const Events = forwardRef((props, ref) => {
               other managers, or anyone else that players in your Event should
               have access to for general questions and assistance.
             </p>
-            {/* TODO: <ContactDetails /> */}
+            <ContactDetails />
           </div>
         </div>
       </div>

@@ -1,10 +1,13 @@
 .contactDetails :global {
-  @apply flex flex-col gap-2 overflow-auto
+  @apply mt-5 flex flex-col gap-3;
+  .item {
+    @apply flex flex-col gap-2 overflow-auto
   bg-white py-4 px-5;
-  box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  height: 100%;
-  border-width: 1px;
+    @apply hidden;
+    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    border-width: 1px;
+  }
   h3 {
     @apply block w-full text-base font-semibold text-blue-dark;
   }
@@ -45,5 +48,21 @@
 
   .btn {
     @apply ml-auto mt-2;
+  }
+
+  .add-new {
+    @apply flex flex-row items-center justify-between rounded-md py-3 px-4;
+    @apply cursor-pointer gap-2 overflow-auto bg-white;
+    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    border-width: 1px;
+    span {
+      @apply text-sm font-semibold uppercase text-blue-brand;
+    }
+    svg {
+      @apply relative ml-auto block opacity-100;
+      width: 15px;
+      height: 15px;
+    }
   }
 }
