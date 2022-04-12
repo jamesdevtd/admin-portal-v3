@@ -17,10 +17,9 @@ ul {
   }
 }
 
-label,
-.label {
+label {
   span {
-    @apply font-body;
+    @apply font-title;
   }
   @apply font-body;
 }
@@ -40,4 +39,8 @@ button,
 .btn {
   @apply rounded-md py-1 px-10 uppercase text-white shadow-md;
   @extend .bg-blue-gradient;
+}
+
+input:focus {
+  box-shadow: none !important;
 }

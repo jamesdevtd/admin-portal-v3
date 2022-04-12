@@ -136,8 +136,7 @@ export const Events = forwardRef((props, ref) => {
               <span>Event Dates</span>
             </div>
             <p className='instructions'>
-              Specify the date your event will begin and end. This date must be
-              at least XXX days after you&apos;ve completed Registration.
+              Specify the dates you would like your Event to begin and end. Please note: End Time will be automatically generated based on the size of your Draw and Game Settings.
             </p>
             <div className='fields-group'>
               <div>

@@ -6,9 +6,8 @@
     top: 0px;
   }
   .label {
-    @apply font-body;
     span {
-      @apply font-body text-md font-semibold text-blue-brand;
+      @apply font-title text-md font-semibold text-blue-brand;
     }
   }
   .instructions {
