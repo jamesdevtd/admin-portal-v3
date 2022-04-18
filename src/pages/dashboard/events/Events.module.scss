@@ -1,0 +1,117 @@
+$sidebarWidth: 180px;
+
+.Events :global {
+  .content-header {
+    @apply flex flex-row items-center gap-3 p-5;
+    svg {
+      @apply h-5 w-5;
+    }
+    h2 {
+      @apply text-xl font-bold text-blue-dark;
+    }
+    button.draft {
+      @apply rounded-xl py-1 px-5 uppercase text-white;
+      @apply bg-orange #{!important};
+      background-image: none;
+      font-size: 10px;
+    }
+  }
+
+  .content-main {
+    @apply flex flex-row gap-0;
+    min-height: 85vh;
+  }
+
+  .inner-sidebar {
+    @apply relative m-0 pl-5 pr-1;
+    width: $sidebarWidth;
+    .nav {
+      ul {
+        @apply mt-2 flex flex-col gap-3;
+        li {
+          @apply block pr-5;
+          a {
+            @apply flex flex-row gap-2;
+            .icon-box {
+              @apply relative rounded-full bg-gray-400
+              text-center text-white drop-shadow-md;
+              height: 18px;
+              width: 18px;
+              font-size: 10px;
+              border: 1px solid white;
+              background-image: none !important;
+              &:after {
+                @apply absolute block;
+                content: "";
+                bottom: 100%;
+                width: 1px;
+                height: 15px;
+                left: 7.5px;
+                z-index: -1;
+                border-right: 1px solid gray;
+              }
+            }
+            span {
+              @apply relative z-20 font-semibold text-blue-dark;
+            }
+          }
+          &.current {
+            @apply rounded-l-full rounded-r-2xl border border-white bg-blue-brand shadow;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            padding-left: 2px;
+            margin-left: -2px;
+            a {
+              .icon-box {
+                @apply border-0 bg-transparent drop-shadow-none;
+              }
+              span {
+                @apply text-white;
+              }
+            }
+          }
+          &:first-child {
+            a {
+              .icon-box:after {
+                content: none;
+              }
+            }
+          }
+          &.inactive {
+            a {
+              .icon-box {
+                @apply bg-gray-300;
+                &:after {
+                  content: none;
+                }
+              }
+              span {
+                @apply font-normal text-gray-400;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .inner-content {
+    @apply static overflow-auto bg-white;
+    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    height: 100%;
+    min-height: 83vh;
+    max-height: calc(100vh - 170px);
+    border-width: 1px;
+    width: calc(100% - $sidebarWidth - 15px);
+    form {
+      @apply mb-5 flex flex-col gap-8
+      py-4 px-5 pb-20;
+      > h3 {
+        @apply mb-1 text-lg font-semibold text-blue-dark;
+      }
+      > p {
+        @apply mb-10 pl-5;
+      }
+    }
+  }
+}

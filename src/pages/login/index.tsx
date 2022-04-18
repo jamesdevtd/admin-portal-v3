@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import Button from '@/components/buttons/Button';
-import Input from '@/components/forms/Input';
+import Input from '@/components/forms/fields/Input';
 import Layout from '@/components/layout/Layout';
 import UnstyledLink from '@/components/links/UnstyledLink';
 

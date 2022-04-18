@@ -13,9 +13,15 @@
   .instructions {
     @apply font-body text-gray-500;
   }
+
   .fields-group {
     @apply flex flex-row flex-wrap pb-10;
     gap: 20px;
+    &.hide-input {
+      input {
+        @apply text-white;
+      }
+    }
     > div {
       @apply -mb-2 flex flex-col justify-between;
       width: calc(50% - 10px);
@@ -80,7 +86,7 @@
 
 .formGroup:after {
   @apply block h-1 w-full border-b border-gray-300;
-  content: '';
+  content: "";
 }
 
 .formGroup:last-child:after {

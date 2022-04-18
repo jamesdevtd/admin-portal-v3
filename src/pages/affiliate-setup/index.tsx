@@ -8,8 +8,8 @@ import { FiMinusCircle } from 'react-icons/fi';
 import styles from './styles.module.scss';
 
 import Button from '@/components/buttons/Button';
-import DropzoneInput from '@/components/forms/DropzoneInput';
-import Input from '@/components/forms/Input';
+import DropzoneInput from '@/components/forms/fields/DropzoneInput';
+import Input from '@/components/forms/fields/Input';
 import Layout from '@/components/layout/Layout';
 import NextImage from '@/components/NextImage';
 

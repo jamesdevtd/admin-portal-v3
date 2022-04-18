@@ -197,10 +197,11 @@ $sidebarCollapsedWidth: 65px;
   // ICONS
 
   .icon-box {
+    @apply bg-contain bg-center bg-no-repeat;
+    background-image: url(/icons/dashboard.svg);
     width: 14px;
     height: 14px;
-    background-image: url(/icons/dashboard.svg);
-    @apply bg-contain bg-center bg-no-repeat;
+    min-width: 14px;
     &.calendar {
       background-image: url(/icons/calendar.svg);
     }

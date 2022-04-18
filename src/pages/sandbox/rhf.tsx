@@ -2,11 +2,11 @@ import * as React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import Button from '@/components/buttons/Button';
-import DatePicker from '@/components/forms/DatePicker';
-import DropzoneInput from '@/components/forms/DropzoneInput';
-import Input from '@/components/forms/Input';
-import SelectInput from '@/components/forms/SelectInput';
-import TextArea from '@/components/forms/TextArea';
+import DatePicker from '@/components/forms/fields/DatePicker';
+import DropzoneInput from '@/components/forms/fields/DropzoneInput';
+import Input from '@/components/forms/fields/Input';
+import SelectInput from '@/components/forms/fields/SelectInput';
+import TextArea from '@/components/forms/fields/TextArea';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 

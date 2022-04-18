@@ -4,7 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import RICIBs from 'react-individual-character-input-boxes';
 
 import Button from '@/components/buttons/Button';
-import Input from '@/components/forms/Input';
+import Input from '@/components/forms/fields/Input';
 import Layout from '@/components/layout/Layout';
 import UnstyledLink from '@/components/links/UnstyledLink';
 
@@ -50,7 +50,7 @@ export default function SignUpPage() {
   //#endregion  //*======== Form Submit ===========
 
   const handleOutput = (_code: string) => {
-    // Do something with the string
+    // TODO: referral code
     console.log(_code);
     setReferralCode(_code);
   };
@@ -113,9 +113,8 @@ export default function SignUpPage() {
             />
             <p
               onClick={() => setShowReferralCode(!showReferralCode)}
-              className={`-mb-3 cursor-pointer text-blue-brand ${
-                showReferralCode ? 'with-caret' : 'underline'
-              }`}
+              className={`-mb-3 cursor-pointer text-blue-brand ${showReferralCode ? 'with-caret' : 'underline'
+                }`}
             >
               Enter a referral code
             </p>
