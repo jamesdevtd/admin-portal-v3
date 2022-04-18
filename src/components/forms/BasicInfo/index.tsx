@@ -5,7 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import formStyles from '@/components/forms/BasicInfo/formGroup.module.scss';
+import styles from '@/components/forms/BasicInfo/BasicInfo.module.scss';
 
 import seriesNames from '@/mock-data/seriesNames';
 
@@ -122,13 +122,13 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
       className={hasErrors ? 'has-errors' : ''}
     >
       {hasErrors && (
-        <div className="error-box">
-          <span>Error Box</span>
+        <div className={styles.errorBox}>
+          <span>Please Complete All Required Fields </span>
         </div>
       )}
       <h3>Basic Info</h3>
 
-      <div className={`${formStyles.formGroup}`}>
+      <div className={styles.formGroup}>
         <WarningIcon />
         <div className='label'>
           <span>General</span>
@@ -194,7 +194,7 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
         </div>
       </div>
 
-      <div className={`${formStyles.formGroup}`}>
+      <div className={styles.formGroup}>
         <EventIcon />
         <div className='label'>
           <span>Event Dates</span>
@@ -270,7 +270,7 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
         </div>
       </div>
 
-      <div className={`${formStyles.formGroup}`}>
+      <div className={styles.formGroup}>
         <RegIcon />
         <div className='label'>
           <span>Registration Dates</span>
@@ -334,7 +334,7 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
         <SeriesCheckBoxes seriesMonth={seriesMonth} items={seriesNames} />
       </div>
 
-      <div className={`${formStyles.formGroup}`}>
+      <div className={styles.formGroup}>
         <LocationIcon />
         <div className='label'>
           <span>Location</span>
@@ -380,7 +380,7 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
         </div>
       </div>
 
-      <div className={`${formStyles.formGroup} border-none`}>
+      <div className={`${styles.formGroup} border-none`}>
         <RegIcon />
         <div className='label'>
           <span>Contact Details (Optional)</span>

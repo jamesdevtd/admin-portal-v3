@@ -11,6 +11,7 @@ module.exports = {
         offWhite: '#EBEDF7',
         'gray-brand': '#5E656F',
         'gray-light': '#9ca5b4',
+        'red-warning': '#FC6767'
       },
       fontFamily: {
         title: ['Blinker', 'sans-serif'],
