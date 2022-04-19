@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './Login.module.scss';
+import styles from './LoginLayout.module.scss';
 
 import TagxLogo from '~/svg/tagx.svg';
 
@@ -9,7 +9,7 @@ type Props = {
   pageTitle?: string;
 };
 
-const Login = (props: Props) => {
+const LoginLayout = (props: Props) => {
   return (
     <div
       className={`${styles.layoutLogin} grid min-h-screen grid-cols-1 content-start md:grid-cols-2`}
@@ -38,4 +38,4 @@ const Login = (props: Props) => {
   );
 };
 
-export default Login;
+export default LoginLayout;

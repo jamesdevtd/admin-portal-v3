@@ -20,12 +20,12 @@ const mockMenuItems = [
       {
         icon: 'reports',
         label: 'Reports',
-        url: '#',
+        url: '/reports',
       },
       {
         icon: 'settings',
         label: 'Settings',
-        url: '#',
+        url: '/settings',
       },
     ],
   },
@@ -35,12 +35,12 @@ const mockMenuItems = [
       {
         icon: 'account',
         label: 'Staff',
-        url: '/',
+        url: '/staff',
       },
       {
         icon: 'referee',
         label: 'Referees',
-        url: '#',
+        url: '/referees',
       },
     ],
   },
@@ -50,22 +50,22 @@ const mockMenuItems = [
       {
         icon: 'overview',
         label: 'Overview',
-        url: '/',
+        url: '/overview',
       },
       {
         icon: 'fees',
         label: 'TX Fees',
-        url: '#',
+        url: '/overview',
       },
       {
         icon: 'transactions',
         label: 'Transactions',
-        url: '#',
+        url: '/overview',
       },
       {
         icon: 'calculator',
         label: 'Budget Calculator',
-        url: '#',
+        url: '/overview',
       },
     ],
   },

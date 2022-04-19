@@ -2,7 +2,7 @@ import Layout from '@/components/layout/Layout';
 
 export default function Dashboard() {
   return (
-    <Layout layoutName='' pageTitle='Forgot password'>
+    <Layout pageTitle='Forgot password'>
       <div className=''>
         <div className='content'>
           <div className='content-wrap'>

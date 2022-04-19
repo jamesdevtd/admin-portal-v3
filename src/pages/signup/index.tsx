@@ -5,7 +5,7 @@ import RICIBs from 'react-individual-character-input-boxes';
 
 import Button from '@/components/buttons/Button';
 import Input from '@/components/forms/fields/Input';
-import Layout from '@/components/layout/Layout';
+import LoginLayout from '@/components/layout/LoginLayout';
 import UnstyledLink from '@/components/links/UnstyledLink';
 
 import { handleSignUp } from '../../services/signup';
@@ -56,7 +56,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <Layout layoutName='login' pageTitle='TagX Affiliate Setup'>
+    <LoginLayout pageTitle='TagX Affiliate Setup'>
       <div className='form-wrap signup m-auto flex w-full flex-col gap-5'>
         <TagxLogo className='logo m-auto h-10 w-36' />
         <div className='forms-nav'>
@@ -151,6 +151,6 @@ export default function SignUpPage() {
           </p>
         </div>
       </div>
-    </Layout>
+    </LoginLayout>
   );
 }

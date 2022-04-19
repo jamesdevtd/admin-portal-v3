@@ -51,7 +51,7 @@ module.exports = {
     return [
       {
         source: '/dashboard',
-        destination: '/dashboard/events',
+        destination: '/events',
         permanent: true,
       },
     ]

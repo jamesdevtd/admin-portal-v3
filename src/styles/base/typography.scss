@@ -32,7 +32,7 @@ button,
   }
 }
 
-[class*='ButtonLink_'] {
+[class*="ButtonLink_"] {
   @apply font-title;
 }
 
@@ -43,4 +43,18 @@ button,
 
 input:focus {
   box-shadow: none !important;
+}
+
+.content {
+  h2,
+  h2,
+  h3 {
+    @apply font-semibold text-blue-dark;
+  }
+  h2 {
+    @apply text-xl;
+  }
+  h3 {
+    @apply text-lg;
+  }
 }

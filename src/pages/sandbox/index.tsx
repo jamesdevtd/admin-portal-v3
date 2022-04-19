@@ -30,7 +30,7 @@ export default function RHFSandbox() {
     <Layout>
       <Seo templateTitle='React Hook Form Sandbox' />
 
-      <section className=''>
+      <section className='rhf-demo'>
         <div className='layout min-h-screen py-20'>
           <FormProvider {...methods}>
             <form

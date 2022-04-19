@@ -4,7 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import Button from '@/components/buttons/Button';
 import Input from '@/components/forms/fields/Input';
-import Layout from '@/components/layout/Layout';
+import LoginLayout from '@/components/layout/LoginLayout';
 import UnstyledLink from '@/components/links/UnstyledLink';
 
 import { handleLogin } from '../../services/login';
@@ -35,7 +35,7 @@ export default function LoginPage() {
   //#endregion  //*======== Form Submit ===========
 
   return (
-    <Layout layoutName='login' pageTitle='TagX Affiliate Log In'>
+    <LoginLayout pageTitle='TagX Affiliate Log In'>
       <div className='form-wrap m-auto flex w-full flex-col gap-5'>
         <TagxLogo className='logo m-auto h-10 w-36' />
         <div className='forms-nav'>
@@ -98,6 +98,6 @@ export default function LoginPage() {
           </p>
         </div>
       </div>
-    </Layout>
+    </LoginLayout>
   );
 }

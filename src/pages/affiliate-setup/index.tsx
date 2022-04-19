@@ -10,7 +10,7 @@ import styles from './styles.module.scss';
 import Button from '@/components/buttons/Button';
 import DropzoneInput from '@/components/forms/fields/DropzoneInput';
 import Input from '@/components/forms/fields/Input';
-import Layout from '@/components/layout/Layout';
+import LoginLayout from '@/components/layout/LoginLayout';
 import NextImage from '@/components/NextImage';
 
 import StepsButtons from './stepsButtons/StepsButtons';
@@ -213,7 +213,7 @@ export default function AffiliateSetupPage() {
   ];
 
   return (
-    <Layout layoutName='login' pageTitle='TagX Affiliate Setup'>
+    <LoginLayout pageTitle='TagX Affiliate Setup'>
       <div className={styles.affiliateSetup}>
         <div className='form-wrap setup m-auto flex w-full flex-col gap-5'>
           <TagxLogo className='logo m-auto h-10 w-36' />
@@ -233,6 +233,6 @@ export default function AffiliateSetupPage() {
           )}
         </div>
       </div>
-    </Layout>
+    </LoginLayout>
   );
 }
