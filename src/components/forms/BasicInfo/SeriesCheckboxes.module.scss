@@ -9,7 +9,7 @@
     @apply block w-full text-base font-semibold text-blue-dark;
   }
   .checkboxes {
-    @apply justify-between pb-2 columns-2;
+    @apply justify-between columns-2;
     .form-check {
       @apply mb-2 flex w-full flex-row items-center justify-start gap-2 border-gray-300 p-2;
       border-width: 1px;
@@ -40,6 +40,6 @@
   }
 
   .btn {
-    @apply ml-auto mt-2;
+    @apply ml-auto;
   }
 }

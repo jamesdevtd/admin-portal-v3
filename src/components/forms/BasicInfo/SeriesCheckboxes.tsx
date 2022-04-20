@@ -1,26 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import styles from './SeriesCheckboxes.module.scss';
 
 import SeriesProps from '@/types/series'
 
-interface CheckBoxGroupProps {
+interface Props {
   heading: string;
   items: SeriesProps[];
   seriesMonth: number
 }
 
-const defaultProps: CheckBoxGroupProps = {
+// Optional props
+interface OptionalProps {
+  handleAdditionalEvents: (val: SeriesProps[]) => void;
+}
+
+interface SeriesCheckboxesProps extends Props, OptionalProps { }
+
+const defaultProps: Props = {
   heading: 'Additional Events',
   items: [],
   seriesMonth: 0
 };
 
-export default function SeriesCheckboxes({ heading, items, seriesMonth }: CheckBoxGroupProps) {
+export default function SeriesCheckboxes({ heading, items, seriesMonth, handleAdditionalEvents }: SeriesCheckboxesProps) {
   const [checkedItems, setCheckedItems] = useState<SeriesProps[]>([]);
 
+  useEffect(() => {
+    handleAdditionalEvents(checkedItems);
+  }, [handleAdditionalEvents, checkedItems])
+
   const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault;
     const val = e.target.getAttribute('data-checked');
     const isItemChecked = val ? !!parseInt(val) : !!false;
     if (isItemChecked) {
@@ -32,7 +42,7 @@ export default function SeriesCheckboxes({ heading, items, seriesMonth }: CheckB
   };
 
   const handleCheckAll = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault;
+    e.preventDefault();
     const checkedAllItems = items.filter(item => item.id > seriesMonth);
     setCheckedItems(checkedAllItems);
   };

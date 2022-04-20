@@ -7,11 +7,16 @@ import * as yup from 'yup';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '@/components/forms/BasicInfo/BasicInfo.module.scss';
 
+import { setDayBefore, setNextDay } from '@/helpers/DateMods';
 import seriesNames from '@/mock-data/seriesNames';
 
 import ContactDetails from './ContactDetails';
-import SeriesCheckBoxes from './SeriesCheckboxes';
+import SeriesCheckboxes from './SeriesCheckboxes';
 
+import SeriesProps from '@/types/series';
+
+import CloseIcon from '~/icons/close.svg';
+import ErrorIcon from '~/icons/error.svg';
 import EventIcon from '~/icons/grey/event.svg';
 import LocationIcon from '~/icons/grey/location.svg';
 import RegIcon from '~/icons/grey/registration.svg';
@@ -19,28 +24,34 @@ import WarningIcon from '~/icons/grey/warning.svg';
 
 const schema = yup
   .object({
+    eventEndDate: yup.date().required(),
     eventName: yup.string().required(),
+    eventStartDate: yup.date().required(),
+    eventStartTime: yup.date().required(),
     eventYear: yup.number().positive().integer().required(),
+    facilityAddress: yup.string().required(),
+    facilityName: yup.string().required(),
+    facilityNotes: yup.string().nullable(),
+    registrationEndDate: yup.date().required(),
+    registrationStartDate: yup.date().required(),
     seriesMonth: yup.number().positive().integer().required(),
-    // eventStartDate: yup.date(),
-    // eventStartTime: yup.date(),
-    // eventEndDate: yup.date()
-    // eventEndDate: yup.string().required()
-    // TODO complete all fields schema for validation
+    additionalEvents: yup.array()
   })
   .required();
 
 const formDefaultValues = {
-  eventName: '',
-  eventYear: null,
-  seriesMonth: null,
+  eventEndDate: null,
+  eventName: null,
   eventStartDate: null,
   eventStartTime: null,
-  eventEndDate: null,
-  registrationStartDate: null,
-  registrationEndDate: null,
+  eventYear: null,
+  facilityAddress: null,
   facilityName: null,
-  facilityNotes: null,
+  facilityNotes: '',
+  registrationEndDate: null,
+  registrationStartDate: null,
+  seriesMonth: null,
+  additionalEvents: [{}]
 }
 
 type Props = {
@@ -51,15 +62,18 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
   const [startDate, setStartDate] = useState(new Date());
   const [minEndDate, setMinEndDate] = useState(new Date());
   const [startDateSelected, setStartDateSelected] = useState(false);
-  const [seriesMonth, setSeriesMonth] = useState(0);
+  const [seriesMonth, setSeriesMonth] = useState<number>(0);
   const [hasErrors, setHasErrors] = useState(false)
+  const [hideErrorBox, setHideErrorBox] = useState(false)
 
   const {
     handleSubmit,
     register,
     clearErrors,
+    getValues,
+    setValue,
     control,
-    formState: { errors, isDirty },
+    formState,
   } = useForm({
     resolver: yupResolver(schema),
     mode: 'onSubmit',
@@ -67,39 +81,23 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
   });
 
   useEffect(() => {
-    if (isDirty) setIsFormEdited(true);
-  }, [setIsFormEdited, isDirty]);
-
-  useEffect(() => {
-    if (Object.keys(errors).length) {
-      setHasErrors(true);
-    } else {
-      setHasErrors(false);
+    formState.isDirty && setIsFormEdited(true);
+    Object.keys(formState.errors).length ? setHasErrors(true) : setHasErrors(false);
+    if (Object.keys(formState.errors).length) {
+      console.log('FORM VALUES: ');
+      console.log(getValues());
+      console.log('FORM ERRORS: ');
+      console.log(formState.errors);
     }
-  }, [setHasErrors, errors]);
-
-  const setNextDay = (date: Date) => {
-    if (date !== null) {
-      const nextDate = new Date(date.getTime());
-      nextDate.setDate(nextDate.getDate() + 1);
-      return nextDate;
-    } else {
-      return date;
-    }
-  }
-
-  const setDayBefore = (date: Date) => {
-    if (date !== null) {
-      const prevDate = new Date(date.getTime());
-      prevDate.setDate(prevDate.getDate() - 1);
-      return prevDate;
-    } else {
-      return date;
-    }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formState]);
 
   const handleSelectSeries = (val: number) => {
     setSeriesMonth(val)
+  };
+
+  const handleAdditionalEvents = (val: SeriesProps[]) => {
+    setValue('additionalEvents', val);
   };
 
   const onSubmit = (data: unknown) => {
@@ -109,6 +107,7 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
   };
 
   const submitForm = () => {
+    setHideErrorBox(false);
     handleSubmit(onSubmit)();
   };
 
@@ -121,11 +120,16 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
       onSubmit={handleSubmit(onSubmit)}
       className={hasErrors ? 'has-errors' : ''}
     >
-      {hasErrors && (
+      {(hasErrors && !hideErrorBox) &&
         <div className={styles.errorBox}>
-          <span>Please Complete All Required Fields </span>
+          <div className="wrap">
+            <ErrorIcon />
+            <span>Please Complete All Required Fields </span>
+            <button onClick={() => setHideErrorBox(true)}><CloseIcon /></button>
+          </div>
         </div>
-      )}
+      }
+
       <h3>Basic Info</h3>
 
       <div className={styles.formGroup}>
@@ -138,22 +142,19 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
           January, Open 2 - February, etc.).
         </p>
         <div className='fields-group'>
-          <div>
+          <div className='col'>
             <input
               type='text'
-              autoComplete='name'
-              required
               {...register('eventName')}
               onChange={() => clearErrors('eventName')}
             />
-            {errors.eventName ? (
-              <span className='error'>Event Name is required</span>
-            ) : (
+            {formState.errors.eventName ?
+              <span className='error'>Event Name is required</span> :
               <label>Event Name</label>
-            )}
+            }
           </div>
 
-          <div>
+          <div className='col'>
             <select
               {...register('eventYear')}
               onChange={() => clearErrors('eventYear')}
@@ -163,20 +164,19 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
               <option value='2023'>2023</option>
               <option value='2023'>2024</option>
             </select>
-            {errors.eventYear ? (
-              <span className='error'>Event Year is required</span>
-            ) : (
+            {formState.errors.eventYear ?
+              <span className='error'>Event Year is required</span> :
               <label>Year</label>
-            )}
+            }
           </div>
 
-          <div>
+          <div className='col'>
             <select
-              {...register('seriesMonth', {
-                onChange: (e) => {
-                  handleSelectSeries(e.target.value);
-                }
-              })}
+              {...register('seriesMonth')}
+              onChange={(e) => {
+                clearErrors('seriesMonth');
+                handleSelectSeries(parseInt(e.target.value));
+              }}
             >
               <option value='' hidden></option>
               {seriesNames.map((item) => (
@@ -185,11 +185,10 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
                 </option>
               ))}
             </select>
-            {errors.seriesMonth ? (
-              <span className='error'>Series Month is required</span>
-            ) : (
+            {formState.errors.seriesMonth ?
+              <span className='error'>Series Month is required</span> :
               <label>Series</label>
-            )}
+            }
           </div>
         </div>
       </div>
@@ -203,18 +202,21 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
           Specify the dates you would like your Event to begin and end. Please note: End Time will be automatically generated based on the size of your Draw and Game Settings.
         </p>
         <div className='fields-group'>
-          <div>
+          <div className='col'>
             <Controller
               name='eventStartDate'
               control={control}
               defaultValue={null}
-              render={() => (
+              render={({ field }) => (
                 <DatePicker
                   selected={startDateSelected ? startDate : null}
                   minDate={new Date()}
-                  onChange={(date: Date) => {
-                    setStartDate(date);
-                    setMinEndDate(setNextDay(date));
+                  onChange={(e) => {
+                    field.onChange(e);
+                    if (field.value) {
+                      setStartDate(field.value);
+                      setMinEndDate(setNextDay(field.value));
+                    }
                   }}
                   onCalendarClose={() => {
                     setStartDateSelected(true);
@@ -226,9 +228,12 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
                 />
               )}
             />
-            <label htmlFor='eventStartDate'>Event Start Date</label>
+            {formState.errors.eventStartDate ?
+              <span className='error'>Event Start Date is required</span> :
+              <label>Event Start Date</label>
+            }
           </div>
-          <div>
+          <div className='col'>
             <Controller
               name='eventStartTime'
               control={control}
@@ -247,9 +252,12 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
                 />
               )}
             />
-            <label htmlFor='eventStartTime'>Event Start Time</label>
+            {formState.errors.eventStartTime ?
+              <span className='error'>Event Start Time is required</span> :
+              <label>Event Start Time</label>
+            }
           </div>
-          <div>
+          <div className='col'>
             <Controller
               name='eventEndDate'
               control={control}
@@ -265,7 +273,10 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
                 />
               )}
             />
-            <label htmlFor='eventEndDate'>Event End Date</label>
+            {formState.errors.eventEndDate ?
+              <span className='error'>Event End Date is required</span> :
+              <label>Event End Date</label>
+            }
           </div>
         </div>
       </div>
@@ -281,7 +292,7 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
           confirmed teams is reached.
         </p>
         <div className='fields-group border-none'>
-          <div>
+          <div className='col'>
             <Controller
               name='registrationStartDate'
               control={control}
@@ -298,11 +309,12 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
                 />
               )}
             />
-            <label htmlFor='registrationStartDate'>
-              Registration Start Date
-            </label>
+            {formState.errors.registrationStartDate ?
+              <span className='error'>Registration Start Date is required</span> :
+              <label>Registration Start Date</label>
+            }
           </div>
-          <div>
+          <div className='col'>
             <Controller
               name='registrationEndDate'
               control={control}
@@ -319,9 +331,10 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
                 />
               )}
             />
-            <label htmlFor='registrationEndDate'>
-              Registration End Date
-            </label>
+            {formState.errors.registrationEndDate ?
+              <span className='error'>Registration End Date is required</span> :
+              <label>Registration End Date</label>
+            }
           </div>
         </div>
         <p className='instructions'>
@@ -331,7 +344,11 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
           <a href='#'>CREATE ADDITIONAL EVENTS</a>
         </p>
 
-        <SeriesCheckBoxes seriesMonth={seriesMonth} items={seriesNames} />
+        <SeriesCheckboxes
+          seriesMonth={seriesMonth}
+          items={seriesNames}
+          handleAdditionalEvents={handleAdditionalEvents}
+        />
       </div>
 
       <div className={styles.formGroup}>
@@ -349,30 +366,33 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
           </div>
           <div className='col'>
             <div className='fields-group'>
-              <div>
+              <div className='col'>
                 <input
                   type='text'
+                  {...register('facilityName')}
                   onChange={() => clearErrors('facilityName')}
                 />
-                {errors.eventName ? (
+                {formState.errors.facilityName ? (
                   <span className='error'>Facility Name is required</span>
                 ) : (
                   <label>Name of Playing Facility</label>
                 )}
               </div>
-              <div>
-                <input type='text' autoComplete='name' required />
-                {errors.eventName ? (
-                  <span className='error'>
-                    Playing Facility Address is required
-                  </span>
-                ) : (
+              <div className='col'>
+                <input type='text'
+                  {...register('facilityAddress')}
+                  onChange={() => clearErrors('facilityAddress')}
+                />
+                {formState.errors.facilityAddress ?
+                  <span className='error'>Playing Facility Address is required</span> :
                   <label>Playing Facility Address</label>
-                )}
+                }
                 <span className='icon map'></span>
               </div>
-              <div>
-                <textarea required {...register('facilityNotes')} />
+              <div className='col'>
+                <textarea
+                  {...register('facilityNotes')}
+                />
                 <label>Notes</label>
               </div>
             </div>
@@ -394,6 +414,6 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
       </div>
 
 
-    </form>
+    </form >
   );
 });

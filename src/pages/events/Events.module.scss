@@ -1,4 +1,4 @@
-$sidebarWidth: 180px;
+$sidebarWidth: 150px;
 
 .Events :global {
   .content-header {
@@ -99,10 +99,9 @@ $sidebarWidth: 180px;
     box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     height: 100%;
-    min-height: 83vh;
-    max-height: calc(100vh - 170px);
     border-width: 1px;
     width: calc(100% - $sidebarWidth);
+    max-height: calc(100vh - 205px);
     form {
       @apply relative mb-5 flex flex-col gap-8 py-4 px-5 pb-20;
       > h3 {
@@ -115,9 +114,14 @@ $sidebarWidth: 180px;
   }
 }
 
+@import "@/styles/base/animations.scss";
+
 .footerNav :global {
   @apply fixed bottom-0 left-0 w-full bg-white py-5 px-8;
   box-shadow: 0px -1px 5px 1px rgba(0, 0, 0, 0.1);
+  & :local {
+    animation: slide-in-bottom 0.4s ease-in-out forwards;
+  }
   .wrap {
     @apply flex w-full flex-row justify-end gap-6;
   }

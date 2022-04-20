@@ -1,3 +1,5 @@
+@import "@/styles/base/animations.scss";
+
 .formGroup :global {
   @apply relative mb-2 flex flex-col gap-2 pl-8;
   max-width: 600px;
@@ -22,7 +24,7 @@
         @apply text-white;
       }
     }
-    > div {
+    .col {
       @apply -mb-2 flex flex-col justify-between;
       width: calc(50% - 10px);
       input,
@@ -47,9 +49,9 @@
     .error {
       @apply text-red-500;
     }
-    @media (max-width: 1024px) {
+    @media (max-width: 991px) {
       @apply flex-col;
-      > div {
+      .col {
         @apply w-full;
       }
     }
@@ -65,7 +67,7 @@
     }
     .fields-group {
       @apply gap-4 border-none;
-      > div {
+      .col {
         @apply relative w-full;
       }
       .icon.map {
@@ -76,10 +78,62 @@
       }
     }
   }
+
   .react-datepicker-wrapper {
     @apply relative;
     input {
       @apply w-full;
+    }
+  }
+  .react-datepicker {
+    @apply border-none rounded-xl #{!important};
+    @apply rounded-xl overflow-hidden pb-2;
+    @apply shadow-[0_0_7px_0_rgb(0,0,0,0.15)];
+    &__triangle {
+      display: none;
+    }
+    &__header {
+      @apply bg-white border-none pt-5 px-3;
+    }
+    &__navigation {
+      @apply items-center top-4;
+      &--previous {
+        @apply left-3;
+      }
+      &--next {
+        @apply right-3;
+      }
+    }
+    &__current-month {
+      @apply mb-5;
+    }
+    &__day-names {
+      @apply opacity-50;
+    }
+    &__navigation-icon {
+      @apply border-none rounded-md w-6 h-6 bg-white;
+      @apply shadow-[0_0_4px_0_rgb(0,0,0,0.3)];
+      &:before {
+        @apply inset-0 border-gray-700;
+        margin: auto 5px;
+        border-width: 2px 2px 0 0;
+        width: 8px;
+        height: 8px;
+      }
+      &--previous {
+        &:before {
+          margin: auto 10px;
+        }
+      }
+    }
+    &__time-container {
+      @apply w-24;
+    }
+    &__header--time {
+      @apply pt-2 mb-2 border-none shadow-sm shadow-gray-300;
+    }
+    &-popper {
+      @apply pt-0;
     }
   }
 }
@@ -93,11 +147,25 @@
   display: none;
 }
 
-.errorBox {
-  @apply text-white bg-red-warning w-full top-0 left-0 absolute;
-  padding: 15px 20px 15px 45px;
-  animation: slide-in-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  span {
-    @apply text-md;
+.errorBox :global {
+  @apply w-full top-0 left-0 absolute py-3 px-2;
+  & :local {
+    animation: slide-in-top 0.4s ease-in-out forwards;
+  }
+  .wrap {
+    @apply text-white bg-red-warning rounded-md flex flex-row;
+    @apply gap-3 py-2 px-3 items-center;
+    svg {
+      @apply w-5 h-5;
+    }
+    span {
+      @apply text-md;
+    }
+    button {
+      @apply ml-auto block flex-1 h-5;
+      svg {
+        @apply w-3 h-3 ml-auto;
+      }
+    }
   }
 }
