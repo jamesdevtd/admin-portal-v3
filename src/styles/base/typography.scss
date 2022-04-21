@@ -26,19 +26,19 @@ label {
 
 button,
 .button {
-  @apply font-title;
+  @apply font-body;
   span {
-    @apply font-title;
+    @apply font-body;
   }
+}
+
+.btn {
+  @apply rounded-md py-1 px-10 uppercase text-white shadow-md font-body;
+  @extend .bg-blue-gradient;
 }
 
 [class*="ButtonLink_"] {
   @apply font-title;
-}
-
-.btn {
-  @apply rounded-md py-1 px-10 uppercase text-white shadow-md;
-  @extend .bg-blue-gradient;
 }
 
 input:focus {
