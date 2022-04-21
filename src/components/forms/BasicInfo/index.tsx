@@ -1,4 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { LatLngExpression } from 'leaflet';
+import dynamic from 'next/dynamic';
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import GooglePlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
@@ -71,6 +73,7 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
   const [hasErrors, setHasErrors] = useState(false);
   const [hideErrorBox, setHideErrorBox] = useState(false);
   const [contactItems, setContactItems] = useState<ContactDetailsProps[]>([]);
+  const [coordinates, setCoordinates] = useState<LatLngExpression>([40.795817, -73.9247057]);
 
   const {
     handleSubmit,
@@ -142,6 +145,11 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
   };
 
   useImperativeHandle(ref, () => ({ submitForm }));
+
+  const LeafletMap = dynamic(
+    () => import('@/components/leaflet/LeafletMap'),
+    { loading: () => <p>A map is loading</p>, ssr: false }
+  );
 
   return (
     <form
@@ -388,11 +396,9 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
         </div>
         <div className='location-group'>
           <div className='col map-col'>
-            <img
-              src='/images/map-placeholder.jpg'
-              alt='map placeholder'
-              className='block'
-            />
+            <LeafletMap
+              coordinates={coordinates}
+              style={{ height: '250px', width: '250px' }} />
           </div>
           <div className='col'>
             <div className='fields-group'>

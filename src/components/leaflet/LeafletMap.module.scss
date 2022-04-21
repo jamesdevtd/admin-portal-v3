@@ -1,0 +1,14 @@
+.leafletMap {
+  &.filtered :global {
+    color: pink;
+    .leaflet-container {
+      filter: brightness(108%) contrast(81%) hue-rotate(360deg) saturate(46%) sepia(11%) invert(100%);
+    }
+  }
+}
+
+.leafletMap :global {
+  .leaflet-control-attribution {
+    @apply hidden;
+  }
+}

@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -9,7 +10,6 @@ import SelectInput from '@/components/forms/fields/SelectInput';
 import TextArea from '@/components/forms/fields/TextArea';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
-
 export default function RHFSandbox() {
   //#region  //*=========== Form ===========
   const methods = useForm({
@@ -26,9 +26,27 @@ export default function RHFSandbox() {
   };
   //#endregion  //*======== Form Submit ===========
 
+  const LeaftletMap = dynamic(
+    () => import('@/components/leaflet/LeafletMap'),
+    { loading: () => <p>A map is loading</p>, ssr: false }
+  );
+
   return (
     <Layout>
       <Seo templateTitle='React Hook Form Sandbox' />
+
+      <LeaftletMap
+        coordinates={[40.795817, -73.9247057]}
+        style={{ height: '250px', width: '250px' }}
+      />
+
+      <div className="mt-5"></div>
+
+      <LeaftletMap
+        coordinates={[40.795817, -73.9247057]}
+        style={{ height: '250px', width: '250px' }}
+        colorFiltered
+      />
 
       <section className='rhf-demo'>
         <div className='layout min-h-screen py-20'>
