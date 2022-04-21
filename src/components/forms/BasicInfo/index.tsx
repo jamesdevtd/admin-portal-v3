@@ -130,7 +130,9 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
     console.log('facilityAddress: ', results);
     setValue('facilityAddress', results);
     const latLng = await getLatLng(results[0]);
-    console.log('latLng: ', latLng);
+    console.log('lat: ', latLng.lat);
+    console.log('lng: ', latLng.lng);
+    setCoordinates([latLng.lat, latLng.lng]);
   };
 
   const onSubmit = (data: unknown) => {
