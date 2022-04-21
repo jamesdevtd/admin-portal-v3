@@ -34,8 +34,7 @@ const Layout = (props: Props) => {
 
   useEffect(() => {
     setMenuItems(mockMenuItems);
-    console.log('router.pathname: ', router.pathname);
-  });
+  }, [router.pathname]);
 
   return (
     <div className={`${styles.dashboardLayout} default-layout`}>

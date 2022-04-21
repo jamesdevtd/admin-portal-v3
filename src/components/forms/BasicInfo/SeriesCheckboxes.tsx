@@ -20,7 +20,7 @@ interface SeriesCheckboxesProps extends Props, OptionalProps { }
 const defaultProps: Props = {
   heading: 'Additional Events',
   items: [],
-  seriesMonth: 0
+  seriesMonth: 1
 };
 
 export default function SeriesCheckboxes({ heading, items, seriesMonth, handleAdditionalEvents }: SeriesCheckboxesProps) {
@@ -39,10 +39,10 @@ export default function SeriesCheckboxes({ heading, items, seriesMonth, handleAd
     const val = e.target.getAttribute('data-checked');
     const isItemChecked = val ? !!parseInt(val) : !!false;
     if (isItemChecked) {
-      const updatedItems = checkedItems.filter(item => item.id !== parseInt(e.target.value));
+      const updatedItems = checkedItems.filter(item => item.month !== parseInt(e.target.value));
       setCheckedItems(updatedItems);
     } else {
-      setCheckedItems([...checkedItems, { id: parseInt(e.target.value), name: e.target.name }]);
+      setCheckedItems([...checkedItems, { month: parseInt(e.target.value), name: e.target.name }]);
     }
   };
 
@@ -52,7 +52,7 @@ export default function SeriesCheckboxes({ heading, items, seriesMonth, handleAd
 
   const handleCheckAll = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const checkedAllItems = items.filter(item => item.id > seriesMonth);
+    const checkedAllItems = items.filter(item => item.month > seriesMonth);
     setCheckedItems(checkedAllItems);
   };
 
@@ -62,26 +62,26 @@ export default function SeriesCheckboxes({ heading, items, seriesMonth, handleAd
       <h3>{heading}</h3>
       <div className='checkboxes'>
         {items.map((item) => {
-          const isChecked = (checkedItems.find(i => i.id === item.id))
-            && (item.id > seriesMonth)
+          const isChecked = (checkedItems.find(i => i.month === item.month))
+            && (item.month > seriesMonth)
             ? true : false;
           return (
             <div
-              className={`form-check ${(item.id <= seriesMonth) ? 'disabled' : ''}`}
-              key={item.id}
+              className={`form-check ${(item.month <= seriesMonth) ? 'disabled' : ''}`}
+              key={item.month}
             >
               <input
-                value={item.id}
+                value={item.month}
                 name={item.name}
                 className={`form-check-input ${isChecked ? 'checked' : 'unchecked'}`}
                 type='checkbox'
                 data-checked={isChecked ? 1 : 0}
-                id={`check-${item.id}`}
-                disabled={(item.id <= seriesMonth) ? true : false}
+                id={`check-${item.month}`}
+                disabled={(item.month <= seriesMonth) ? true : false}
                 onChange={handleCheck}
                 checked={isChecked}
               />
-              <label className='form-check-label' htmlFor={`check-${item.id}`}>
+              <label className='form-check-label' htmlFor={`check-${item.month}`}>
                 {item.name}
               </label>
             </div>

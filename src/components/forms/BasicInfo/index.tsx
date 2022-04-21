@@ -52,7 +52,7 @@ const formDefaultValues = {
   eventName: null,
   eventStartDate: null,
   eventStartTime: null,
-  eventYear: null,
+  eventYear: 0,
   facilityAddress: [{}],
   facilityName: null,
   facilityNotes: '',
@@ -74,6 +74,7 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
   const [hideErrorBox, setHideErrorBox] = useState(false);
   const [contactItems, setContactItems] = useState<ContactDetailsProps[]>([]);
   const [coordinates, setCoordinates] = useState<LatLngExpression>([40.795817, -73.9247057]);
+  const [availableSeries, setAvailableSeries] = useState(seriesNames);
 
   const {
     handleSubmit,
@@ -102,7 +103,8 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
       console.log('FORM ERRORS: ');
       console.log(formState.errors);
     }
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formState.errors, formState.isDirty]);
 
   useEffect(() => {
     if (contactItems) {
@@ -122,16 +124,24 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
     setContactItems([...contactItems, val]);
   };
 
+  const handleAvaiableSeries = (year: number) => {
+    const d = new Date();
+    const startMonthNumber = (year === d.getFullYear() && d.getDate() >= 7) ? d.getMonth() + 1 : null;
+    if (startMonthNumber) {
+      setSeriesMonth(startMonthNumber);
+      setAvailableSeries(seriesNames.slice(startMonthNumber));
+    } else {
+      setAvailableSeries(seriesNames);
+    }
+  }
+
   // TODO: transfter googleApiKey to .env
   const googleApiKey = 'AIzaSyA8vejxIx686PpYxiXBqGpovVCZRurJBLQ';
 
   const handleLocationInput = async (address: string) => {
     const results = await geocodeByAddress(address);
-    console.log('facilityAddress: ', results);
     setValue('facilityAddress', results);
     const latLng = await getLatLng(results[0]);
-    console.log('lat: ', latLng.lat);
-    console.log('lng: ', latLng.lng);
     setCoordinates([latLng.lat, latLng.lng]);
   };
 
@@ -152,6 +162,8 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
     () => import('@/components/leaflet/LeafletMap'),
     { loading: () => <p>A map is loading</p>, ssr: false }
   );
+
+
 
   return (
     <form
@@ -197,12 +209,15 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
           <div className='col'>
             <select
               {...register('eventYear')}
-              onChange={() => clearErrors('eventYear')}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                handleAvaiableSeries(parseInt(e.target.value));
+                clearErrors('eventYear');
+              }}
             >
               <option value='' hidden></option>
-              <option value='2022'>2022</option>
-              <option value='2023'>2023</option>
-              <option value='2023'>2024</option>
+              <option value={2022}>2022</option>
+              <option value={2023}>2023</option>
+              <option value={2023}>2024</option>
             </select>
             {formState.errors.eventYear ?
               <span className='error'>Event Year is required</span> :
@@ -219,11 +234,9 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
               }}
             >
               <option value='' hidden></option>
-              {seriesNames.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
+              {availableSeries.map((item) => {
+                return <option key={item.month} value={item.month}>{item.name}</option>
+              })}
             </select>
             {formState.errors.seriesMonth ?
               <span className='error'>Series Month is required</span> :
@@ -420,6 +433,8 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
                 <GooglePlacesAutocomplete
                   apiKey={googleApiKey}
                   selectProps={{
+                    // FIX: for “Warning: Prop `id` did not match”
+                    instanceId: 'facilityAddressId',
                     className: 'autocomplete-field',
                     // TODO: trace type for the any below
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any

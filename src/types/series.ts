@@ -1,4 +1,4 @@
 export default interface SeriesProps {
-  id: number;
+  month: number;
   name: string;
 }
