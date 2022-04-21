@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { signIn } from 'next-auth/react';
 import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -6,8 +7,6 @@ import Button from '@/components/buttons/Button';
 import Input from '@/components/forms/fields/Input';
 import LoginLayout from '@/components/layout/LoginLayout';
 import UnstyledLink from '@/components/links/UnstyledLink';
-
-import { handleLogin } from '../../services/login';
 
 import TagxLogo from '~/svg/tagx.svg';
 
@@ -25,12 +24,15 @@ export default function LoginPage() {
   const onSubmit = async () => {
     const username = getValues('username');
     const password = getValues('password');
-    if (await handleLogin({ username, password })) {
-      // TODO: set as protected route
-      router.push('/dashboard');
-    } else {
-      setMessage('Invalid Credentials!');
-    }
+    await signIn(
+      'credentials', 
+      {
+        redirect: true,
+        username: username,
+        password: password,
+        callbackUrl: '/dashboard' 
+      }
+    );
   };
   //#endregion  //*======== Form Submit ===========
 

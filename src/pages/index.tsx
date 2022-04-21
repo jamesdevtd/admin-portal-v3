@@ -1,3 +1,8 @@
+
+   
+import { GetServerSideProps } from "next"
+import type { Session } from "next-auth"
+import { getSession } from "next-auth/react"
 import * as React from 'react';
 
 import ButtonLink from '@/components/links/ButtonLink';
@@ -17,4 +22,12 @@ export default function HomePage() {
       </section>
     </main>
   );
+}
+
+export const getServerSideProps: GetServerSideProps<{session: Session | null}> = async (context) => {
+  return {
+    props: {
+      session: await getSession(context),
+    },
+  }
 }

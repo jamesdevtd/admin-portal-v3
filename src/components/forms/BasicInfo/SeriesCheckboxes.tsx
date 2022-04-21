@@ -28,7 +28,12 @@ export default function SeriesCheckboxes({ heading, items, seriesMonth, handleAd
 
   useEffect(() => {
     handleAdditionalEvents(checkedItems);
-  }, [handleAdditionalEvents, checkedItems])
+  });
+
+  useEffect(() => {
+    // TODO: add Clear all button as option after select all is clicked?
+    clearCheckedItems();
+  }, [seriesMonth]);
 
   const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.getAttribute('data-checked');
@@ -39,6 +44,10 @@ export default function SeriesCheckboxes({ heading, items, seriesMonth, handleAd
     } else {
       setCheckedItems([...checkedItems, { id: parseInt(e.target.value), name: e.target.name }]);
     }
+  };
+
+  const clearCheckedItems = () => {
+    setCheckedItems([]);
   };
 
   const handleCheckAll = (e: React.MouseEvent<HTMLButtonElement>) => {

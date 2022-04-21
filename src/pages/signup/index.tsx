@@ -8,8 +8,6 @@ import Input from '@/components/forms/fields/Input';
 import LoginLayout from '@/components/layout/LoginLayout';
 import UnstyledLink from '@/components/links/UnstyledLink';
 
-import { handleSignUp } from '../../services/signup';
-
 import TagxLogo from '~/svg/tagx.svg';
 
 export default function SignUpPage() {
@@ -25,7 +23,7 @@ export default function SignUpPage() {
   //#endregion  //*======== Form ===========
 
   //#region  //*=========== Form Submit ===========
-  const onSubmit = (_data: unknown) => {
+  const onSubmit = async (_data: unknown) => {
     // eslint-disable-next-line no-console
     const firstName = getValues('firstName');
     const lastName = getValues('lastName');
@@ -38,7 +36,18 @@ export default function SignUpPage() {
       password,
       referralCode,
     };
-    handleSignUp(submitData);
+    //handleSignUp(submitData);
+    const response = await fetch(process.env.API_BASE_URL + '/affiliate/signup', {
+      method: 'POST',
+      body: JSON.stringify(submitData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    const data = await response.json();
+
+    console.log(data);
     // if (await handleLogin({ username, password })) {
     //   // TODO: set as protected route
     //   router.push('/dashboard');

@@ -1,22 +1,25 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import DatePicker from 'react-datepicker';
+import GooglePlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '@/components/forms/BasicInfo/BasicInfo.module.scss';
 
-import { setDayBefore, setNextDay } from '@/helpers/DateMods';
+import { setDayBefore, setNextDay } from '@/helpers/dateMods';
 import seriesNames from '@/mock-data/seriesNames';
 
 import ContactDetails from './ContactDetails';
 import SeriesCheckboxes from './SeriesCheckboxes';
 
+import ContactDetailsProps from '@/types/contactDetails';
 import SeriesProps from '@/types/series';
 
 import CloseIcon from '~/icons/close.svg';
 import ErrorIcon from '~/icons/error.svg';
+import ContactIcon from '~/icons/grey/contact.svg';
 import EventIcon from '~/icons/grey/event.svg';
 import LocationIcon from '~/icons/grey/location.svg';
 import RegIcon from '~/icons/grey/registration.svg';
@@ -24,34 +27,36 @@ import WarningIcon from '~/icons/grey/warning.svg';
 
 const schema = yup
   .object({
+    additionalEvents: yup.array(),
+    contactDetails: yup.array(),
     eventEndDate: yup.date().required(),
     eventName: yup.string().required(),
     eventStartDate: yup.date().required(),
     eventStartTime: yup.date().required(),
     eventYear: yup.number().positive().integer().required(),
-    facilityAddress: yup.string().required(),
+    facilityAddress: yup.array().required(),
     facilityName: yup.string().required(),
     facilityNotes: yup.string().nullable(),
     registrationEndDate: yup.date().required(),
     registrationStartDate: yup.date().required(),
     seriesMonth: yup.number().positive().integer().required(),
-    additionalEvents: yup.array()
   })
   .required();
 
 const formDefaultValues = {
+  additionalEvents: [{}],
+  contactDetails: [{}],
   eventEndDate: null,
   eventName: null,
   eventStartDate: null,
   eventStartTime: null,
   eventYear: null,
-  facilityAddress: null,
+  facilityAddress: [{}],
   facilityName: null,
   facilityNotes: '',
   registrationEndDate: null,
   registrationStartDate: null,
   seriesMonth: null,
-  additionalEvents: [{}]
 }
 
 type Props = {
@@ -63,8 +68,9 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
   const [minEndDate, setMinEndDate] = useState(new Date());
   const [startDateSelected, setStartDateSelected] = useState(false);
   const [seriesMonth, setSeriesMonth] = useState<number>(0);
-  const [hasErrors, setHasErrors] = useState(false)
-  const [hideErrorBox, setHideErrorBox] = useState(false)
+  const [hasErrors, setHasErrors] = useState(false);
+  const [hideErrorBox, setHideErrorBox] = useState(false);
+  const [contactItems, setContactItems] = useState<ContactDetailsProps[]>([]);
 
   const {
     handleSubmit,
@@ -81,7 +87,11 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
   });
 
   useEffect(() => {
-    formState.isDirty && setIsFormEdited(true);
+    if (formState.isDirty) {
+      setIsFormEdited(true);
+      console.log('FORM VALUES: ');
+      console.log(getValues());
+    }
     Object.keys(formState.errors).length ? setHasErrors(true) : setHasErrors(false);
     if (Object.keys(formState.errors).length) {
       console.log('FORM VALUES: ');
@@ -89,8 +99,13 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
       console.log('FORM ERRORS: ');
       console.log(formState.errors);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formState]);
+  });
+
+  useEffect(() => {
+    if (contactItems) {
+      setValue('contactDetails', contactItems);
+    }
+  });
 
   const handleSelectSeries = (val: number) => {
     setSeriesMonth(val)
@@ -98,6 +113,21 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
 
   const handleAdditionalEvents = (val: SeriesProps[]) => {
     setValue('additionalEvents', val);
+  };
+
+  const handleAddContactItem = (val: ContactDetailsProps) => {
+    setContactItems([...contactItems, val]);
+  };
+
+  // TODO: transfter googleApiKey to .env
+  const googleApiKey = 'AIzaSyA8vejxIx686PpYxiXBqGpovVCZRurJBLQ';
+
+  const handleLocationInput = async (address: string) => {
+    const results = await geocodeByAddress(address);
+    console.log('facilityAddress: ', results);
+    setValue('facilityAddress', results);
+    const latLng = await getLatLng(results[0]);
+    console.log('latLng: ', latLng);
   };
 
   const onSubmit = (data: unknown) => {
@@ -118,7 +148,7 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
       {...ref}
       {...props}
       onSubmit={handleSubmit(onSubmit)}
-      className={hasErrors ? 'has-errors' : ''}
+      className={`main-form ${hasErrors ? 'has-errors' : ''}`}
     >
       {(hasErrors && !hideErrorBox) &&
         <div className={styles.errorBox}>
@@ -357,7 +387,7 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
           <span>Location</span>
         </div>
         <div className='location-group'>
-          <div className='col relative'>
+          <div className='col map-col'>
             <img
               src='/images/map-placeholder.jpg'
               alt='map placeholder'
@@ -379,9 +409,17 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
                 )}
               </div>
               <div className='col'>
-                <input type='text'
+                <GooglePlacesAutocomplete
+                  apiKey={googleApiKey}
+                  selectProps={{
+                    className: 'autocomplete-field',
+                    // TODO: trace type for the any below
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    onChange: (e: any) => {
+                      handleLocationInput(e.value.description);
+                    },
+                  }}
                   {...register('facilityAddress')}
-                  onChange={() => clearErrors('facilityAddress')}
                 />
                 {formState.errors.facilityAddress ?
                   <span className='error'>Playing Facility Address is required</span> :
@@ -401,7 +439,7 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
       </div>
 
       <div className={`${styles.formGroup} border-none`}>
-        <RegIcon />
+        <ContactIcon />
         <div className='label'>
           <span>Contact Details (Optional)</span>
         </div>
@@ -410,7 +448,10 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
           other managers, or anyone else that players in your Event should
           have access to for general questions and assistance.
         </p>
-        <ContactDetails />
+        <ContactDetails
+          handleAddContactItem={handleAddContactItem}
+          items={contactItems}
+        />
       </div>
 
 

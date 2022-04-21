@@ -18,6 +18,7 @@ module.exports = {
         body: ['Source Sans Pro', 'sans-serif'],
       },
       fontSize: {
+        xxxs: '10px',
         xxs: '11px',
         xs: '12px',
         sm: '13px',

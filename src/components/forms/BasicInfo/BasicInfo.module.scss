@@ -2,7 +2,7 @@
 
 .formGroup :global {
   @apply relative mb-2 flex flex-col gap-2 pl-8;
-  max-width: 600px;
+  max-width: 650px;
   svg {
     @apply absolute left-0 h-5 w-5 opacity-60;
     top: 0px;
@@ -18,20 +18,20 @@
 
   .fields-group {
     @apply flex flex-row flex-wrap pb-10;
-    gap: 20px;
+    gap: 15px;
     &.hide-input {
       input {
         @apply text-white;
       }
     }
     .col {
-      @apply -mb-2 flex flex-col justify-between;
+      @apply flex flex-col justify-between;
       width: calc(50% - 10px);
       input,
       select,
       option {
         @apply p-0 py-1 text-blue-dark placeholder-blue-dark;
-        @apply border-0 border-b-2 border-gray-400;
+        @apply border-0 border-b-2 border-gray-400 text-md;
         border-bottom-width: 1px;
         &:focus {
           outline: none;
@@ -59,22 +59,57 @@
 
   .location-group {
     @apply mt-0 flex flex-row gap-5;
-    .col {
+    .map-col {
+      @apply flex-none;
+      width: 250px;
       img {
         @apply mt-2 h-full object-contain object-top;
         height: 250px;
       }
     }
     .fields-group {
-      @apply gap-4 border-none;
+      @apply border-none;
       .col {
         @apply relative w-full;
       }
       .icon.map {
-        @apply absolute right-0 top-3 bg-contain bg-center bg-no-repeat opacity-50;
+        @apply absolute right-3 top-3 bg-contain bg-center bg-no-repeat opacity-50;
         width: 13px;
         height: 13px;
         background-image: url(/icons/blue/map-pin.svg);
+      }
+    }
+    .autocomplete-field {
+      [class$="-control"] {
+        @apply border-0 border-b-2 border-gray-400 rounded-none mb-1 shadow-none pr-7;
+        border-bottom-width: 1px;
+        height: 30px;
+        div:first-child {
+          @apply p-0;
+        }
+        > div > div:last-child {
+          @apply w-full;
+        }
+        [class$="-placeholder"] {
+          @apply text-md;
+        }
+        [class$="-indicatorSeparator"],
+        [class$="-indicatorContainer"] {
+          @apply hidden;
+        }
+        input {
+          @apply p-0 py-1 text-blue-dark placeholder-blue-dark w-full text-md #{!important};
+          &:focus {
+            outline: none;
+            box-shadow: none;
+          }
+        }
+        input + div {
+          opacity: 0;
+        }
+      }
+      [class$="-menu"] {
+        @apply mt-0;
       }
     }
   }

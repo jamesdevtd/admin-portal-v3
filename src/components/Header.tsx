@@ -1,11 +1,30 @@
-import * as React from 'react';
+import { getSession, signOut } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 
 import styles from './Header.module.scss';
 
 import BellIcon from '~/icons/bell.svg';
 import UserInitials from '~/icons/user-init.svg';
 
+
 export default function Header() {
+  const [username, setUsername] = useState('');
+  
+  function logoutHandler() {
+    signOut();
+  }
+
+  useEffect(() => {
+    getSession().then(session => {
+      if(!session) {
+        setUsername('Guest');  
+      } else {
+        setUsername('Sean Paul');  
+      }
+    });  
+  }, []);
+  
+  
   return (
     <header className={`${styles.header}`}>
       <div className='wrap'>
@@ -34,8 +53,8 @@ export default function Header() {
             <button>
               <UserInitials />
             </button>
-            <button>
-              <span className='user-name'>Sean P</span>
+            <button onClick={logoutHandler}>
+              <span className='user-name'>{username}</span>
             </button>
           </ul>
         </nav>

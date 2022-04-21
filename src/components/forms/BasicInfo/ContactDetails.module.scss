@@ -1,16 +1,5 @@
 .contactDetails :global {
   @apply mt-5 flex flex-col gap-3;
-  .item {
-    @apply flex flex-col gap-2 overflow-auto
-  bg-white py-4 px-5;
-    @apply hidden;
-    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    border-width: 1px;
-  }
-  h3 {
-    @apply block w-full text-base font-semibold text-blue-dark;
-  }
   .contact-fields {
     @apply flex flex-wrap justify-between border-b border-gray-300 pb-7;
     gap: 20px;

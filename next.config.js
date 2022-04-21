@@ -47,15 +47,15 @@ module.exports = {
     includePaths: [path.join(__dirname, 'styles')],
   },
 
-  async redirects() {
-    return [
-      {
-        source: '/dashboard',
-        destination: '/events',
-        permanent: true,
-      },
-    ]
-  }
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: '/dashboard',
+  //       destination: '/events',
+  //       permanent: true,
+  //     },
+  //   ]
+  // }
 
   //TODO: add next-http-proxy-middleware
   // async rewrites() {

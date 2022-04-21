@@ -3,9 +3,8 @@ $border-color_1: #6b7280;
 .affiliateSetup :global {
   ul.warnings {
     li {
-      @apply block bg-contain bg-left bg-no-repeat font-semibold uppercase;
+      @apply block bg-contain bg-left bg-no-repeat font-semibold uppercase text-xxs;
       line-height: 1.1em;
-      font-size: 11px;
       padding-left: 13px;
       padding-right: 10px;
       background-image: url(/images/backgrounds/circle-warning.svg);

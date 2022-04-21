@@ -17,15 +17,14 @@ $border-color_1: #6b7280;
         &.active {
           @apply font-bold text-blue-dark opacity-100;
           &:after {
-            content: '';
+            content: "";
             @apply absolute left-0 bottom-0 block w-full bg-blue-dark;
             height: 4px;
             border-radius: 3px 3px 0 0;
           }
         }
         a {
-          @apply font-semibold;
-          font-size: 13px;
+          @apply font-semibold text-sm;
         }
       }
     }
@@ -72,8 +71,7 @@ $border-color_1: #6b7280;
     }
   }
   .form-group.note {
-    @apply text-gray-600;
-    font-size: 9px;
+    @apply text-gray-600 text-xxxs;
   }
   .anchor {
     @apply inline-block font-semibold text-blue-brand underline;
@@ -81,9 +79,8 @@ $border-color_1: #6b7280;
 
   ul.warnings {
     li {
-      @apply block bg-contain bg-left bg-no-repeat font-semibold uppercase;
+      @apply block bg-contain bg-left bg-no-repeat font-semibold uppercase text-xxs;
       line-height: 1.1em;
-      font-size: 11px;
       padding-left: 13px;
       padding-right: 10px;
       background-image: url(/images/backgrounds/circle-warning.svg);
@@ -116,7 +113,7 @@ $border-color_1: #6b7280;
       @apply relative cursor-pointer;
       &:after {
         @apply ml-2 inline-block bg-contain bg-center bg-no-repeat;
-        content: '';
+        content: "";
         width: 7px;
         height: 8px;
         background-image: url(/images/backgrounds/caret-down-blue.svg);

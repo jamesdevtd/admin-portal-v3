@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import styles from '@/components/layout/Dashboard.module.scss';
@@ -29,9 +30,12 @@ const Layout = (props: Props) => {
   const [menuItems, setMenuItems] = useState<MenuItems[]>([]);
   const [sidebarCollapse, setSidebarCollapse] = useState(false);
 
+  const router = useRouter();
+
   useEffect(() => {
     setMenuItems(mockMenuItems);
-  }, []);
+    console.log('router.pathname: ', router.pathname);
+  });
 
   return (
     <div className={`${styles.dashboardLayout} default-layout`}>
@@ -54,7 +58,7 @@ const Layout = (props: Props) => {
                     group.items.map((item, i) => (
                       <li
                         key={i}
-                        className={`${item.label === 'Events' ? 'current' : ''
+                        className={`${(router.pathname === item.url) ? 'current' : ''
                           }`}
                       >
                         <Link href={item.url}>
