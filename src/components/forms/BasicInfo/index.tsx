@@ -10,7 +10,8 @@ import * as yup from 'yup';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '@/components/forms/BasicInfo/BasicInfo.module.scss';
 
-import { setDayBefore, setNextDay } from '@/helpers/dateMods';
+import { setDayBefore, setNextDay } from '../../../helpers/date-mods';
+
 import seriesNames from '@/mock-data/seriesNames';
 
 import ContactDetails from './ContactDetails';
