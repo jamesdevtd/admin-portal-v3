@@ -33,7 +33,7 @@ const LeafletMap = ({ coordinates, style, colorFiltered }: MapProps) => {
         style={style}
         whenReady={() => setMap}
         doubleClickZoom={false}
-        dragging={false}
+        dragging={true}
         closePopupOnClick={false}
         zoomControl={false}
         trackResize={false}
