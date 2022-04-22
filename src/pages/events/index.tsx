@@ -4,15 +4,25 @@ import styles from "./Events.module.scss";
 
 import SubmitButton from '@/components/buttons/SubmitButton';
 import { BasicInfo } from '@/components/forms/BasicInfo';
+import { EventOptions } from '@/components/forms/EventOptions';
+import { EventPublicPage } from '@/components/forms/EventPublicPage';
 import Layout from '@/components/layout/Layout';
 import ButtonLink from '@/components/links/ButtonLink';
+
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import {
+  selectCurrentStep,
+  setCurrentStep,
+} from '@/features/eventCreationSteps/eventCreationStepsSlice';
 
 import EventsMenu from './EventsMenu';
 
 import CalendarIcon from '~/icons/blue/calendar.svg';
 
 export default function Events() {
-  const [isFormEdited, setIsFormEdited] = useState<boolean>(false)
+  const [isFormEdited, setIsFormEdited] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const currentStep = useAppSelector(selectCurrentStep);
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const eventFormRef = useRef<any>();
 
@@ -25,6 +35,10 @@ export default function Events() {
       eventFormRef.current.submitForm();
     }
   };
+
+  const handleNextStep = (val: number) => {
+    dispatch(setCurrentStep(Number(val)));
+  }
 
   return (
     <div className='relative'>
@@ -41,11 +55,25 @@ export default function Events() {
 
           <div className='content-main'>
             <div className='inner-sidebar'>
-              <EventsMenu />
+              <EventsMenu currentStep={currentStep} handleNextStep={handleNextStep} />
             </div>
 
             <div className="inner-content">
-              <BasicInfo ref={eventFormRef} setIsFormEdited={setIsFormEdited} />
+              {currentStep === 0 &&
+                <BasicInfo ref={eventFormRef}
+                  setIsFormEdited={setIsFormEdited}
+                  handleNextStep={handleNextStep} />
+              }
+              {currentStep === 1 &&
+                <EventOptions ref={eventFormRef}
+                  setIsFormEdited={setIsFormEdited}
+                  handleNextStep={handleNextStep} />
+              }
+              {currentStep === 2 &&
+                <EventPublicPage ref={eventFormRef}
+                  setIsFormEdited={setIsFormEdited}
+                  handleNextStep={handleNextStep} />
+              }
             </div>
           </div>
 

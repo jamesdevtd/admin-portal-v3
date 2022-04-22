@@ -29,8 +29,10 @@ $sidebarWidth: 150px;
         @apply mt-2 flex flex-col gap-3;
         li {
           @apply block pr-5;
-          a {
-            @apply flex flex-row gap-2;
+          padding-top: 2px;
+          padding-bottom: 2px;
+          .wrap {
+            @apply flex flex-row gap-2 cursor-pointer;
             .icon-box {
               @apply relative rounded-full bg-gray-400
               text-center text-white drop-shadow-md text-xxxs;
@@ -55,11 +57,9 @@ $sidebarWidth: 150px;
           }
           &.current {
             @apply rounded-l-full rounded-r-2xl border border-white bg-blue-brand shadow;
-            padding-top: 2px;
-            padding-bottom: 2px;
             padding-left: 2px;
             margin-left: -2px;
-            a {
+            .wrap {
               .icon-box {
                 @apply border-0 bg-transparent drop-shadow-none;
               }
@@ -69,14 +69,15 @@ $sidebarWidth: 150px;
             }
           }
           &:first-child {
-            a {
+            .wrap {
               .icon-box:after {
                 content: none;
               }
             }
           }
           &.inactive {
-            a {
+            .wrap {
+              @apply pointer-events-none cursor-default;
               .icon-box {
                 @apply bg-gray-300;
                 &:after {

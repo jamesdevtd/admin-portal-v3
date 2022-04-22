@@ -1,0 +1,94 @@
+@import "@/styles/base/animations.scss";
+
+.formGroup :global {
+  @apply relative mb-2 flex flex-col gap-2 pl-8;
+  max-width: 750px;
+  svg {
+    @apply absolute left-0 h-5 w-5 opacity-60;
+    top: 0px;
+  }
+  .label {
+    span {
+      @apply font-title text-md font-semibold text-blue-brand;
+    }
+  }
+  .instructions {
+    @apply font-body text-gray-500;
+  }
+
+  .fields-group {
+    @apply flex flex-row flex-wrap pb-10;
+    gap: 15px;
+    &.hide-input {
+      input {
+        @apply text-white;
+      }
+    }
+    .col {
+      @apply flex flex-col justify-between;
+      width: calc(50% - 10px);
+      input,
+      select,
+      option {
+        @apply p-0 py-1 text-blue-dark placeholder-blue-dark;
+        @apply border-0 border-b-2 border-gray-400 text-md;
+        border-bottom-width: 1px;
+        &:focus {
+          outline: none;
+          box-shadow: none;
+        }
+      }
+      textarea {
+        @apply mb-2 border-gray-400;
+        &:focus {
+          outline: none;
+          box-shadow: none;
+        }
+      }
+    }
+    .error {
+      @apply text-red-500;
+    }
+    @media (max-width: 991px) {
+      @apply flex-col;
+      .col {
+        @apply w-full;
+      }
+    }
+  }
+  .center-note {
+    @apply text-center text-blue-dark font-semibold my-7 mx-auto;
+  }
+}
+
+.formGroup:after {
+  @apply block h-1 w-full border-b border-gray-300;
+  content: "";
+}
+
+.formGroup:last-child:after {
+  display: none;
+}
+
+.errorBox :global {
+  @apply w-full top-0 left-0 absolute py-3 px-2;
+  & :local {
+    animation: slide-in-top 0.4s ease-in-out forwards;
+  }
+  .wrap {
+    @apply text-white bg-red-warning rounded-md flex flex-row;
+    @apply gap-3 py-2 px-3 items-center;
+    svg {
+      @apply w-5 h-5;
+    }
+    span {
+      @apply text-md;
+    }
+    button {
+      @apply ml-auto block flex-1 h-5;
+      svg {
+        @apply w-3 h-3 ml-auto;
+      }
+    }
+  }
+}

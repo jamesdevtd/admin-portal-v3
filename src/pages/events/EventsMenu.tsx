@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import eventsMenuItems from '@/mock-data/eventsMenuItems';
@@ -13,7 +12,11 @@ interface MenuItems {
   items: MenuSubItems[];
 }
 
-export default function EventsMenu() {
+type Props = {
+  currentStep: number;
+  handleNextStep: (val: number) => void;
+}
+export default function EventsMenu({ currentStep, handleNextStep }: Props) {
   const [menuItems, setMenuItems] = useState<MenuItems[]>([]);
 
   useEffect(() => {
@@ -30,16 +33,13 @@ export default function EventsMenu() {
                 group.items.map((item, i) => (
                   <li
                     key={i}
-                    className={`${i > 3 ? 'inactive' : 'active'} ${
-                      i < 1 ? 'current' : ''
-                    }`}
+                    className={`${i > 3 ? 'inactive' : 'active'} ${i === currentStep ? 'current' : ''
+                      }`}
                   >
-                    <Link href={item.url}>
-                      <a>
-                        <div className={`icon-box ${item.icon}`}>{++i}</div>
-                        <span>{item.label}</span>
-                      </a>
-                    </Link>
+                    <div className='wrap' onClick={() => handleNextStep(--i)}>
+                      <div className={`icon-box ${item.icon}`}>{++i}</div>
+                      <span>{item.label}</span>
+                    </div>
                   </li>
                 ))}
             </ul>

@@ -1,5 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LatLngExpression } from 'leaflet';
+import moment from 'moment';
 import dynamic from 'next/dynamic';
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import DatePicker from 'react-datepicker';
@@ -10,7 +11,7 @@ import * as yup from 'yup';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '@/components/forms/BasicInfo/BasicInfo.module.scss';
 
-import { setDayBefore, setNextDay } from '@/helpers/dateModifiers';
+import { getNextDay } from '@/helpers/dateModifiers';
 import seriesNames from '@/mock-data/seriesNames';
 
 import ContactDetails from './ContactDetails';
@@ -31,11 +32,11 @@ const schema = yup
   .object({
     additionalEvents: yup.array(),
     contactDetails: yup.array(),
-    eventEndDate: yup.date().required(),
+    eventEndDate: yup.date().required().nullable(),
     eventName: yup.string().required(),
     eventStartDate: yup.date().required(),
     eventStartTime: yup.date().required(),
-    eventYear: yup.number().positive().integer().required(),
+    eventYear: yup.number().positive().integer().required().nullable(),
     facilityAddress: yup.array().required(),
     facilityName: yup.string().required(),
     facilityNotes: yup.string().nullable(),
@@ -52,7 +53,7 @@ const formDefaultValues = {
   eventName: null,
   eventStartDate: null,
   eventStartTime: null,
-  eventYear: 0,
+  eventYear: null,
   facilityAddress: [{}],
   facilityName: null,
   facilityNotes: '',
@@ -62,14 +63,15 @@ const formDefaultValues = {
 }
 
 type Props = {
-  setIsFormEdited: React.Dispatch<React.SetStateAction<boolean>>
+  setIsFormEdited: React.Dispatch<React.SetStateAction<boolean>>,
+  handleNextStep: (val: number) => void
 }
 
-export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) => {
+export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props }: Props, ref) => {
+  const [yearSelected, setYearSelected] = useState<number>(0);
   const [startDate, setStartDate] = useState(new Date());
-  const [minEndDate, setMinEndDate] = useState(new Date());
-  const [startDateSelected, setStartDateSelected] = useState(false);
-  const [seriesMonth, setSeriesMonth] = useState<number>(0);
+  const [eventRange, setEventRange] = useState<Date[]>([new Date(), new Date()]);
+  const [monthId, setMonthId] = useState<number>(1);
   const [hasErrors, setHasErrors] = useState(false);
   const [hideErrorBox, setHideErrorBox] = useState(false);
   const [contactItems, setContactItems] = useState<ContactDetailsProps[]>([]);
@@ -110,11 +112,8 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
     if (contactItems) {
       setValue('contactDetails', contactItems);
     }
-  });
-
-  const handleSelectSeries = (val: number) => {
-    setSeriesMonth(val)
-  };
+    setAvaiableSeries(moment().year());
+  }, []);
 
   const handleAdditionalEvents = (val: SeriesProps[]) => {
     setValue('additionalEvents', val);
@@ -124,17 +123,27 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
     setContactItems([...contactItems, val]);
   };
 
-  const handleAvaiableSeries = (year: number) => {
+  const clearSelectedDates = () => {
+    setValue('seriesMonth', null);
+    setValue('eventStartDate', null);
+    setValue('registrationStartDate', null);
+    setMonthId(1);
+  }
+
+  const setAvaiableSeries = (year: number) => {
     const d = new Date();
     const startMonthNumber = (year === d.getFullYear() && d.getDate() >= 7) ? d.getMonth() + 1 : null;
-    setValue('seriesMonth', null);
-    setSeriesMonth(0);
     if (startMonthNumber) {
       setAvailableSeries(seriesNames.slice(startMonthNumber));
     } else {
       setAvailableSeries(seriesNames);
     }
+    clearSelectedDates();
   }
+
+  const handleSelectSeries = (id: number) => {
+    setMonthId(id);
+  };
 
   // TODO: transfter googleApiKey to .env
   const googleApiKey = 'AIzaSyA8vejxIx686PpYxiXBqGpovVCZRurJBLQ';
@@ -150,6 +159,7 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
     //TODO: POST request to API
     console.log('POST: sending data...');
     console.log(data);
+    handleNextStep(1);
   };
 
   const submitForm = () => {
@@ -163,8 +173,6 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
     () => import('@/components/leaflet/LeafletMap'),
     { loading: () => <p>A map is loading</p>, ssr: false }
   );
-
-
 
   return (
     <form
@@ -211,14 +219,15 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
             <select
               {...register('eventYear')}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                handleAvaiableSeries(parseInt(e.target.value));
+                setYearSelected(parseInt(e.target.value));
+                setAvaiableSeries(parseInt(e.target.value));
                 clearErrors('eventYear');
               }}
             >
               <option value='' hidden></option>
-              <option value={2022}>2022</option>
-              <option value={2023}>2023</option>
-              <option value={2023}>2024</option>
+              <option value='2022'>2022</option>
+              <option value='2023'>2023</option>
+              <option value='2023'>2024</option>
             </select>
             {formState.errors.eventYear ?
               <span className='error'>Event Year is required</span> :
@@ -263,17 +272,14 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
               defaultValue={null}
               render={({ field }) => (
                 <DatePicker
-                  selected={startDateSelected ? startDate : null}
-                  minDate={new Date()}
+                  selected={field.value}
+                  minDate={eventRange[0]}
                   onChange={(e) => {
                     field.onChange(e);
-                    if (field.value) {
-                      setStartDate(field.value);
-                      setMinEndDate(setNextDay(field.value));
-                    }
+                    clearErrors('eventStartDate');
                   }}
                   onCalendarClose={() => {
-                    setStartDateSelected(true);
+                    if (field.value) setStartDate(field.value);
                   }}
                   disabledKeyboardNavigation
                   className='datepicker-group'
@@ -294,7 +300,10 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
               defaultValue={null}
               render={({ field }) => (
                 <DatePicker
-                  onChange={(e) => field.onChange(e)}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    clearErrors('eventStartTime');
+                  }}
                   className='datepicker-group'
                   showTimeSelect
                   showTimeSelectOnly
@@ -318,9 +327,13 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
               defaultValue={null}
               render={({ field }) => (
                 <DatePicker
-                  selected={field.value && minEndDate}
-                  minDate={minEndDate}
-                  onChange={(e) => field.onChange(e)}
+                  selected={field.value && getNextDay(startDate)}
+                  minDate={startDate}
+                  // maxDate={getNextMonth13(startDate)}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    clearErrors('eventEndDate');
+                  }}
                   className='datepicker-group'
                   placeholderText=''
                   dateFormat='MMMM d, yyyy'
@@ -355,7 +368,7 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
                 <DatePicker
                   selected={field.value}
                   minDate={new Date()}
-                  maxDate={setDayBefore(startDate)}
+                  // maxDate={getPrevDay(startDate)}
                   onChange={(e) => field.onChange(e)}
                   className='datepicker-group'
                   placeholderText=''
@@ -375,11 +388,11 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
               defaultValue={null}
               render={({ field }) => (
                 <DatePicker
+                  selected={field.value}
                   minDate={new Date()}
-                  maxDate={setDayBefore(startDate)}
+                  maxDate={startDate}
                   onChange={(e) => field.onChange(e)}
                   className='datepicker-group'
-                  selected={field.value}
                   placeholderText=''
                   dateFormat='MMMM d, yyyy'
                 />
@@ -399,7 +412,7 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
         </p>
 
         <SeriesCheckboxes
-          seriesMonth={seriesMonth}
+          seriesMonth={monthId}
           items={seriesNames}
           handleAdditionalEvents={handleAdditionalEvents}
         />

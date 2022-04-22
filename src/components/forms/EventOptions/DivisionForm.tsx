@@ -3,12 +3,12 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import styles from './ContactDetailForm.module.scss';
+import styles from './DivisionForm.module.scss';
 import fieldStyles from '@/components/forms/fields/FieldsGroup.module.scss';
 
 import SubmitButton from '@/components/buttons/SubmitButton';
 
-import ContactDetailsProps from '@/types/contactDetails';
+import DivisionProps from '@/types/division';
 
 const schema = yup
   .object({
@@ -29,11 +29,11 @@ const formDefaultValues = {
 }
 
 type Props = {
-  handleAddContactItem: (val: ContactDetailsProps) => void,
+  handleAddDivision: (val: DivisionProps) => void,
   removeForm: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 }
 
-export default function ContactDetailForm({ handleAddContactItem, removeForm }: Props) {
+export default function DivisionForm({ handleAddDivision, removeForm }: Props) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [hasErrors, setHasErrors] = useState(false);
@@ -71,57 +71,23 @@ export default function ContactDetailForm({ handleAddContactItem, removeForm }: 
   };
 
   return (
-    <form className={`${styles.contactDetailForm} item`} >
+    <form className={`${styles.divisionForm} item`} >
       <h3>
         {firstName} {lastName}
       </h3>
       <div className={`${fieldStyles.fieldsGroup} inner-box`}>
-        <div className='col'>
-          <input
-            type='text' {...register('firstName')}
-            onChange={(e) => {
-              setFirstName(e.target.value);
-              clearErrors('firstName');
-            }}
-          />
-          {formState.errors.firstName ?
-            <span className='error'>First Name is required</span> :
-            <label>First Name <span className='req'>*</span></label>
-          }
-        </div>
-        <div className='col'>
-          <input type='text' {...register('lastName')}
-            onChange={(e) => {
-              setLastName(e.target.value);
-              clearErrors('lastName');
-            }}
-          />
-          {formState.errors.lastName ?
-            <span className='error'>Last Name is required</span> :
-            <label>Last Name <span className='req'>*</span></label>
-          }
-        </div>
-        <div className='col'>
-          <input type='email' {...register('email')}
-            onChange={() => clearErrors('email')}
-          />
-          {formState.errors.email ?
-            <span className='error'>Email is required</span> :
-            <label>Email <span className='req'>*</span></label>
-          }
-        </div>
-        <div className='col'>
-          <input type='text' {...register('phone')}
-            onChange={() => clearErrors('phone')}
-          />
-          <label>Mobile <span className='req'>*</span></label>
-        </div>
+        <img
+          src='/images/wip-placeholders/division-form-placeholder.png'
+          alt='palceholder'
+          className='img-placeholder'
+        />
       </div>
       <div className="buttons">
         <div className='wrap'>
           <SubmitButton
             variant='grey'
             clickHander={removeForm}
+            className='hidden'
           >
             Remove
           </SubmitButton>

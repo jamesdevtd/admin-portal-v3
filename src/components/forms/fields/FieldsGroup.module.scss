@@ -26,6 +26,9 @@
   .error {
     @apply text-red-500;
   }
+  .center-note {
+    @apply text-center m-auto text-blue-dark font-semibold;
+  }
   @media (max-width: 991px) {
     @apply flex-col;
     .col {
