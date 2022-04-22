@@ -41,7 +41,7 @@ const schema = yup
     facilityNotes: yup.string().nullable(),
     registrationEndDate: yup.date().required(),
     registrationStartDate: yup.date().required(),
-    seriesMonth: yup.number().positive().integer().required(),
+    seriesMonth: yup.number().positive().integer().required().nullable(),
   })
   .required();
 
@@ -127,8 +127,9 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, ...props }: Props, ref) 
   const handleAvaiableSeries = (year: number) => {
     const d = new Date();
     const startMonthNumber = (year === d.getFullYear() && d.getDate() >= 7) ? d.getMonth() + 1 : null;
+    setValue('seriesMonth', null);
+    setSeriesMonth(0);
     if (startMonthNumber) {
-      setSeriesMonth(startMonthNumber);
       setAvailableSeries(seriesNames.slice(startMonthNumber));
     } else {
       setAvailableSeries(seriesNames);
