@@ -10,22 +10,23 @@ import SubmitButton from '@/components/buttons/SubmitButton';
 
 import DivisionProps from '@/types/division';
 
+
 const schema = yup
   .object({
-    firstName: yup.string().required(),
-    lastName: yup.string().required(),
-    email: yup.string().email().required(),
-    phone: yup.string().nullable(),
+    divisionType: yup.string().required(),
+    makeUp: yup.string().required(),
+    competitionLevel: yup.string().email().required(),
+    numberOfPools: yup.number().integer().positive().required(),
     // TODO: phone number validation
     // phone: yup.string().nullable().matches(phoneRegExp, 'Phone number is not valid'),
   })
   .required();
 
 const formDefaultValues = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  phone: null,
+  divisionType: '',
+  makeUp: '',
+  competitionLevel: '',
+  numberOfPools: 0
 }
 
 type Props = {
@@ -34,9 +35,9 @@ type Props = {
 }
 
 export default function DivisionForm({ handleAddDivision, removeForm }: Props) {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [hasErrors, setHasErrors] = useState(false);
+  const [divisionType, setDivisionType] = useState('');
+  const [makeUp, setMakeUp] = useState('');
+  const [competitionLevel, setCompetitionLevel] = useState('');
 
   const {
     register,
@@ -73,14 +74,50 @@ export default function DivisionForm({ handleAddDivision, removeForm }: Props) {
   return (
     <form className={`${styles.divisionForm} item`} >
       <h3>
-        {firstName} {lastName}
+        <span className="number">1</span>
+        New Division
       </h3>
       <div className={`${fieldStyles.fieldsGroup} inner-box`}>
-        <img
-          src='/images/wip-placeholders/division-form-placeholder.png'
-          alt='palceholder'
-          className='img-placeholder'
-        />
+        <div className='col'>
+          <input
+            type='text' {...register('divisionType')}
+            onChange={(e) => {
+              setDivisionType(e.target.value);
+              clearErrors('divisionType');
+            }}
+          />
+          {formState.errors.divisionType ?
+            <span className='error'>Division Type is required</span> :
+            <label>Division Type</label>
+          }
+        </div>
+        <div className='col'>
+          <input
+            type='text' {...register('makeUp')}
+            onChange={(e) => {
+              setMakeUp(e.target.value);
+              clearErrors('makeUp');
+            }}
+          />
+          {formState.errors.makeUp ?
+            <span className='error'>Makeup is required</span> :
+            <label>Makeup</label>
+          }
+        </div>
+        <div className='col'>
+          <input
+            type='text' {...register('competitionLevel')}
+            onChange={(e) => {
+              setCompetitionLevel(e.target.value);
+              clearErrors('competitionLevel');
+            }}
+          />
+          {formState.errors.competitionLevel ?
+            <span className='error'>Competition Level is required</span> :
+            <label>Competition Level</label>
+          }
+        </div>
+
       </div>
       <div className="buttons">
         <div className='wrap'>

@@ -14,4 +14,7 @@
   &.grey {
     @extend .bg-grey-gradient;
   }
+  &:disabled {
+    @apply opacity-40;
+  }
 }

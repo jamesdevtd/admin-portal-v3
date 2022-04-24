@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import styles from './ContactDetails.module.scss';
 
-import ContactDetailForm from './ContactDetailForm';
+import ContactCreator from './ContactCreator';
+import ContactEditor from './ContactEditor';
 
 import ContactDetailsProps from '@/types/contactDetails';
 
@@ -12,43 +13,38 @@ import PlusIcon from '~/icons/blue/plus.svg';
 
 type Props = {
   items: ContactDetailsProps[];
-  handleAddContactItem: (val: ContactDetailsProps) => void
+  handleAddContactItem: (val: ContactDetailsProps) => void;
+  handleRemoveContactItem: (val: ContactDetailsProps) => void
+  handleUpdateContactItem: (val: ContactDetailsProps) => void
 };
 
-const defaultProps = {
-  firstName: 'Jonathan',
-  lastName: 'Rabinowitsky',
-  email: 'jtherabbit2022@gmail.com',
-  mobilePhone: '+0001(914) 428 3195',
-};
-
-export default function ContactDetails({ items, handleAddContactItem }: Props) {
+export default function ContactDetails({
+  items,
+  handleAddContactItem,
+  handleRemoveContactItem,
+  handleUpdateContactItem
+}: Props) {
   const [showBlankForm, setShowBlankForm] = useState(false);
-
-  useEffect(() => {
-    console.log('ContactDetails items: ', items);
-  }, [items]);
-
-  const handleAddItem = () => {
-    //
-    console.log('handleAddItem');
-  }
-
-  const removeForm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    console.log('removeForm:');
-    setShowBlankForm(false);
-  };
 
   return (
     <div className={`${styles.contactDetails}`}>
       {(items.length > 0) &&
         <div className="items">
-          <h4>items here....</h4>
+          {items.map(item =>
+            <div className="item" key={item.id}>
+              <ContactEditor
+                itemData={item}
+                updateItem={handleUpdateContactItem}
+                removeItem={handleRemoveContactItem} />
+            </div>
+          )}
         </div>
       }
       {showBlankForm ?
-        <ContactDetailForm handleAddContactItem={handleAddContactItem} removeForm={removeForm} /> :
+        <ContactCreator
+          itemsLength={items.length}
+          addItem={handleAddContactItem}
+          setShowBlankForm={setShowBlankForm} /> :
         <div className='add-new' onClick={(e) => {
           e.preventDefault();
           setShowBlankForm(true);

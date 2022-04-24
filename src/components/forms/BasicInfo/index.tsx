@@ -11,7 +11,6 @@ import * as yup from 'yup';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '@/components/forms/BasicInfo/BasicInfo.module.scss';
 
-import { getNextDay } from '@/helpers/dateModifiers';
 import seriesNames from '@/mock-data/seriesNames';
 
 import ContactDetails from './ContactDetails';
@@ -68,12 +67,16 @@ type Props = {
 }
 
 export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props }: Props, ref) => {
-  const [yearSelected, setYearSelected] = useState<number>(0);
-  const [startDate, setStartDate] = useState(new Date());
-  const [eventRange, setEventRange] = useState<Date[]>([new Date(), new Date()]);
-  const [monthId, setMonthId] = useState<number>(1);
+  const [monthId, setMonthId] = useState<number>(moment().month() + 1);
+  const [yearSelected, setYearSelected] = useState<number>(moment().year());
+
+  const [startDate, setStartDate] = useState(moment().toDate());
+  const [minStartDate, setMinStartDate] = useState(moment().toDate());
+  const [regStartDate, setRegStartDate] = useState(moment().toDate());
+
   const [hasErrors, setHasErrors] = useState(false);
   const [hideErrorBox, setHideErrorBox] = useState(false);
+
   const [contactItems, setContactItems] = useState<ContactDetailsProps[]>([]);
   const [coordinates, setCoordinates] = useState<LatLngExpression>([40.795817, -73.9247057]);
   const [availableSeries, setAvailableSeries] = useState(seriesNames);
@@ -95,25 +98,28 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
   useEffect(() => {
     if (formState.isDirty) {
       setIsFormEdited(true);
-      console.log('FORM VALUES: ');
-      console.log(getValues());
     }
     Object.keys(formState.errors).length ? setHasErrors(true) : setHasErrors(false);
-    if (Object.keys(formState.errors).length) {
-      console.log('FORM VALUES: ');
-      console.log(getValues());
-      console.log('FORM ERRORS: ');
-      console.log(formState.errors);
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formState.errors, formState.isDirty]);
 
   useEffect(() => {
-    if (contactItems) {
+    if (contactItems.length) {
       setValue('contactDetails', contactItems);
     }
-    setAvaiableSeries(moment().year());
-  }, []);
+  }, [contactItems]);
+
+  const handleSelectSeries = (id: number) => {
+    setMonthId(id);
+    clearEventsDatesFields();
+
+    // LOGIC: If current day is 7th or later, move minimun Event Start date to next month
+    setMinStartDate(moment()
+      .set('year', yearSelected)
+      .set('month', id - 1)
+      .set('date', 1)
+      .toDate());
+  };
 
   const handleAdditionalEvents = (val: SeriesProps[]) => {
     setValue('additionalEvents', val);
@@ -121,16 +127,28 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
 
   const handleAddContactItem = (val: ContactDetailsProps) => {
     setContactItems([...contactItems, val]);
+    setIsFormEdited(true);
   };
 
-  const clearSelectedDates = () => {
-    setValue('seriesMonth', null);
+  const handleRemoveContactItem = (val: ContactDetailsProps) => {
+    const newItems = contactItems.filter(item => item.id !== val.id);
+    setContactItems(newItems);
+  };
+
+  const handleUpdateContactItem = (val: ContactDetailsProps) => {
+    console.log('handleUpdateContactItem: ', val);
+    const newItems = contactItems.map(item => item.id === val.id ? val : item);
+    setContactItems(newItems);
+  };
+
+  const clearEventsDatesFields = () => {
     setValue('eventStartDate', null);
+    setValue('eventEndDate', null);
     setValue('registrationStartDate', null);
-    setMonthId(1);
+    setValue('registrationEndDate', null);
   }
 
-  const setAvaiableSeries = (year: number) => {
+  const handleYearChange = (year: number) => {
     const d = new Date();
     const startMonthNumber = (year === d.getFullYear() && d.getDate() >= 7) ? d.getMonth() + 1 : null;
     if (startMonthNumber) {
@@ -138,12 +156,10 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
     } else {
       setAvailableSeries(seriesNames);
     }
-    clearSelectedDates();
+    setValue('seriesMonth', null);
+    setMonthId(0);
+    clearEventsDatesFields();
   }
-
-  const handleSelectSeries = (id: number) => {
-    setMonthId(id);
-  };
 
   // TODO: transfter googleApiKey to .env
   const googleApiKey = 'AIzaSyA8vejxIx686PpYxiXBqGpovVCZRurJBLQ';
@@ -220,14 +236,14 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
               {...register('eventYear')}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 setYearSelected(parseInt(e.target.value));
-                setAvaiableSeries(parseInt(e.target.value));
+                handleYearChange(parseInt(e.target.value));
                 clearErrors('eventYear');
               }}
             >
               <option value='' hidden></option>
               <option value='2022'>2022</option>
               <option value='2023'>2023</option>
-              <option value='2023'>2024</option>
+              <option value='2024'>2024</option>
             </select>
             {formState.errors.eventYear ?
               <span className='error'>Event Year is required</span> :
@@ -273,13 +289,18 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
               render={({ field }) => (
                 <DatePicker
                   selected={field.value}
-                  minDate={eventRange[0]}
+                  minDate={minStartDate}
+                  maxDate={moment(minStartDate).endOf('year').toDate()}
                   onChange={(e) => {
                     field.onChange(e);
                     clearErrors('eventStartDate');
                   }}
                   onCalendarClose={() => {
-                    if (field.value) setStartDate(field.value);
+                    // NOTE: state setter fx can't detect field.value actual onChange event
+                    // NOTE: hence setter is called under onCalendarClose
+                    if (field.value) {
+                      setStartDate(field.value);
+                    }
                   }}
                   disabledKeyboardNavigation
                   className='datepicker-group'
@@ -327,9 +348,9 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
               defaultValue={null}
               render={({ field }) => (
                 <DatePicker
-                  selected={field.value && getNextDay(startDate)}
+                  selected={field.value}
                   minDate={startDate}
-                  // maxDate={getNextMonth13(startDate)}
+                  maxDate={moment(startDate).add(1, 'month').date(13).toDate()}
                   onChange={(e) => {
                     field.onChange(e);
                     clearErrors('eventEndDate');
@@ -367,9 +388,18 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
               render={({ field }) => (
                 <DatePicker
                   selected={field.value}
-                  minDate={new Date()}
-                  // maxDate={getPrevDay(startDate)}
+                  // LOGIC: Reg start date min should be current date.
+                  minDate={moment().toDate()}
+                  // LOGIC: include date of event as last day of reg. 
+                  maxDate={startDate}
                   onChange={(e) => field.onChange(e)}
+                  onCalendarClose={() => {
+                    // NOTE: state setter fx can't detect field.value actual onChange event
+                    // NOTE: hence setter is called under onCalendarClose
+                    if (field.value) {
+                      setRegStartDate(field.value);
+                    }
+                  }}
                   className='datepicker-group'
                   placeholderText=''
                   dateFormat='MMMM d, yyyy'
@@ -388,8 +418,9 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
               defaultValue={null}
               render={({ field }) => (
                 <DatePicker
-                  selected={field.value}
-                  minDate={new Date()}
+                  selected={field.value && regStartDate}
+                  minDate={regStartDate}
+                  // LOGIC: include date of event as last day of reg. 
                   maxDate={startDate}
                   onChange={(e) => field.onChange(e)}
                   className='datepicker-group'
@@ -487,6 +518,8 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
         </p>
         <ContactDetails
           handleAddContactItem={handleAddContactItem}
+          handleRemoveContactItem={handleRemoveContactItem}
+          handleUpdateContactItem={handleUpdateContactItem}
           items={contactItems}
         />
       </div>

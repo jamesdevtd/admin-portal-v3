@@ -26,7 +26,11 @@ export default function ContactDetails({ items, handleAddContactItem }: Props) {
   const [showBlankForm, setShowBlankForm] = useState(false);
 
   useEffect(() => {
-    console.log('ContactDetails items: ', items);
+    if (items.length) {
+      console.log('event public page: ContactDetails items: ', items);
+    } else {
+      console.log('event public page: no ContactDetails items');
+    }
   }, [items]);
 
   const handleAddItem = () => {
