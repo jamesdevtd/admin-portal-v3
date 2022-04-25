@@ -23,10 +23,12 @@
 }
 
 .divisionEditor {
-  color: pink;
   :global {
     .col:nth-child(2) {
       @apply ml-auto;
+    }
+    h3 {
+      @apply mb-3 flex flex-row gap-1;
     }
     select {
       @apply text-blue-brand font-semibold text-sm py-0 #{!important};
