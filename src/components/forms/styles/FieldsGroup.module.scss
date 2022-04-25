@@ -1,0 +1,82 @@
+.fieldsGroup :global {
+  @apply flex flex-row flex-wrap p-3 pt-2 overflow-hidden;
+  gap: 15px;
+  .col {
+    @apply flex flex-col justify-between;
+    width: calc(50% - 10px);
+    input,
+    select,
+    option {
+      @apply p-0 py-1 text-blue-dark placeholder-blue-dark;
+      @apply border-0 border-b-2 border-gray-400 text-md w-full;
+      border-bottom-width: 1px;
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+    }
+    textarea {
+      @apply mb-2 border-gray-400;
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+    }
+    select {
+      @apply capitalize;
+    }
+  }
+  .error {
+    @apply text-red-500;
+  }
+  .center-note {
+    @apply text-center m-auto text-blue-dark font-semibold;
+  }
+  .inline-number {
+    @apply gap-3 flex flex-row items-center;
+    input {
+      @apply block w-auto rounded-none px-1 py-0 m-0 leading-none;
+      @apply text-blue-brand font-semibold text-base h-auto;
+      @apply border-0 border-b-2 border-gray-400 text-base;
+      max-width: 45px;
+      border-bottom-width: 1px;
+      line-height: 1em;
+    }
+  }
+  @media (max-width: 991px) {
+    @apply flex-col;
+    .col {
+      @apply w-full;
+    }
+  }
+}
+
+.fieldsGroup {
+  &.hide-input :global {
+    input {
+      @apply text-white;
+    }
+  }
+}
+
+.fieldsGroup.inner-box {
+  @apply flex-nowrap py-2 leading-normal;
+  @apply shadow-[0_0_3px_0_rgb(0,0,0,0.1)];
+  border-radius: 5px;
+  border-width: 1px;
+  .col {
+    max-width: 25%;
+    input {
+      @apply text-blue-brand text-base py-1;
+    }
+    &:nth-child(3) {
+      min-width: 31%;
+    }
+  }
+  @media (max-width: 991px) {
+    @apply flex-wrap;
+    .col {
+      @apply flex-auto max-w-none;
+    }
+  }
+}

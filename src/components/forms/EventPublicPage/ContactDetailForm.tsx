@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import styles from './ContactDetailForm.module.scss';
-import fieldStyles from '@/components/forms/fields/FieldsGroup.module.scss';
+import fieldStyles from '@/components/forms/styles/FieldsGroup.module.scss';
 
 import SubmitButton from '@/components/buttons/SubmitButton';
 
@@ -75,7 +75,7 @@ export default function ContactDetailForm({ handleAddContactItem, removeForm }: 
       <h3>
         {firstName} {lastName}
       </h3>
-      <div className={`${fieldStyles.fieldsGroup} inner-box`}>
+      <div className={`${fieldStyles.fieldsGroup} ${fieldStyles['inner-box']}`}>
         <div className='col'>
           <input
             type='text' {...register('firstName')}

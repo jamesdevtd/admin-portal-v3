@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import styles from './ContactCreator.module.scss';
-import fieldStyles from '@/components/forms/fields/FieldsGroup.module.scss';
+import formStyles from '@/components/forms/styles/ContactForm.module.scss';
+import fieldStyles from '@/components/forms/styles/FieldsGroup.module.scss';
 
 import SubmitButton from '@/components/buttons/SubmitButton';
 
@@ -67,11 +67,11 @@ export default function ContactCreator({ itemsLength, addItem, setShowBlankForm 
   };
 
   return (
-    <div className={`${styles.contactCreator} item`} >
+    <div className={`${formStyles.contactForm} item`} >
       <h3>
         {firstName} {lastName}
       </h3>
-      <div className={`${fieldStyles.fieldsGroup} inner-box`}>
+      <div className={`${fieldStyles.fieldsGroup} ${fieldStyles['inner-box']}`}>
         <div className='col'>
           <input
             type='text' {...register('firstName')}

@@ -1,13 +1,13 @@
-interface PoolItemProps {
+export interface PoolItemProps {
   name: string;
   numberOfTeam: number;
 }
 
-export default interface ContactDetails {
-  id: number;
-  divisionType: string;
-  makeUp: string;
-  competitionLevel: string;
-  numberOfPools: number;
-  pools: PoolItemProps[];
+export interface DivisionProps {
+  id: number | undefined;
+  divisionType: string | undefined;
+  makeUp: string | undefined;
+  competitionLevel: string | undefined;
+  numberOfPools: number | undefined;
+  pools: PoolItemProps[] | undefined;
 }

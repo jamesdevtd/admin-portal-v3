@@ -1,0 +1,46 @@
+.contactForm {
+  :global {
+    @apply flex flex-col gap-3 overflow-auto
+  bg-white py-4 px-5;
+    @apply shadow-[0_0_2px_0_rgb(0,0,0,0.1)];
+    border-radius: 12px;
+    border-width: 1px;
+    h3 {
+      @apply block w-full text-md font-semibold text-blue-dark leading-tight flex flex-row cursor-pointer capitalize;
+      svg {
+        @apply ml-auto;
+        @apply block;
+      }
+    }
+    div {
+      @apply flex flex-row;
+    }
+    .buttons {
+      .wrap {
+        @apply gap-5 ml-auto;
+      }
+    }
+  }
+  &.expanded {
+    h3 {
+      @apply capitalize;
+    }
+    h3 + div {
+      @apply flex;
+    }
+  }
+  &.collapsed :global {
+    h3 {
+      @apply uppercase;
+      svg {
+        @apply rotate-90;
+      }
+    }
+    h3 + div {
+      @apply hidden;
+    }
+    .buttons {
+      @apply hidden;
+    }
+  }
+}

@@ -9,7 +9,7 @@ import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import styles from '@/components/forms/BasicInfo/BasicInfo.module.scss';
+import styles from '@/components/forms/styles/FormGroup.module.scss';
 
 import seriesNames from '@/mock-data/seriesNames';
 
@@ -455,11 +455,6 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
           <span>Location</span>
         </div>
         <div className='location-group'>
-          <div className='col map-col'>
-            <LeafletMap
-              coordinates={coordinates}
-              style={{ height: '250px', width: '250px' }} />
-          </div>
           <div className='col'>
             <div className='fields-group'>
               <div className='col'>
@@ -502,6 +497,11 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
                 <label>Notes</label>
               </div>
             </div>
+          </div>
+          <div className='col map-col'>
+            <LeafletMap
+              coordinates={coordinates}
+              style={{ height: '250px', width: '250px' }} />
           </div>
         </div>
       </div>

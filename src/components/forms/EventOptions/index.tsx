@@ -6,14 +6,14 @@ import * as yup from 'yup';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './EventOptions.module.scss';
 
-import DivisionCreator from './DivisionCreator';
+import Divisions from './Divisions';
 
-import DvisionProps from '@/types/division';
+import { DivisionProps } from '@/types/division';
 
 import CloseIcon from '~/icons/close.svg';
+import DvisionsIcon from '~/icons/divisions.svg';
 import ErrorIcon from '~/icons/error.svg';
-import EventIcon from '~/icons/grey/event.svg';
-import WarningIcon from '~/icons/grey/warning.svg';
+import PlayerFeesIcon from '~/icons/player-fees.svg';
 
 const schema = yup
   .object({
@@ -31,7 +31,7 @@ type Props = {
 }
 
 export const EventOptions = forwardRef(({ setIsFormEdited, handleNextStep, ...props }: Props, ref) => {
-  const [divisionItems, setDivisionItems] = useState<DvisionProps[]>([]);
+  const [divisionItems, setDivisionItems] = useState<DivisionProps[]>([]);
   const [hasErrors, setHasErrors] = useState(false);
   const [hideErrorBox, setHideErrorBox] = useState(false);
 
@@ -67,12 +67,16 @@ export const EventOptions = forwardRef(({ setIsFormEdited, handleNextStep, ...pr
 
   useEffect(() => {
     if (divisionItems) {
+      console.log('has division Items');
+
       setValue('divisions', divisionItems);
+    } else {
+      console.log('has NO division Items yet....');
     }
-  }, []);
+  }, [divisionItems]);
 
 
-  const handleAddDivision = (val: DvisionProps) => {
+  const handleAddDivision = (val: DivisionProps) => {
     setDivisionItems([...divisionItems, val]);
   };
 
@@ -80,12 +84,28 @@ export const EventOptions = forwardRef(({ setIsFormEdited, handleNextStep, ...pr
     //TODO: POST request to API
     console.log('POST: sending data...');
     console.log(data);
-    handleNextStep(2);
+    // handleNextStep(2);
   };
 
   const submitForm = () => {
     setHideErrorBox(false);
     handleSubmit(onSubmit)();
+  };
+
+  const handleAddDivisionItem = (val: DivisionProps) => {
+    setDivisionItems([...divisionItems, val]);
+    setIsFormEdited(true);
+  };
+
+  const handleRemoveDivisionItem = (val: DivisionProps) => {
+    const newItems = divisionItems.filter(item => item.id !== val.id);
+    setDivisionItems(newItems);
+  };
+
+  const handleUpdateDivisionItem = (val: DivisionProps) => {
+    console.log('handleUpdateDivisionItem: ', val);
+    const newItems = divisionItems.map(item => item.id === val.id ? val : item);
+    setDivisionItems(newItems);
   };
 
   useImperativeHandle(ref, () => ({ submitForm }));
@@ -110,20 +130,22 @@ export const EventOptions = forwardRef(({ setIsFormEdited, handleNextStep, ...pr
       <h3>Event Options</h3>
 
       <div className={styles.formGroup}>
-        <WarningIcon />
+        <DvisionsIcon />
         <div className='label'>
           <span>Divisions</span>
         </div>
         <p className='instructions'>
           Select Divisions you would like to be available in the Open Series</p>
-        <DivisionCreator
-          handleAddDivision={handleAddDivision}
+        <Divisions
+          handleAddDivisionItem={handleAddDivisionItem}
+          handleRemoveDivisionItem={handleRemoveDivisionItem}
+          handleUpdateDivisionItem={handleUpdateDivisionItem}
           items={divisionItems}
         />
       </div>
 
       <div className={styles.formGroup}>
-        <EventIcon />
+        <PlayerFeesIcon />
         <div className='label'>
           <span>Player Fees</span>
         </div>

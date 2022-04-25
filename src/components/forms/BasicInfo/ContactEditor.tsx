@@ -3,12 +3,14 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import styles from './ContactCreator.module.scss';
-import fieldStyles from '@/components/forms/fields/FieldsGroup.module.scss';
+import formStyles from '@/components/forms/styles/ContactForm.module.scss';
+import fieldStyles from '@/components/forms/styles/FieldsGroup.module.scss';
 
 import SubmitButton from '@/components/buttons/SubmitButton';
 
 import ContactDetailsProps from '@/types/contactDetails';
+
+import ChevronIcon from '~/icons/chevron-down.svg';
 
 const schema = yup
   .object({
@@ -21,19 +23,17 @@ const schema = yup
   })
   .required();
 
-
-
 type Props = {
   itemData: ContactDetailsProps,
   updateItem: (val: ContactDetailsProps) => void,
   removeItem: (val: ContactDetailsProps) => void,
 }
 
-
-
 export default function ContactEditor({ itemData, updateItem, removeItem }: Props) {
   const [firstName, setFirstName] = useState<string | null>(null);
   const [lastName, setLastName] = useState<string | null>(null);
+  const [expand, setExpand] = useState(false);
+  const [isEdited, setIsEdited] = useState(false);
 
   const defaultValues = {
     firstName: itemData.firstName,
@@ -54,30 +54,32 @@ export default function ContactEditor({ itemData, updateItem, removeItem }: Prop
     defaultValues: defaultValues
   });
 
-  // useEffect(() => {
-
-  // }, [formState]);
-
   const handleSaveItem = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     trigger();
     if (formState.isValid) {
       const updatedData = { ...getValues(), id: itemData.id };
       updateItem(updatedData);
+      setIsEdited(false);
     }
   };
 
   return (
-    <div className={`${styles.contactCreator} item`} >
-      <h3>
+    <div className={`${formStyles.contactForm} ${expand ? formStyles['expanded'] : formStyles['collapsed']}`} >
+      <h3 onClick={(e) => {
+        e.preventDefault();
+        setExpand(!expand);
+      }}>
         {firstName ? firstName : getValues('firstName')} {lastName ? lastName : getValues('lastName')}
+        <ChevronIcon />
       </h3>
-      <div className={`${fieldStyles.fieldsGroup} inner-box`}>
+      <div className={`${fieldStyles.fieldsGroup} ${fieldStyles['inner-box']}`}>
         <div className='col'>
           <input
             type='text' {...register('firstName')}
             onChange={(e) => {
               setFirstName(e.target.value);
+              setIsEdited(true);
               clearErrors('firstName');
             }}
           />
@@ -90,6 +92,7 @@ export default function ContactEditor({ itemData, updateItem, removeItem }: Prop
           <input type='text' {...register('lastName')}
             onChange={(e) => {
               setLastName(e.target.value);
+              setIsEdited(true);
               clearErrors('lastName');
             }}
           />
@@ -100,7 +103,10 @@ export default function ContactEditor({ itemData, updateItem, removeItem }: Prop
         </div>
         <div className='col'>
           <input type='email' {...register('email')}
-            onChange={() => clearErrors('email')}
+            onChange={() => {
+              clearErrors('email');
+              setIsEdited(true);
+            }}
           />
           {formState.errors.email ?
             <span className='error'>Valid Email is required</span> :
@@ -109,7 +115,10 @@ export default function ContactEditor({ itemData, updateItem, removeItem }: Prop
         </div>
         <div className='col'>
           <input type='text' {...register('phone')}
-            onChange={() => clearErrors('phone')}
+            onChange={() => {
+              clearErrors('phone');
+              setIsEdited(true);
+            }}
           />
           <label>Mobile</label>
         </div>
@@ -127,12 +136,12 @@ export default function ContactEditor({ itemData, updateItem, removeItem }: Prop
           </SubmitButton>
           <SubmitButton
             clickHander={handleSaveItem}
-            disabled={!formState.isDirty}
+            disabled={!isEdited}
           >
             Save
           </SubmitButton>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
