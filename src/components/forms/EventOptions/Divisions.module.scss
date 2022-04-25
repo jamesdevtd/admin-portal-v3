@@ -31,14 +31,21 @@
       @apply mb-3 flex flex-row gap-1;
     }
     select {
-      @apply text-blue-brand font-semibold text-sm py-0 #{!important};
+      @apply text-blue-brand font-semibold text-sm py-0 leading-tight #{!important};
     }
     .pool-items {
-      .item {
-        .col:nth-child(2) {
-          @apply ml-auto block;
-          max-width: 40px;
-        }
+      input {
+        @apply text-blue-brand font-semibold text-sm py-0 leading-tight #{!important};
+      }
+      label {
+        @apply mt-1;
+      }
+      > div {
+        @apply items-center;
+      }
+      .col:nth-child(2) {
+        @apply ml-auto mr-5;
+        max-width: 60px;
       }
     }
     .team-info {
@@ -50,9 +57,9 @@
         @apply flex flex-row;
         span {
           @apply font-semibold;
-          &:last-child {
-            @apply text-blue-brand ml-1;
-          }
+        }
+        span:last-child {
+          @apply text-blue-brand ml-1;
         }
       }
     }

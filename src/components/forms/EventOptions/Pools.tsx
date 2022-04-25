@@ -1,8 +1,6 @@
 import React from 'react';
 
-import fieldStyles from '@/components/forms/styles/FieldsGroup.module.scss';
-
-import { divisionNumberOfTeams } from '@/mock-data/divisionTypes';
+import PoolEditor from './PoolEditor';
 
 import { PoolItemProps } from '@/types/division';
 
@@ -12,29 +10,24 @@ type Props = {
 }
 
 export default function Pools({ pools, setPoolItems }: Props) {
+
+  const handleAddPool = (val: PoolItemProps) => {
+    console.log('handleAddPool: ', val);
+    // setPoolItems
+  }
+  const handleUpdatePool = (val: PoolItemProps) => {
+    console.log('handleUpdatePool: ', val);
+    // setPoolItems
+  }
+
   return (
     <div className="items pool-items">
       {pools.map((item, i) =>
-        <div className={`${fieldStyles.fieldsGroup} ${fieldStyles['inner-box']}`} key={i}>
-          <div className='col'>
-            <input
-              type='text'
-              onChange={(e) => {
-                const val = e.target.value;
-                console.log('changed pool name ' + i + ' : ' + val);
-              }}
-            />
-            <label>Pool Name</label>
-          </div>
-          <div className='col'>
-            <select >
-              {divisionNumberOfTeams.map((item, i) => {
-                return <option key={i} value={item}>{item}</option>
-              })}
-            </select>
-            <label># of Teams</label>
-          </div>
-        </div>
+        <PoolEditor
+          key={i}
+          itemIndex={Number(i)}
+          poolItem={item}
+          handleUpdatePool={handleUpdatePool} />
       )}
     </div>
   );

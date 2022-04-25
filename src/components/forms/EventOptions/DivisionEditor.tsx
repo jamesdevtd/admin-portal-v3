@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
@@ -51,7 +51,7 @@ export default function DivisionEditor({
   const [divisionType, setDivisionType] = useState<string>('adult');
   const [makeUp, setMakeUp] = useState<string | null>(null);
   const [numberOfPools, setNumberOfPools] = useState<number>(1);
-  const [poolItems, setPoolItems] = useState<PoolItemProps[]>([{ name: 'Pool 1', numberOfTeam: 8 }]);
+  const [poolItems, setPoolItems] = useState<PoolItemProps[]>([{ name: 'Pool 1', numberOfTeams: 8 }]);
   const [teamCount, setTeamCount] = useState(8)
 
   const [expand, setExpand] = useState(true);
@@ -61,7 +61,7 @@ export default function DivisionEditor({
     divisionType: itemData?.divisionType,
     makeUp: itemData?.makeUp,
     competitionLevel: itemData?.competitionLevel,
-    numberOfPools: itemData?.numberOfPools,
+    numberOfPools: itemData?.numberOfPools ?? 1,
     pools: itemData?.pools
   }
 
@@ -78,30 +78,48 @@ export default function DivisionEditor({
     defaultValues: defaultValues
   });
 
-  const handleSaveItem = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleSaveDivision = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     trigger();
     if (formState.isValid && updateItem && itemData) {
       const updatedData = { ...getValues(), id: itemData?.id };
-      console.log('handleSaveItem:, ', updatedData);
+      console.log('handleSaveDivision:, ', updatedData);
       // updateItem(updatedData);
       // setIsEdited(false);
     }
   };
 
-  const handleAddItem = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleAddDivision = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     trigger();
-    console.log('handleAddItem trigger:, ', getValues());
+    console.log('handleAddDivision trigger:, ', getValues());
   };
 
-  const handleAddPoolItem = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const addPool = () => {
+    const newItem = {
+      name: 'Pool ' + (numberOfPools + 1),
+      numberOfTeams: 8
+    }
+    console.log('addPool: ', newItem);
+    setPoolItems((oldArray) => [...oldArray, newItem]);
+  }
+
+  const removePool = () => {
+    const newItems = [...poolItems];
+    newItems.slice(0, -1);
+    console.log('origPools: ', poolItems);
+    console.log('removedPool: ', newItems);
+    setPoolItems(newItems);
+  }
+
+  const handleAddPool = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    console.log('handleAddPoolItem trigger:, ',);
+    setValue('numberOfPools', getValues('numberOfPools') + 1);
+    addPool();
   };
 
   useEffect(() => {
-    // add item after validation from handleAddItem
+    // add item after validation from handleAddDivision
     if (formState.isValid && addItem && setShowBlankForm) {
       const data = { ...getValues(), id: ++itemsLength };
       addItem(data);
@@ -122,12 +140,21 @@ export default function DivisionEditor({
     }
   }, [divisionType]);
 
-  useEffect(() => {
-    if (numberOfPools) {
-      setValue('numberOfPools', 1);
+  const prevCount = useRef<number>();
+  const handlePoolCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('handlePoolCountChange');
+    console.log('prev:', prevCount.current = numberOfPools);
+    const oldVal = prevCount.current;
+    const newVal = Number(e.target.value);
+    console.log('current:',);
+    if (newVal && oldVal < newVal) {
+      addPool();
     }
-  }, [numberOfPools]);
-
+    if (newVal && oldVal > newVal) {
+      removePool();
+    }
+    setNumberOfPools(newVal);
+  }
 
   return (
     <div className={`${formStyles.contactForm} ${divisionStyles.divisionEditor} ${expand ? formStyles['expanded'] : formStyles['collapsed']}`} >
@@ -218,22 +245,21 @@ export default function DivisionEditor({
           <label>Number of Pools</label>
           <input
             autoComplete='on'
+            step='1'
+            min={1}
+            onKeyDown={(e) => e.preventDefault()}
             type='number' {...register('numberOfPools', {
               valueAsNumber: true,
             })}
-            onChange={(e) => {
-              const val = e.target.value;
-              clearErrors('numberOfPools');
-              setNumberOfPools(Number(val));
-              setIsEdited(true);
-            }} />
+            onChange={handlePoolCountChange}
+          />
         </div>
       </div>
 
       <Pools pools={poolItems} setPoolItems={setPoolItems} />
 
       <div className="team-info">
-        <button>Add Pool +</button>
+        <button onClick={handleAddPool}>Add Pool +</button>
         <div className="capacity">
           <span>Team Capacity | </span>
           <span>{teamCount} Teams</span>
@@ -242,7 +268,7 @@ export default function DivisionEditor({
       <div className="buttons">
         <div className='wrap'>
           <SubmitButton
-            clickHander={itemData ? handleAddItem : handleAddItem}
+            clickHander={itemData ? handleAddDivision : handleAddDivision}
             disabled={!isEdited}
           >
             Save

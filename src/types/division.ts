@@ -1,6 +1,6 @@
 export interface PoolItemProps {
   name: string;
-  numberOfTeam: number;
+  numberOfTeams: number;
 }
 
 export interface DivisionProps {
