@@ -62,9 +62,9 @@ $sidebarWidth: 150px;
             .wrap {
               .icon-box {
                 @apply border-0 bg-transparent drop-shadow-none;
-                &:before {
-                  content: none;
-                }
+                // &:before {
+                //   content: none;
+                // }
               }
               span {
                 @apply text-white;
@@ -74,16 +74,13 @@ $sidebarWidth: 150px;
           &.checked {
             .wrap {
               .icon-box {
-                @apply bg-transparent flex items-center #{!important};
+                @apply bg-blue-dark flex items-center justify-center #{!important};
                 svg {
-                  width: 95%;
+                  width: 57%;
                 }
-                svg path {
-                  @apply stroke-blue-brand fill-blue-brand;
-                }
-                &:before {
-                  content: none;
-                }
+                // &:before {
+                //   content: none;
+                // }
               }
             }
           }

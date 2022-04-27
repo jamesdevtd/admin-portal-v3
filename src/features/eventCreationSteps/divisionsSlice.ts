@@ -10,17 +10,7 @@ export type DivisionsState = {
 };
 
 const initialState: DivisionsState = {
-  value: [
-    {
-      id: 1,
-      divisionType: '',
-      makeUp: '',
-      competitionLevel: '',
-      numberOfPools: 1,
-      pools: [],
-      isEdited: false,
-    },
-  ],
+  value: [],
 };
 
 export const divisionsSlice = createSlice({

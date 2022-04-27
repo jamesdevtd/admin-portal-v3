@@ -5,6 +5,7 @@ import styles from './Divisions.module.scss';
 import { useAppSelector } from '@/app/hooks';
 import { getDivisions } from '@/features/eventCreationSteps/divisionsSlice';
 
+import DivisionCreator from './DivisionCreator';
 import { DivisionEditor } from './DivisionEditor';
 
 import PlusIcon from '~/icons/blue/plus.svg';
@@ -29,8 +30,8 @@ export default function Divisions() {
         </div>
       }
       {showBlankForm ?
-        <DivisionEditor
-
+        <DivisionCreator
+          divisionsLength={divisions.length}
         />
         :
         <div className='add-new' onClick={(e) => {

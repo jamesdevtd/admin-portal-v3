@@ -10,12 +10,13 @@ import fieldStyles from '@/components/forms/styles/FieldsGroup.module.scss';
 import SubmitButton from '@/components/buttons/SubmitButton';
 
 import { useAppDispatch } from '@/app/hooks';
-import { updateDivision } from '@/features/eventCreationSteps/divisionsSlice';
+import { useAppSelector } from '@/app/hooks';
+import { getPools } from '@/features/eventCreationSteps/poolsSlice';
 import { adultLevels, adultMakeups, youthLevels, youthMakeups } from '@/static/divisionTypes';
 
 import Pools from './Pools';
 
-import { DivisionProps, PoolItemProps } from '@/types/division';
+import { PoolItemProps } from '@/types/division';
 
 import ChevronIcon from '~/icons/chevron-down.svg';
 
@@ -30,18 +31,12 @@ const schema = yup
   .required();
 
 
-
-type Props = {
-  itemData?: DivisionProps
-}
-
-export const DivisionEditor: React.FC<Props> = ({ itemData }) => {
+export const DivisionEditor = (divisionsLength: number) => {
 
   const dispatch = useAppDispatch();
+  const pools = useAppSelector(getPools);
 
   const [divisionType, setDivisionType] = useState<string>('adult');
-  const [makeUp, setMakeUp] = useState<string | null>(null);
-  const [competitionLevel, setCompetitionLevel] = useState<string | null>(null);
 
   const [numberOfPools, setNumberOfPools] = useState<number>(1);
   const [poolItems, setPoolItems] = useState<PoolItemProps[]>([{ id: 1, name: 'Pool 1', numberOfTeams: 8 }]);
@@ -51,11 +46,11 @@ export const DivisionEditor: React.FC<Props> = ({ itemData }) => {
   const [isEdited, setIsEdited] = useState(false);
 
   const defaultValues = {
-    divisionType: itemData?.divisionType ?? '',
-    makeUp: itemData?.makeUp ?? '',
-    competitionLevel: itemData?.competitionLevel ?? '',
-    numberOfPools: itemData?.numberOfPools ?? 8,
-    pools: itemData?.pools ?? []
+    divisionType: '',
+    makeUp: '',
+    competitionLevel: '',
+    numberOfPools: 8,
+    pools: []
   }
 
   const {
@@ -75,12 +70,11 @@ export const DivisionEditor: React.FC<Props> = ({ itemData }) => {
     e.preventDefault();
     trigger();
     if (formState.isValid) {
-      const updatedData = { ...getValues(), id: itemData?.id, isEdited: isEdited };
-      console.log('handleUpdateDIvision:, ', updatedData);
-      // TODO: remove any, create new DevisionCreator component
-      dispatch(updateDivision(updatedData as any));
-      // updateItem(updatedData);
-      // setIsEdited(false);
+      const newDivision = { ...getValues(), id: divisionsLength + 1, isEdited: false };
+      console.log('handleUpdateDIvision:, ', newDivision);
+      //dispatch(addDivision(newDivision));
+    } else {
+      console.log('form is NOT VALID');
     }
   };
 
@@ -90,7 +84,6 @@ export const DivisionEditor: React.FC<Props> = ({ itemData }) => {
       numberOfTeams: 8
     }
     console.log('addPool: ', newItem);
-    setPoolItems((oldArray) => [...oldArray, newItem]);
   }
 
   const removePool = () => {
@@ -98,13 +91,11 @@ export const DivisionEditor: React.FC<Props> = ({ itemData }) => {
     newItems.slice(0, -1);
     console.log('origPools: ', poolItems);
     console.log('removedPool: ', newItems);
-    setPoolItems(newItems);
   }
 
   const handleAddPool = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     setValue('numberOfPools', getValues('numberOfPools') + 1);
-    addPool();
   };
 
   useEffect(() => {
@@ -139,18 +130,7 @@ export const DivisionEditor: React.FC<Props> = ({ itemData }) => {
         e.preventDefault();
         setExpand(!expand);
       }}>
-        {itemData?.id != undefined &&
-          <span>{itemData?.id}.</span>
-        }
-        <span>
-          {divisionType ?? getValues('divisionType')}
-        </span>
-        <span>
-          {makeUp ?? getValues('makeUp')}
-        </span>
-        <span>
-          {competitionLevel ?? getValues('competitionLevel')}
-        </span>
+        New Division
         <ChevronIcon />
       </h3>
       <div className={`${fieldStyles.fieldsGroup} ${fieldStyles['inner-box']}`}>

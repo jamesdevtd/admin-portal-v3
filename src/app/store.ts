@@ -3,6 +3,7 @@ import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
 import divisionsReducer from '../features/eventCreationSteps/divisionsSlice';
 import eventCreationStepReducer from '../features/eventCreationSteps/eventCreationStepsSlice';
+import poolsReducer from '../features/eventCreationSteps/poolsSlice';
 import onboardingStepReducer from '../features/onboardingSteps/onboardingStepsSlice';
 
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
     onboardingStep: onboardingStepReducer,
     eventCreationStep: eventCreationStepReducer,
     divisions: divisionsReducer,
+    pools: poolsReducer,
   },
 });
 

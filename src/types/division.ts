@@ -1,4 +1,5 @@
 export interface PoolItemProps {
+  id: number;
   name: string;
   numberOfTeams: number;
 }
