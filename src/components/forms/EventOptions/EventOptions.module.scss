@@ -2,7 +2,7 @@
 
 .formGroup :global {
   @apply relative mb-2 flex flex-col gap-2 pl-8;
-  max-width: 750px;
+  max-width: 800px;
   svg {
     @apply absolute left-0 h-5 w-5 opacity-60;
     top: 0px;
