@@ -90,7 +90,7 @@ export const DivisionEditor: React.FC<Props> = ({ itemData }) => {
       numberOfTeams: 8
     }
     console.log('addPool: ', newItem);
-    setPoolItems((oldArray) => [...oldArray, newItem]);
+    // setPoolItems((oldArray) => [...oldArray, newItem]);
   }
 
   const removePool = () => {
@@ -98,13 +98,13 @@ export const DivisionEditor: React.FC<Props> = ({ itemData }) => {
     newItems.slice(0, -1);
     console.log('origPools: ', poolItems);
     console.log('removedPool: ', newItems);
-    setPoolItems(newItems);
+    // setPoolItems(newItems);
   }
 
   const handleAddPool = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     setValue('numberOfPools', getValues('numberOfPools') + 1);
-    addPool();
+    // addPool();
   };
 
   useEffect(() => {
