@@ -50,3 +50,5 @@ export const seriesNames = [
 ];
 
 export default seriesNames;
+
+// TODO: fetch this data under /static using getStaticProps

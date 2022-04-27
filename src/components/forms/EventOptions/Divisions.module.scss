@@ -22,45 +22,50 @@
   }
 }
 
-.divisionEditor {
-  :global {
-    .col:nth-child(2) {
-      @apply ml-auto;
+.divisionEditor :global {
+  .col:nth-child(2) {
+    @apply ml-auto;
+  }
+  h3 {
+    @apply mb-3 flex flex-row gap-1 relative;
+    svg {
+      @apply right-0;
     }
-    h3 {
-      @apply mb-3 flex flex-row gap-1;
+  }
+  select {
+    @apply text-blue-brand font-semibold text-sm py-0 leading-tight #{!important};
+  }
+  .pool-items {
+    @apply flex flex-col gap-3;
+    > div {
+      @apply w-full;
     }
-    select {
+    input {
       @apply text-blue-brand font-semibold text-sm py-0 leading-tight #{!important};
     }
-    .pool-items {
-      input {
-        @apply text-blue-brand font-semibold text-sm py-0 leading-tight #{!important};
-      }
-      label {
-        @apply mt-1;
-      }
-      > div {
-        @apply items-center;
-      }
-      .col:nth-child(2) {
-        @apply ml-auto mr-5;
-        max-width: 60px;
-      }
+    label {
+      @apply mt-1;
     }
-    .team-info {
-      @apply flex flex-row gap-5 justify-between px-3;
-      button {
-        @apply text-blue-brand font-semibold;
+    > div {
+      @apply items-center;
+    }
+    .col:nth-child(2) {
+      @apply ml-auto mr-5;
+      max-width: 60px;
+    }
+  }
+  .team-info {
+    @apply flex flex-row gap-5 justify-between px-3;
+    button {
+      @apply text-blue-brand font-semibold;
+    }
+    .capacity {
+      @apply flex flex-row;
+      span {
+        @apply font-semibold;
       }
-      .capacity {
-        @apply flex flex-row;
-        span {
-          @apply font-semibold;
-        }
-        span:last-child {
-          @apply text-blue-brand ml-1;
-        }
+      span:last-child {
+        @apply text-blue-brand ml-1;
       }
     }
   }

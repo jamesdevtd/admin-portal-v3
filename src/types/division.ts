@@ -4,10 +4,17 @@ export interface PoolItemProps {
 }
 
 export interface DivisionProps {
-  id: number | undefined;
-  divisionType: string | undefined;
-  makeUp: string | undefined;
-  competitionLevel: string | undefined;
-  numberOfPools: number | undefined;
-  pools: PoolItemProps[] | undefined;
+  id: number;
+  divisionType: string;
+  makeUp: string;
+  competitionLevel: string;
+  numberOfPools: number;
+  pools: PoolItemProps[];
+  isEdited: boolean;
 }
+
+export type DivisionContextType = {
+  divisions: DivisionProps[];
+  addDivision: (item: DivisionProps) => void;
+  updateDivision: (item: DivisionProps) => void;
+};

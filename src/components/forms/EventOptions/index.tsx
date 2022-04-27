@@ -136,12 +136,7 @@ export const EventOptions = forwardRef(({ setIsFormEdited, handleNextStep, ...pr
         </div>
         <p className='instructions'>
           Select Divisions you would like to be available in the Open Series</p>
-        <Divisions
-          handleAddDivisionItem={handleAddDivisionItem}
-          handleRemoveDivisionItem={handleRemoveDivisionItem}
-          handleUpdateDivisionItem={handleUpdateDivisionItem}
-          items={divisionItems}
-        />
+        <Divisions />
       </div>
 
       <div className={styles.formGroup}>

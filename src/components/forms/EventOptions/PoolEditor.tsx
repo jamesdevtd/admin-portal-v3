@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import fieldStyles from '@/components/forms/styles/FieldsGroup.module.scss';
 
-import { divisionNumberOfTeams } from '@/mock-data/divisionTypes';
+import { divisionNumberOfTeams } from '@/static/divisionTypes';
 
 import { PoolItemProps } from '@/types/division';
 

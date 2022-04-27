@@ -6,7 +6,7 @@ import { PoolItemProps } from '@/types/division';
 
 type Props = {
   pools: PoolItemProps[],
-  setPoolItems: React.Dispatch<React.SetStateAction<PoolItemProps[]>>
+  setPoolItems: React.Dispatch<React.SetStateAction<PoolItemProps[]>>,
 }
 
 export default function Pools({ pools, setPoolItems }: Props) {
@@ -27,7 +27,9 @@ export default function Pools({ pools, setPoolItems }: Props) {
           key={i}
           itemIndex={Number(i)}
           poolItem={item}
-          handleUpdatePool={handleUpdatePool} />
+          handleUpdatePool={handleUpdatePool}
+        // setIsEdited={setIsEdited}
+        />
       )}
     </div>
   );

@@ -11,7 +11,7 @@ import * as yup from 'yup';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '@/components/forms/styles/FormGroup.module.scss';
 
-import seriesNames from '@/mock-data/seriesNames';
+import seriesNames from '@/static/seriesNames';
 
 import ContactDetails from './ContactDetails';
 import SeriesCheckboxes from './SeriesCheckboxes';
@@ -36,7 +36,7 @@ const schema = yup
     eventStartDate: yup.date().required(),
     eventStartTime: yup.date().required(),
     eventYear: yup.number().positive().integer().required().nullable(),
-    facilityAddress: yup.array().required(),
+    facilityAddress: yup.array().required().nullable(),
     facilityName: yup.string().required(),
     facilityNotes: yup.string().nullable(),
     registrationEndDate: yup.date().required(),
@@ -53,7 +53,7 @@ const formDefaultValues = {
   eventStartDate: null,
   eventStartTime: null,
   eventYear: null,
-  facilityAddress: [{}],
+  facilityAddress: null,
   facilityName: null,
   facilityNotes: '',
   registrationEndDate: null,
@@ -67,12 +67,14 @@ type Props = {
 }
 
 export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props }: Props, ref) => {
+  const tomorrow = moment().add(1, 'day').toDate();
+
   const [monthId, setMonthId] = useState<number>(moment().month() + 1);
   const [yearSelected, setYearSelected] = useState<number>(moment().year());
 
-  const [startDate, setStartDate] = useState(moment().toDate());
-  const [minStartDate, setMinStartDate] = useState(moment().toDate());
+  const [minStartDate, setMinStartDate] = useState(tomorrow);
   const [regStartDate, setRegStartDate] = useState(moment().toDate());
+  const [startDate, setStartDate] = useState(tomorrow);
 
   const [hasErrors, setHasErrors] = useState(false);
   const [hideErrorBox, setHideErrorBox] = useState(false);
@@ -109,17 +111,65 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
     }
   }, [contactItems]);
 
+  const handleYearChange = (year: number) => {
+
+    setValue('seriesMonth', null);
+    setMonthId(0);
+    clearEventsDatesFields();
+
+    const currentDate = moment().date();
+    const currentMonth = moment().month();
+
+    // LOGIC: If selected year is current & today is 7th or later 
+    // then you can't select current month
+    if (moment().year() === year && currentDate >= 7) {
+      setAvailableSeries(seriesNames.slice(currentMonth + 1));
+      return;
+    }
+
+    // LOGIC: If selected year is current then you can only select starting from current month 
+    if (moment().year() === year && currentDate < 7) {
+      setAvailableSeries(seriesNames.slice(currentMonth));
+      return;
+    }
+
+    setAvailableSeries(seriesNames);
+
+  }
+
   const handleSelectSeries = (id: number) => {
     setMonthId(id);
     clearEventsDatesFields();
 
-    // LOGIC: If current day is 7th or later, move minimun Event Start date to next month
-    setMinStartDate(moment()
-      .set('year', yearSelected)
-      .set('month', id - 1)
-      .set('date', 1)
-      .toDate());
+    // LOGIC: If selected year & month is current AND today's date is 7 or greater 
+    // THEN minimun Event Start date is next month's day 1
+    const month = id - 1;
+    const currentDate = 3;
+    if (moment().year() === yearSelected && moment().month() === month && currentDate >= 7) {
+      setMinStartDate(moment().set('year', yearSelected).set('month', month + 1).set('date', 1).toDate());
+      return;
+    }
+
+    // LOGIC: If selected year & month is current, THEN min. event start date is a day after tomorrow.
+    if (moment().year() === yearSelected && moment().month() === month) {
+      setMinStartDate(moment().add(1, 'day').toDate());
+      return;
+    }
+
+    // LOGIC: If year selected is NOT current year, THEN min. event start date is day 1 of month selected.
+    setMinStartDate(moment().set('year', yearSelected).set('month', month).set('date', 1).toDate());
+
   };
+
+  const clearEventsDatesFields = () => {
+    setValue('eventStartDate', null);
+    setValue('eventEndDate', null);
+    setValue('registrationStartDate', null);
+    setValue('registrationEndDate', null);
+    setMinStartDate(tomorrow);
+    setRegStartDate(moment().toDate());
+    setStartDate(tomorrow);
+  }
 
   const handleAdditionalEvents = (val: SeriesProps[]) => {
     setValue('additionalEvents', val);
@@ -141,32 +191,14 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
     setContactItems(newItems);
   };
 
-  const clearEventsDatesFields = () => {
-    setValue('eventStartDate', null);
-    setValue('eventEndDate', null);
-    setValue('registrationStartDate', null);
-    setValue('registrationEndDate', null);
-  }
 
-  const handleYearChange = (year: number) => {
-    const d = new Date();
-    const startMonthNumber = (year === d.getFullYear() && d.getDate() >= 7) ? d.getMonth() + 1 : null;
-    if (startMonthNumber) {
-      setAvailableSeries(seriesNames.slice(startMonthNumber));
-    } else {
-      setAvailableSeries(seriesNames);
-    }
-    setValue('seriesMonth', null);
-    setMonthId(0);
-    clearEventsDatesFields();
-  }
 
   // TODO: transfter googleApiKey to .env
   const googleApiKey = 'AIzaSyA8vejxIx686PpYxiXBqGpovVCZRurJBLQ';
 
   const handleLocationInput = async (address: string) => {
     const results = await geocodeByAddress(address);
-    setValue('facilityAddress', results);
+    setValue('facilityAddress', results as any);
     const latLng = await getLatLng(results[0]);
     setCoordinates([latLng.lat, latLng.lng]);
   };
@@ -390,12 +422,12 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
                   selected={field.value}
                   // LOGIC: Reg start date min should be current date.
                   minDate={moment().toDate()}
-                  // LOGIC: include date of event as last day of reg. 
-                  maxDate={startDate}
+                  // LOGIC: Reg End Date must take place one day before Event Start Date
+                  maxDate={moment(startDate).subtract(1, 'day').toDate()}
                   onChange={(e) => field.onChange(e)}
                   onCalendarClose={() => {
                     // NOTE: state setter fx can't detect field.value actual onChange event
-                    // NOTE: hence setter is called under onCalendarClose
+                    // NOTE: hence state setter is called under onCalendarClose
                     if (field.value) {
                       setRegStartDate(field.value);
                     }
@@ -418,10 +450,10 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
               defaultValue={null}
               render={({ field }) => (
                 <DatePicker
-                  selected={field.value && regStartDate}
+                  selected={field.value}
                   minDate={regStartDate}
-                  // LOGIC: include date of event as last day of reg. 
-                  maxDate={startDate}
+                  // LOGIC: Reg End Date must take place one day before Event Start Date
+                  maxDate={moment(startDate).subtract(1, 'day').toDate()}
                   onChange={(e) => field.onChange(e)}
                   className='datepicker-group'
                   placeholderText=''
@@ -500,6 +532,7 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
           </div>
           <div className='col map-col'>
             <LeafletMap
+              // TODO: Optimize this form to prevent reloading of Leaflet Map on other formState changes 
               coordinates={coordinates}
               style={{ height: '250px', width: '250px' }} />
           </div>

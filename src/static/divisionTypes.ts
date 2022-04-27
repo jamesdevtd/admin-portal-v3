@@ -13,3 +13,5 @@ export const youthLevels = [
 ];
 
 export const divisionNumberOfTeams = [4, 6, 8];
+
+// TODO: fetch this data under /static using getStaticProps

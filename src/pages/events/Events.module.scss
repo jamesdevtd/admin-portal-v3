@@ -40,7 +40,7 @@ $sidebarWidth: 150px;
               width: 18px;
               border: 1px solid white;
               background-image: none !important;
-              &:after {
+              &:before {
                 @apply absolute block;
                 content: "";
                 bottom: 100%;
@@ -62,15 +62,34 @@ $sidebarWidth: 150px;
             .wrap {
               .icon-box {
                 @apply border-0 bg-transparent drop-shadow-none;
+                &:before {
+                  content: none;
+                }
               }
               span {
                 @apply text-white;
               }
             }
           }
+          &.checked {
+            .wrap {
+              .icon-box {
+                @apply bg-transparent flex items-center #{!important};
+                svg {
+                  width: 95%;
+                }
+                svg path {
+                  @apply stroke-blue-brand fill-blue-brand;
+                }
+                &:before {
+                  content: none;
+                }
+              }
+            }
+          }
           &:first-child {
             .wrap {
-              .icon-box:after {
+              .icon-box:before {
                 content: none;
               }
             }
@@ -80,7 +99,7 @@ $sidebarWidth: 150px;
               @apply pointer-events-none cursor-default;
               .icon-box {
                 @apply bg-gray-300;
-                &:after {
+                &:before {
                   content: none;
                 }
               }

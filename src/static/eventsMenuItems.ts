@@ -49,3 +49,5 @@ const eventsMenuItems = [
 ];
 
 export default eventsMenuItems;
+
+// TODO: fetch this data under /static using getStaticProps

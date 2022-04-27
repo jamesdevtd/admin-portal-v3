@@ -6,7 +6,7 @@ import styles from '@/components/layout/Dashboard.module.scss';
 
 import Header from '@/components/Header';
 
-import mockMenuItems from '@/mock-data/menuItems';
+import mockMenuItems from '@/static/menuItems';
 
 import BottomWhiteCurve from '~/svg/bottom-white-curve.svg';
 import TagxLogoWhite from '~/svg/tagx-logo-white.svg';

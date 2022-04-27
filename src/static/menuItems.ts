@@ -72,3 +72,5 @@ const mockMenuItems = [
 ];
 
 export default mockMenuItems;
+
+// TODO: fetch this data under /static using getStaticProps
