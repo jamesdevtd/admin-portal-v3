@@ -12,6 +12,7 @@ export interface DivisionProps {
   numberOfPools: number;
   pools: PoolItemProps[];
   isEdited: boolean;
+  isValidated: boolean;
 }
 
 export type DivisionContextType = {

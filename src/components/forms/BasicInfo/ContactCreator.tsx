@@ -8,13 +8,15 @@ import fieldStyles from '@/components/forms/styles/FieldsGroup.module.scss';
 
 import SubmitButton from '@/components/buttons/SubmitButton';
 
+import { emailRegExp } from '@/utils/regex';
+
 import ContactDetailsProps from '@/types/contactDetails';
 
 const schema = yup
   .object({
     firstName: yup.string().required(),
     lastName: yup.string().required(),
-    email: yup.string().email().required(),
+    email: yup.string().email().required().matches(emailRegExp, 'Email is not valid'),
     phone: yup.string().nullable(),
     // TODO: phone number validation
     // phone: yup.string().nullable().matches(phoneRegExp, 'Phone number is not valid'),

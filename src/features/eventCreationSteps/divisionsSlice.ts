@@ -30,6 +30,7 @@ export const divisionsSlice = createSlice({
           i.numberOfPools = item.numberOfPools;
           i.pools = item.pools;
           i.isEdited = item.isEdited;
+          i.isValidated = item.isValidated;
         }
       });
     },

@@ -1,36 +1,30 @@
 import React from 'react';
 
+import { useAppSelector } from '@/app/hooks';
+import { getDivisions } from '@/features/eventCreationSteps/divisionsSlice';
+
 import PoolEditor from './PoolEditor';
 
-import { PoolItemProps } from '@/types/division';
 
 type Props = {
-  pools: PoolItemProps[],
-  setPoolItems: React.Dispatch<React.SetStateAction<PoolItemProps[]>>,
+  divisionId: number
 }
 
-export default function Pools({ pools, setPoolItems }: Props) {
+export default function Pools({ divisionId }: Props) {
 
-  const handleAddPool = (val: PoolItemProps) => {
-    console.log('handleAddPool: ', val);
-    // setPoolItems
-  }
-  const handleUpdatePool = (val: PoolItemProps) => {
-    console.log('handleUpdatePool: ', val);
-    // setPoolItems
-  }
+  const divisions = useAppSelector(getDivisions);
+  const item = divisions.find(i => i.id === divisionId);
 
   return (
-    <div className="items pool-items">
-      {pools.map((item, i) =>
-        <PoolEditor
-          key={i}
-          itemIndex={Number(i)}
-          poolItem={item}
-          handleUpdatePool={handleUpdatePool}
-        // setIsEdited={setIsEdited}
-        />
-      )}
+    <div className="items pool-items togglelable">
+      {item?.pools &&
+        item.pools.map((item) =>
+          <PoolEditor
+            key={item.id}
+            itemData={item}
+            divisionId={divisionId}
+          />
+        )}
     </div>
   );
 }

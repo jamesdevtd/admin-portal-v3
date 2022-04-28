@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export function usePrevious(value: number) {
   const currentRef = useRef<number>(value);
@@ -19,7 +19,7 @@ export function useArray(defaultValue: unknown[]) {
     setArray((a) => [...a, element]);
   }
 
-  function filter(callback: any) {
+  function filter(callback: () => void) {
     setArray((a) => a.filter(callback));
   }
 
@@ -40,4 +40,25 @@ export function useArray(defaultValue: unknown[]) {
   }
 
   return { array, set: setArray, push, filter, update, remove, clear };
+}
+
+export function useDebounce<T>(value: T, delay: number): T {
+  // State and setters for debounced value
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+  useEffect(
+    () => {
+      // Update debounced value after delay
+      const handler = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
+      // Cancel the timeout if value changes (also on delay change or unmount)
+      // This is how we prevent debounced value from updating if value is changed ...
+      // .. within the delay period. Timeout gets cleared and restarted.
+      return () => {
+        clearTimeout(handler);
+      };
+    },
+    [value, delay] // Only re-call effect if value or delay changes
+  );
+  return debouncedValue;
 }

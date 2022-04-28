@@ -78,11 +78,12 @@ export const EventOptions = forwardRef(({ setIsFormEdited, handleNextStep, ...pr
 
   const handleAddDivision = (val: DivisionProps) => {
     setDivisionItems([...divisionItems, val]);
+    setIsFormEdited(true);
   };
 
   const onSubmit = (data: unknown) => {
     //TODO: POST request to API
-    console.log('POST: sending data...');
+    console.log('Sending EventOptions FORM data...');
     console.log(data);
     // handleNextStep(2);
   };
