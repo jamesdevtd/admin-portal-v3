@@ -7,6 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styles from './EventOptions.module.scss';
 
 import Divisions from './Divisions';
+import PlayerFees from './PlayerFees';
 
 import { DivisionProps } from '@/types/division';
 
@@ -148,6 +149,7 @@ export const EventOptions = forwardRef(({ setIsFormEdited, handleNextStep, ...pr
         <p className='instructions'>Set the Entry Fee for each available Division</p>
         <p className='instructions italic'>* PLEASE NOTE: If choosing to offer Free Entry for any Division, you will still be responsible for providing payment as per standard TAGX fees prior to publishing your Event Draw.</p>
         <div className='center-note'>Please create a Division - once created, Division Entry Fee options will be displayed here</div>
+        <PlayerFees />
       </div>
 
 

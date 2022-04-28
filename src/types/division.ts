@@ -20,3 +20,9 @@ export type DivisionContextType = {
   addDivision: (item: DivisionProps) => void;
   updateDivision: (item: DivisionProps) => void;
 };
+
+export interface PlayerFeeItemProps {
+  divisionId: number;
+  isFree: boolean;
+  fee: number;
+}

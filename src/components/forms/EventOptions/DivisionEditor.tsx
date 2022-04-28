@@ -39,7 +39,6 @@ export const DivisionEditor = ({ divisionId }: Props) => {
   const item = divisions.find(i => i.id === divisionId);
   const poolsLength = item?.pools.length ?? 1;
   const defaultPool = { id: (poolsLength + 1), name: 'Pool ' + (poolsLength + 1), numberOfTeams: 8 };
-  console.log('poolsLength: ', poolsLength);
 
   const [divisionType, setDivisionType] = useState('');
   const [makeUp, setMakeUp] = useState('');
@@ -70,9 +69,6 @@ export const DivisionEditor = ({ divisionId }: Props) => {
     mode: 'onSubmit',
     defaultValues: defaultValues
   });
-
-  // const watchFields = watch(["makeUp", "competitionLevel"]);
-  const watchMakeUp = watch('makeUp', 'def watch');
 
   useEffect(() => {
 
@@ -105,7 +101,7 @@ export const DivisionEditor = ({ divisionId }: Props) => {
       setValue('competitionLevel', 'competitive');
       setCompetitionLevel('competitive');
     }
-    console.log(getValues());
+    // console.log(getValues());
   }, [divisionType]);
 
   const handleSave = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -117,6 +113,7 @@ export const DivisionEditor = ({ divisionId }: Props) => {
     setIsEdited(true);
     if (item?.pools) {
       const updatedPools = [...item.pools, defaultPool];
+      setValue('pools', updatedPools);
       const payload = {
         id: divisionId,
         ...getValues(),
@@ -124,12 +121,16 @@ export const DivisionEditor = ({ divisionId }: Props) => {
         isEdited: true,
         isValidated: false
       };
+      // console.log('addPool: ');
+      setValue('numberOfPools', (poolsLength + 1));
+      // console.log(payload);
       dispatch(updateDivision(payload));
     }
   }
 
   const handleAddPool = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
+    // console.log('handleAddPool');
     addPool();
   }
 
@@ -138,6 +139,7 @@ export const DivisionEditor = ({ divisionId }: Props) => {
     if (item?.pools && poolsLength > 1) {
       const updatedPools = [...item.pools];
       updatedPools.pop();
+      setValue('pools', updatedPools);
       const payload = {
         id: divisionId,
         ...getValues(),
@@ -145,6 +147,9 @@ export const DivisionEditor = ({ divisionId }: Props) => {
         isEdited: true,
         isValidated: false
       };
+      // console.log('subtractPool: ');
+      setValue('numberOfPools', (poolsLength - 1));
+      // console.log(payload);
       dispatch(updateDivision(payload));
     }
   }
@@ -155,14 +160,21 @@ export const DivisionEditor = ({ divisionId }: Props) => {
     setIsEdited(true);
     const oldValue = numerOfPoolsRef.current;
     const newValue = Number(e.target.value);
-    oldValue < newValue ?
-      addPool() :
+    if (oldValue < newValue) {
+      addPool()
+    }
+    if (oldValue > newValue) {
       subtractPool();
+    }
+
+    // console.log(oldValue + ' | ' + newValue);
+
     // store new value to ref     
     numerOfPoolsRef.current = Number(e.target.value);
   }
 
-  console.log('DivisionEditor render...');
+  console.log(`DivisionEditor id: ${divisionId} render...`);
+  console.log('form values:', getValues());
 
   return (
     <div className={`${formStyles.contactForm} ${divisionStyles.divisionEditor} ${expand ? formStyles['expanded'] : formStyles['collapsed']}`} >

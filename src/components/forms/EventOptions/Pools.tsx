@@ -18,6 +18,7 @@ export default function Pools({ divisionId }: Props) {
   return (
     <div className="items pool-items togglelable">
       {item?.pools &&
+        // TODO: sort by ID: elems.sort((a, b) => a.id - b.id);
         item.pools.map((item) =>
           <PoolEditor
             key={item.id}

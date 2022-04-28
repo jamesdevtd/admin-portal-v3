@@ -27,7 +27,7 @@
     @apply ml-auto;
   }
   h3 {
-    @apply flex flex-row gap-1 relative;
+    @apply flex flex-row gap-1 relative capitalize;
     svg {
       @apply right-0;
     }
@@ -68,5 +68,63 @@
         @apply text-blue-brand ml-1;
       }
     }
+  }
+}
+
+.playerFee {
+  @apply flex flex-row items-center justify-between rounded-md py-3 px-4;
+  @apply cursor-pointer gap-2 overflow-auto bg-white;
+  @apply shadow-[0_0_2px_0_rgb(0,0,0,0.1)];
+  border-radius: 12px;
+  border-width: 1px;
+  :global {
+    .col {
+      @apply flex flex-col gap-1;
+      max-width: 60px;
+      &:nth-child(1) {
+        min-width: 200px;
+      }
+      &:nth-child(2) {
+        @apply ml-auto mr-auto;
+      }
+      &:nth-child(3) {
+        max-width: 100px;
+      }
+    }
+    h3 {
+      @apply text-md capitalize;
+    }
+    .vertical-check {
+      @apply flex flex-col;
+      input {
+        @apply float-left mt-1 mr-2 h-4 w-4 cursor-pointer appearance-none rounded-sm border border-gray-300 bg-white bg-contain bg-center bg-no-repeat align-top transition duration-200 checked:border-blue-600 checked:bg-blue-600 focus:outline-none;
+        @apply checked:bg-blue-brand #{!important};
+      }
+      input:focus {
+        outline: none !important;
+        box-shadow: none !important;
+      }
+
+      input:checked ~ label {
+        @apply text-blue-brand #{!important};
+      }
+    }
+    .price-input {
+      @apply flex flex-col items-start relative;
+      .currency {
+        @apply absolute left-0 top-0;
+      }
+      input {
+        @apply block w-auto rounded-none px-1 py-0 m-0 leading-none pl-3;
+        @apply text-blue-brand font-semibold text-base h-auto;
+        @apply border-0 border-b-2 border-gray-400 text-base;
+        max-width: 70px;
+        border-bottom-width: 1px;
+        line-height: 1em;
+      }
+    }
+  }
+  &.hide {
+    display: none !important;
   }
 }
