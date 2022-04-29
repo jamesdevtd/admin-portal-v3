@@ -13,6 +13,7 @@ export interface DivisionProps {
   pools: PoolItemProps[];
   isEdited: boolean;
   isValidated: boolean;
+  playerFee: PlayerFeeItemProps | undefined;
 }
 
 export type DivisionContextType = {
@@ -24,5 +25,5 @@ export type DivisionContextType = {
 export interface PlayerFeeItemProps {
   divisionId: number;
   isFree: boolean;
-  fee: number;
+  fee: number | null;
 }

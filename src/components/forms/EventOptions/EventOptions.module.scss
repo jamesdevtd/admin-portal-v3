@@ -1,63 +1,65 @@
 @import "@/styles/base/animations.scss";
 
-.formGroup :global {
-  @apply relative mb-2 flex flex-col gap-2 pl-8;
-  max-width: 800px;
-  svg {
+.formGroup {
+  > svg {
     @apply absolute left-0 h-5 w-5 opacity-60;
     top: 0px;
   }
-  .label {
-    span {
-      @apply font-title text-md font-semibold text-blue-brand;
+  :global {
+    @apply relative mb-2 flex flex-col gap-2 pl-8;
+    max-width: 800px;
+    .label {
+      span {
+        @apply font-title text-md font-semibold text-blue-brand;
+      }
     }
-  }
-  .instructions {
-    @apply font-body text-gray-500;
-  }
+    .instructions {
+      @apply font-body text-gray-500;
+    }
 
-  .fields-group {
-    @apply flex flex-row flex-wrap pb-10;
-    gap: 15px;
-    &.hide-input {
-      input {
-        @apply text-white;
-      }
-    }
-    .col {
-      @apply flex flex-col justify-between;
-      width: calc(50% - 10px);
-      input,
-      select,
-      option {
-        @apply p-0 py-1 text-blue-dark placeholder-blue-dark;
-        @apply border-0 border-b-2 border-gray-400 text-md;
-        border-bottom-width: 1px;
-        &:focus {
-          outline: none;
-          box-shadow: none;
+    .fields-group {
+      @apply flex flex-row flex-wrap pb-10;
+      gap: 15px;
+      &.hide-input {
+        input {
+          @apply text-white;
         }
       }
-      textarea {
-        @apply mb-2 border-gray-400;
-        &:focus {
-          outline: none;
-          box-shadow: none;
-        }
-      }
-    }
-    .error {
-      @apply text-red-500;
-    }
-    @media (max-width: 991px) {
-      @apply flex-col;
       .col {
-        @apply w-full;
+        @apply flex flex-col justify-between;
+        width: calc(50% - 10px);
+        input,
+        select,
+        option {
+          @apply p-0 py-1 text-blue-dark placeholder-blue-dark;
+          @apply border-0 border-b-2 border-gray-400 text-md;
+          border-bottom-width: 1px;
+          &:focus {
+            outline: none;
+            box-shadow: none;
+          }
+        }
+        textarea {
+          @apply mb-2 border-gray-400;
+          &:focus {
+            outline: none;
+            box-shadow: none;
+          }
+        }
+      }
+      .error {
+        @apply text-red-500;
+      }
+      @media (max-width: 991px) {
+        @apply flex-col;
+        .col {
+          @apply w-full;
+        }
       }
     }
-  }
-  .center-note {
-    @apply text-center text-blue-dark font-semibold my-7 mx-auto;
+    .center-note {
+      @apply text-center text-blue-dark font-semibold my-7 mx-auto;
+    }
   }
 }
 

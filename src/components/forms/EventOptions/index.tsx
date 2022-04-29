@@ -76,7 +76,6 @@ export const EventOptions = forwardRef(({ setIsFormEdited, handleNextStep, ...pr
     }
   }, [divisionItems]);
 
-
   const handleAddDivision = (val: DivisionProps) => {
     setDivisionItems([...divisionItems, val]);
     setIsFormEdited(true);

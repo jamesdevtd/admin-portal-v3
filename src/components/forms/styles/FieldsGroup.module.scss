@@ -32,8 +32,8 @@
   .center-note {
     @apply text-center m-auto text-blue-dark font-semibold;
   }
-  .inline-number {
-    @apply gap-3 flex flex-row items-center;
+  .styled-number-input {
+    @apply gap-3 flex flex-row items-center relative;
     input {
       @apply block w-auto rounded-none px-1 py-0 m-0 leading-none;
       @apply text-blue-brand font-semibold text-base h-auto;
@@ -41,6 +41,33 @@
       max-width: 45px;
       border-bottom-width: 1px;
       line-height: 1em;
+      -moz-appearance: textfield;
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    }
+    svg {
+      @apply absolute top-0 right-0;
+      transition: all 0.1s ease-in-out;
+      width: 15px;
+      width: 15px;
+      z-index: 2;
+      &:last-child {
+        top: auto;
+        bottom: 0;
+      }
+    }
+    &:hover {
+      svg {
+        @apply bg-white w-4 h-4;
+        top: -5px;
+        &:last-child {
+          @apply top-auto;
+          bottom: -5px;
+        }
+      }
     }
   }
   @media (max-width: 991px) {

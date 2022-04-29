@@ -8,6 +8,8 @@ import { addDivision, getDivisions } from '@/features/eventCreationSteps/divisio
 
 import { DivisionEditor } from './DivisionEditor';
 
+import { DivisionProps } from '@/types/division';
+
 import PlusIcon from '~/icons/blue/plus.svg';
 
 
@@ -17,12 +19,17 @@ export default function Divisions() {
   // const { divisions, updateDivision, addDivision } = React.useContext(DivisionContext) as DivisionContextType;
   const [showAddButton, setShowBlankForm] = useState(false);
 
-  const starterDivision = {
+  const starterDivision: DivisionProps = {
     id: divisions.length + 1,
     divisionType: '',
     makeUp: '',
     competitionLevel: '',
     numberOfPools: 1,
+    playerFee: {
+      divisionId: divisions.length + 1,
+      isFree: false,
+      fee: null,
+    },
     pools: [{
       id: 1,
       name: 'Pool 1',

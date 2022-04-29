@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { getSumByKey } from '@/utils/arrayUtils';
+
 import type { RootState } from '../../app/store';
 
 import { DivisionProps } from '@/types/division';
@@ -29,6 +31,7 @@ export const divisionsSlice = createSlice({
           i.competitionLevel = item.competitionLevel;
           i.numberOfPools = item.numberOfPools;
           i.pools = item.pools;
+          i.playerFee = item.playerFee;
           i.isEdited = item.isEdited;
           i.isValidated = item.isValidated;
         }
@@ -45,5 +48,23 @@ export const { addDivision, updateDivision, deleteDivision } =
   divisionsSlice.actions;
 
 export const getDivisions = (state: RootState) => state.divisions.value;
+
+export const getNumberOfDivisions = (state: RootState) =>
+  state.divisions.value.length;
+
+export const getDivsionById = (id: number) => (state: RootState) => {
+  return state.divisions.value.find((i) => i.id === id);
+};
+
+export const getTotalTeams = (id: number) => (state: RootState) => {
+  const index = state.divisions.value.findIndex((i) => i.id === id);
+  return getSumByKey(state.divisions.value[index].pools, 'numberOfTeams');
+};
+
+export const getPoolbyParentAndId =
+  (divisionId: number, poolId: number) => (state: RootState) => {
+    const division = state.divisions.value.find((i) => i.id === divisionId);
+    return division?.pools.filter((p) => p.id === poolId);
+  };
 
 export default divisionsSlice.reducer;

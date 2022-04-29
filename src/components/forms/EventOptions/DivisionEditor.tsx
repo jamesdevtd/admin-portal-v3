@@ -1,6 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form';
+import { HiOutlineChevronDown, HiOutlineChevronUp } from 'react-icons/hi';
 import * as yup from 'yup';
 
 import divisionStyles from './Divisions.module.scss';
@@ -11,7 +12,7 @@ import SubmitButton from '@/components/buttons/SubmitButton';
 
 import { useAppDispatch } from '@/app/hooks';
 import { useAppSelector } from '@/app/hooks';
-import { getDivisions, updateDivision } from '@/features/eventCreationSteps/divisionsSlice';
+import { getDivsionById, getTotalTeams, updateDivision } from '@/features/eventCreationSteps/divisionsSlice';
 import { adultLevels, adultMakeups, youthLevels, youthMakeups } from '@/static/divisionTypes';
 
 import Pools from './Pools';
@@ -22,9 +23,7 @@ const schema = yup
   .object({
     divisionType: yup.string().required(),
     makeUp: yup.string().required(),
-    competitionLevel: yup.string().required(),
-    numberOfPools: yup.number().positive(),
-    pools: yup.array()
+    competitionLevel: yup.string().required()
   })
   .required();
 
@@ -35,8 +34,9 @@ type Props = {
 export const DivisionEditor = ({ divisionId }: Props) => {
 
   const dispatch = useAppDispatch();
-  const divisions = useAppSelector(getDivisions);
-  const item = divisions.find(i => i.id === divisionId);
+  const item = useAppSelector(getDivsionById(divisionId));
+  const totalTeamCount = useAppSelector(getTotalTeams(divisionId));
+
   const poolsLength = item?.pools.length ?? 1;
   const defaultPool = { id: (poolsLength + 1), name: 'Pool ' + (poolsLength + 1), numberOfTeams: 8 };
 
@@ -47,14 +47,19 @@ export const DivisionEditor = ({ divisionId }: Props) => {
   const [expand, setExpand] = useState(true);
   const [isEdited, setIsEdited] = useState(false);
 
-  const [totalTeams, setTotalTeams] = useState(0);
+  const divisionRootPayload = {
+    id: divisionId,
+    divisionType: divisionType,
+    makeUp: makeUp,
+    competitionLevel: competitionLevel
+    // other itmes to add for dispatch
+    // numberOfPools, pools, isEdited, isValidated, playerFee
+  }
 
   const defaultValues = {
     divisionType: item?.divisionType ?? '',
     makeUp: item?.makeUp ?? '',
     competitionLevel: item?.competitionLevel ?? '',
-    numberOfPools: poolsLength,
-    pools: item?.pools ?? [],
   }
 
   const {
@@ -75,13 +80,7 @@ export const DivisionEditor = ({ divisionId }: Props) => {
     if (formState.isValid) {
       // Submit Division Form
       console.log('Division FORM is VALID');
-      const payload = {
-        id: divisionId,
-        ...getValues(),
-        isEdited: false,
-        isValidated: true
-      };
-      dispatch(updateDivision(payload));
+      saveDivision();
     } else {
       console.log('Division form is NOT VALID');
     }
@@ -113,17 +112,15 @@ export const DivisionEditor = ({ divisionId }: Props) => {
     setIsEdited(true);
     if (item?.pools) {
       const updatedPools = [...item.pools, defaultPool];
-      setValue('pools', updatedPools);
       const payload = {
-        id: divisionId,
-        ...getValues(),
+        ...divisionRootPayload,
+        numberOfPools: item.numberOfPools + 1,
         pools: updatedPools,
         isEdited: true,
-        isValidated: false
+        isValidated: true,
+        playerFee: item?.playerFee
       };
-      // console.log('addPool: ');
-      setValue('numberOfPools', (poolsLength + 1));
-      // console.log(payload);
+      // console.log('addPool: ', payload);
       dispatch(updateDivision(payload));
     }
   }
@@ -139,16 +136,14 @@ export const DivisionEditor = ({ divisionId }: Props) => {
     if (item?.pools && poolsLength > 1) {
       const updatedPools = [...item.pools];
       updatedPools.pop();
-      setValue('pools', updatedPools);
       const payload = {
-        id: divisionId,
-        ...getValues(),
+        ...divisionRootPayload,
+        numberOfPools: item.numberOfPools - 1,
         pools: updatedPools,
         isEdited: true,
-        isValidated: false
+        isValidated: true,
+        playerFee: item?.playerFee
       };
-      // console.log('subtractPool: ');
-      setValue('numberOfPools', (poolsLength - 1));
       // console.log(payload);
       dispatch(updateDivision(payload));
     }
@@ -167,11 +162,25 @@ export const DivisionEditor = ({ divisionId }: Props) => {
       subtractPool();
     }
 
-    // console.log(oldValue + ' | ' + newValue);
-
     // store new value to ref     
     numerOfPoolsRef.current = Number(e.target.value);
   }
+
+  const saveDivision = () => {
+    const payload = {
+      id: divisionId,
+      divisionType: divisionType,
+      makeUp: makeUp,
+      competitionLevel: competitionLevel,
+      numberOfPools: item?.numberOfPools ?? 1,
+      pools: item?.pools ?? [],
+      isEdited: false,
+      isValidated: true,
+      playerFee: item?.playerFee,
+    };
+    dispatch(updateDivision(payload));
+  }
+
 
   console.log(`DivisionEditor id: ${divisionId} render...`);
   console.log('form values:', getValues());
@@ -255,7 +264,7 @@ export const DivisionEditor = ({ divisionId }: Props) => {
 
       </div>
       <div className={`${fieldStyles.fieldsGroup} togglelable`}>
-        <div className="inline-number">
+        <div className="styled-number-input">
           <label>Number of Pools</label>
           <input
             autoComplete='on'
@@ -263,11 +272,11 @@ export const DivisionEditor = ({ divisionId }: Props) => {
             min={1}
             value={poolsLength}
             onKeyDown={(e) => e.preventDefault()}
-            type='number' {...register('numberOfPools', {
-              valueAsNumber: true,
-            })}
+            type='number'
             onChange={handleNumberOfPoolsChange}
           />
+          <HiOutlineChevronUp onClick={addPool} />
+          <HiOutlineChevronDown onClick={subtractPool} />
         </div>
       </div>
 
@@ -277,7 +286,7 @@ export const DivisionEditor = ({ divisionId }: Props) => {
         <button onClick={handleAddPool}>Add Pool +</button>
         <div className="capacity">
           <span>Team Capacity | </span>
-          <span>{totalTeams} Teams</span>
+          <span>{totalTeamCount} Teams</span>
         </div>
       </div>
       <div className="buttons">

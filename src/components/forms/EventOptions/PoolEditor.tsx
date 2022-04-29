@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import fieldStyles from '@/components/forms/styles/FieldsGroup.module.scss';
 
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { getDivisions } from '@/features/eventCreationSteps/divisionsSlice';
+import { getDivisions, getPoolbyParentAndId } from '@/features/eventCreationSteps/divisionsSlice';
 import { divisionNumberOfTeams } from '@/static/divisionTypes';
 
 import { PoolItemProps } from '@/types/division';
@@ -28,6 +28,8 @@ export default function PoolEditor({ itemData, divisionId }: Props) {
   const dispatch = useAppDispatch();
   const divisions = useAppSelector(getDivisions);
   const item = divisions.find(i => i.id === divisionId);
+
+  const poolData = useAppSelector(getPoolbyParentAndId(divisionId, itemData.id));
 
   const [name, setName] = useState<string>(itemData.name);
   const [numberOfTeams, setNumberOfTeams] = useState<number>(itemData.numberOfTeams);
