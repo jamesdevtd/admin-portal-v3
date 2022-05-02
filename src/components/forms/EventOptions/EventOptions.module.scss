@@ -60,6 +60,9 @@
     .center-note {
       @apply text-center text-blue-dark font-semibold my-7 mx-auto;
     }
+    .fee-items {
+      @apply flex flex-col gap-3 mt-5;
+    }
   }
 }
 

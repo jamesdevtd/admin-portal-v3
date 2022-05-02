@@ -7,6 +7,9 @@ import * as yup from 'yup';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './EventPublicPage.module.scss';
 
+import { useAppDispatch } from '@/app/hooks';
+import { setCurrentStep, setIsEditedById } from '@/features/eventCreation/eventCreationSlice';
+
 import CloseIcon from '~/icons/close.svg';
 import ErrorIcon from '~/icons/error.svg';
 import PlaceholderDescription from '~/images/wip-placeholders/description-placeholder.png';
@@ -46,12 +49,14 @@ const formDefaultValues = {
   seriesMonth: null,
 }
 
+
 type Props = {
-  setIsFormEdited: React.Dispatch<React.SetStateAction<boolean>>,
-  handleNextStep: (val: number) => void
+  step: number
 }
 
-export const EventPublicPage = forwardRef(({ setIsFormEdited, handleNextStep, ...props }: Props, ref) => {
+export const EventPublicPage = forwardRef(({ step, ...props }: Props, ref) => {
+
+  const dispatch = useAppDispatch();
 
   const [hasErrors, setHasErrors] = useState(false);
   const [hideErrorBox, setHideErrorBox] = useState(false);
@@ -67,9 +72,18 @@ export const EventPublicPage = forwardRef(({ setIsFormEdited, handleNextStep, ..
     defaultValues: formDefaultValues
   });
 
+
+
+  const setIsFormEdited = () => {
+    dispatch(setIsEditedById(step));
+  }
+  const handleNextStep = () => {
+    dispatch(setCurrentStep(step + 1));
+  }
+
   useEffect(() => {
     if (formState.isDirty) {
-      setIsFormEdited(true);
+      setIsFormEdited();
       console.log('FORM VALUES: ');
       console.log(getValues());
     }
@@ -103,7 +117,7 @@ export const EventPublicPage = forwardRef(({ setIsFormEdited, handleNextStep, ..
     //TODO: POST request to API
     console.log('POST: sending data...');
     console.log(data);
-    handleNextStep(2);
+    handleNextStep();
   };
 
   const submitForm = () => {

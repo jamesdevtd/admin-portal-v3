@@ -16,7 +16,7 @@ const LeafletMap = ({ coordinates, style, colorFiltered }: MapProps) => {
   const [map, setMap] = useState<any>({});
 
   const iconImg = icon({
-    iconUrl: 'images/marker-icon.png',
+    iconUrl: '../images/marker-icon.png',
     iconSize: [20, 30],
   });
 

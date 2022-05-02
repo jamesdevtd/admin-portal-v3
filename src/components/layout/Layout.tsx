@@ -1,3 +1,13 @@
+/* 
+  Layout: Dashboard Layout
+  Description: default Admin Portal dashboard layout 
+  Main elements: 
+    1. sidebar - portal root nagivation 
+    2. header - search bar and user avatar 
+    3. content - wrapper for props.children
+*/
+
+
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -25,6 +35,7 @@ type Props = {
   children: React.ReactNode;
   pageTitle?: string;
 };
+
 
 const Layout = (props: Props) => {
   const [menuItems, setMenuItems] = useState<MenuItems[]>([]);

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useAppSelector } from '@/app/hooks';
-import { getDivisions } from '@/features/eventCreationSteps/divisionsSlice';
+import { getDivisions } from '@/features/eventCreation/divisionsSlice';
 
 import PoolEditor from './PoolEditor';
 
@@ -22,7 +22,7 @@ export default function Pools({ divisionId }: Props) {
         item.pools.map((item) =>
           <PoolEditor
             key={item.id}
-            itemData={item}
+            poolId={item.id}
             divisionId={divisionId}
           />
         )}

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export function usePrevious(value: number) {
   const currentRef = useRef<number>(value);
@@ -42,23 +42,56 @@ export function useArray(defaultValue: unknown[]) {
   return { array, set: setArray, push, filter, update, remove, clear };
 }
 
-export function useDebounce<T>(value: T, delay: number): T {
-  // State and setters for debounced value
+export function useDebounce<T>(value: T, delay?: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
-  useEffect(
-    () => {
-      // Update debounced value after delay
-      const handler = setTimeout(() => {
-        setDebouncedValue(value);
-      }, delay);
-      // Cancel the timeout if value changes (also on delay change or unmount)
-      // This is how we prevent debounced value from updating if value is changed ...
-      // .. within the delay period. Timeout gets cleared and restarted.
-      return () => {
-        clearTimeout(handler);
-      };
-    },
-    [value, delay] // Only re-call effect if value or delay changes
-  );
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedValue(value), delay || 500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [value, delay]);
+
   return debouncedValue;
 }
+
+export default useDebounce;
+
+export const useAsync = <T, E = string>(
+  asyncFunction: () => Promise<T>,
+  immediate = true
+) => {
+  const [status, setStatus] = useState<
+    'idle' | 'pending' | 'success' | 'error'
+  >('idle');
+  const [value, setValue] = useState<T | null>(null);
+  const [error, setError] = useState<E | null>(null);
+  // The execute function wraps asyncFunction and
+  // handles setting state for pending, value, and error.
+  // useCallback ensures the below useEffect is not called
+  // on every render, but only if asyncFunction changes.
+  const execute = useCallback(() => {
+    setStatus('pending');
+    setValue(null);
+    setError(null);
+    return asyncFunction()
+      .then((response: any) => {
+        setValue(response);
+        setStatus('success');
+      })
+      .catch((error: any) => {
+        setError(error);
+        setStatus('error');
+      });
+  }, [asyncFunction]);
+  // Call execute if we want to fire it right away.
+  // Otherwise execute can be called later, such as
+  // in an onClick handler.
+  useEffect(() => {
+    if (immediate) {
+      execute();
+    }
+  }, [execute, immediate]);
+  return { execute, status, value, error };
+};

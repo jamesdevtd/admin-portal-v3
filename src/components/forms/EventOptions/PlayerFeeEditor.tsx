@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import styles from './Divisions.module.scss';
 import fieldStyles from '@/components/forms/styles/FieldsGroup.module.scss';
 
-import { useAppSelector } from '@/app/hooks';
-import { getDivsionById } from '@/features/eventCreationSteps/divisionsSlice';
-import { priceRegExp } from '@/utils/regex';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { getDivsionById, updateDivisionFee } from '@/features/eventCreation/divisionsSlice';
+import useDebounce from '@/utils/customHooks';
 
 
 type Props = {
@@ -13,15 +13,43 @@ type Props = {
 }
 
 export default function PlayerFeeEditor({ divisionId }: Props) {
+  const dispatch = useAppDispatch();
   const division = useAppSelector(getDivsionById(divisionId));
   const divisionName = `${division?.divisionType} ${division?.makeUp} ${division?.competitionLevel}`;
   const item = useAppSelector(getDivsionById(divisionId))?.playerFee;
 
-  const defaultFee = (item?.isFree) ? '' : '0';
-  const [isFree, setIsFree] = useState(item?.isFree);
-  const [fee, setFee] = useState(defaultFee);
+  const [isFree, setIsFree] = useState(item?.isFree || false);
+  const [fee, setFee] = useState(item?.fee || '');
 
-  console.log(`PlayerFeeEditor for ${divisionId}:`, division);
+  const debouncedValue = useDebounce<string>(fee.toString(), 0);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setFee(val);
+    setIsFree(false);
+  }
+
+  const handleUpdateDivisionFee = () => {
+    const updatedFee = {
+      divisionId: divisionId,
+      isFree: isFree,
+      fee: isFree ? 0 : Number(fee)
+    }
+    const payload = {
+      id: divisionId,
+      playerFee: updatedFee
+    };
+    // console.log('payload: ', payload);
+    dispatch(updateDivisionFee(payload));
+  }
+
+  useEffect(() => {
+    handleUpdateDivisionFee();
+  }, [debouncedValue]);
+
+  useEffect(() => {
+    handleUpdateDivisionFee();
+  }, [isFree]);
 
   return (
     <div className={`${fieldStyles.fieldsGroup} ${styles.playerFee} ${division?.divisionType ? '' : 'hide'}`}>
@@ -32,9 +60,9 @@ export default function PlayerFeeEditor({ divisionId }: Props) {
       <div className="col">
         <div className="vertical-check" >
           <input type='checkbox'
-            onChange={(e) => {
-              const val = e.target.checked;
-              setIsFree(val);
+            checked={isFree}
+            onChange={() => {
+              setIsFree(!isFree);
             }}
           />
           <label> Free * </label>
@@ -43,15 +71,10 @@ export default function PlayerFeeEditor({ divisionId }: Props) {
       <div className="col">
         <div className="price-input" >
           <span className="currency">$</span>
-          <input type='number'
-            value={isFree ? '0' : fee}
-            onChange={(e) => {
-              const val = e.target.value;
-              if (val === '' || priceRegExp.test(val))
-                setFee(val);
-              // setFee(cleanNumber(val));
-            }}
-          />
+          {isFree ?
+            <input type='number' value='0' className='is-fee' disabled /> :
+            <input type='number' onChange={handleChange} value={fee} />
+          }
         </div>
       </div>
     </div>

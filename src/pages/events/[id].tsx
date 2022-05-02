@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { GetServerSideProps } from 'next';
+import { useEffect, useRef } from 'react';
 
 import styles from "./Events.module.scss";
 
@@ -11,24 +12,54 @@ import ButtonLink from '@/components/links/ButtonLink';
 
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import {
-  selectCurrentStep,
-  setCurrentStep,
-} from '@/features/eventCreationSteps/eventCreationStepsSlice';
+  getCurrentStep,
+  getNewEventData,
+  getStepById
+} from '@/features/eventCreation/eventCreationSlice';
 
 import EventsMenu from './EventsMenu';
 
 import CalendarIcon from '~/icons/blue/calendar.svg';
 
-export default function Events() {
-  const [isFormEdited, setIsFormEdited] = useState<boolean>(false);
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  try {
+    const id = params?.id
+    // TODO: get current event Data on server before loading and store to redux using use next-redux-wrapper 
+    // const eventData = ....
+    // By returning { props: eventData }, the Events component
+    // will receive `eventData` as a prop at build time
+    return { props: { id } }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    return { props: { errors: err.message } }
+  }
+}
+
+type Props = {
+  id: number
+}
+
+export default function Events({ id }: Props) {
+
   const dispatch = useAppDispatch();
-  const currentStep = useAppSelector(selectCurrentStep);
+  const currentStep = useAppSelector(getCurrentStep);
+  const newEventData = useAppSelector(getNewEventData);
+  const isFormEdited = useAppSelector(getStepById(currentStep))?.isEdited;
+
+  const eventStatus = { id: id, status: 'draft' };
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const eventFormRef = useRef<any>();
 
   useEffect(() => {
-    //
+    // TODO: create actual API request or redux middleware 
+    // EXAMPLE:
+    // const loadEvents = async () => {
+    //   const { data } = await axios.get(`/api/events/${id}`);
+    //   console.log(data);
+    // };
+
   }, []);
+
 
   const submitEventsForm = () => {
     if (eventFormRef && eventFormRef.current) {
@@ -36,12 +67,8 @@ export default function Events() {
     }
   };
 
-  const handleNextStep = (val: number) => {
-    dispatch(setCurrentStep(Number(val)));
-  }
-
   return (
-    <div className='relative'>
+    <div className={`page-event event-id-${id}`}>
       <Layout>
 
         <div className={styles.Events}>
@@ -55,24 +82,18 @@ export default function Events() {
 
           <div className='content-main'>
             <div className='inner-sidebar'>
-              <EventsMenu currentStep={currentStep} handleNextStep={handleNextStep} />
+              <EventsMenu />
             </div>
 
             <div className="inner-content">
-              {currentStep === 0 &&
-                <BasicInfo ref={eventFormRef}
-                  setIsFormEdited={setIsFormEdited}
-                  handleNextStep={handleNextStep} />
-              }
               {currentStep === 1 &&
-                <EventOptions ref={eventFormRef}
-                  setIsFormEdited={setIsFormEdited}
-                  handleNextStep={handleNextStep} />
+                <BasicInfo ref={eventFormRef} step={1} eventStatus={eventStatus} />
               }
               {currentStep === 2 &&
-                <EventPublicPage ref={eventFormRef}
-                  setIsFormEdited={setIsFormEdited}
-                  handleNextStep={handleNextStep} />
+                <EventOptions ref={eventFormRef} step={2} />
+              }
+              {currentStep === 3 &&
+                <EventPublicPage ref={eventFormRef} step={3} />
               }
             </div>
           </div>
@@ -99,3 +120,4 @@ export default function Events() {
     </div>
   );
 }
+

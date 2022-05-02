@@ -1,15 +1,15 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 
-import counterReducer from '../features/counter/counterSlice';
-import divisionsReducer from '../features/eventCreationSteps/divisionsSlice';
-import eventCreationStepReducer from '../features/eventCreationSteps/eventCreationStepsSlice';
-import onboardingStepReducer from '../features/onboardingSteps/onboardingStepsSlice';
+import counterReducer from '@/features/counter/counterSlice';
+import divisionsReducer from '@/features/eventCreation/divisionsSlice';
+import eventCreationReducer from '@/features/eventCreation/eventCreationSlice';
+import onboardingStepReducer from '@/features/onboardingSteps/onboardingStepsSlice';
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     onboardingStep: onboardingStepReducer,
-    eventCreationStep: eventCreationStepReducer,
+    eventCreation: eventCreationReducer,
     divisions: divisionsReducer,
   },
 });

@@ -6,10 +6,11 @@ import * as yup from 'yup';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './EventOptions.module.scss';
 
+import { useAppDispatch } from '@/app/hooks';
+import { setCurrentStep, setIsEditedById } from '@/features/eventCreation/eventCreationSlice';
+
 import Divisions from './Divisions';
 import PlayerFees from './PlayerFees';
-
-import { DivisionProps } from '@/types/division';
 
 import CloseIcon from '~/icons/close.svg';
 import DvisionsIcon from '~/icons/divisions.svg';
@@ -27,12 +28,15 @@ const formDefaultValues = {
 }
 
 type Props = {
-  setIsFormEdited: React.Dispatch<React.SetStateAction<boolean>>,
-  handleNextStep: (val: number) => void
+  step: number
 }
 
-export const EventOptions = forwardRef(({ setIsFormEdited, handleNextStep, ...props }: Props, ref) => {
-  const [divisionItems, setDivisionItems] = useState<DivisionProps[]>([]);
+export const EventOptions = forwardRef(({ step, ...props }: Props, ref) => {
+
+  console.log('EventOptions render...');
+
+  const dispatch = useAppDispatch();
+
   const [hasErrors, setHasErrors] = useState(false);
   const [hideErrorBox, setHideErrorBox] = useState(false);
 
@@ -50,15 +54,24 @@ export const EventOptions = forwardRef(({ setIsFormEdited, handleNextStep, ...pr
     defaultValues: formDefaultValues
   });
 
+
+  const setIsFormEdited = () => {
+    dispatch(setIsEditedById(step));
+  }
+  const handleNextStep = () => {
+    dispatch(setCurrentStep(step + 1));
+  }
+
   useEffect(() => {
     if (formState.isDirty) {
-      setIsFormEdited(true);
+      setIsFormEdited();
       console.log('FORM VALUES: ');
       console.log(getValues());
     }
+
     Object.keys(formState.errors).length ? setHasErrors(true) : setHasErrors(false);
     if (Object.keys(formState.errors).length) {
-      console.log('FORM VALUES: ');
+      console.log('FORM VALUES with Errors: ');
       console.log(getValues());
       console.log('FORM ERRORS: ');
       console.log(formState.errors);
@@ -66,20 +79,6 @@ export const EventOptions = forwardRef(({ setIsFormEdited, handleNextStep, ...pr
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formState.errors, formState.isDirty]);
 
-  useEffect(() => {
-    if (divisionItems) {
-      console.log('has division Items');
-
-      setValue('divisions', divisionItems);
-    } else {
-      console.log('has NO division Items yet....');
-    }
-  }, [divisionItems]);
-
-  const handleAddDivision = (val: DivisionProps) => {
-    setDivisionItems([...divisionItems, val]);
-    setIsFormEdited(true);
-  };
 
   const onSubmit = (data: unknown) => {
     //TODO: POST request to API
@@ -91,22 +90,6 @@ export const EventOptions = forwardRef(({ setIsFormEdited, handleNextStep, ...pr
   const submitForm = () => {
     setHideErrorBox(false);
     handleSubmit(onSubmit)();
-  };
-
-  const handleAddDivisionItem = (val: DivisionProps) => {
-    setDivisionItems([...divisionItems, val]);
-    setIsFormEdited(true);
-  };
-
-  const handleRemoveDivisionItem = (val: DivisionProps) => {
-    const newItems = divisionItems.filter(item => item.id !== val.id);
-    setDivisionItems(newItems);
-  };
-
-  const handleUpdateDivisionItem = (val: DivisionProps) => {
-    console.log('handleUpdateDivisionItem: ', val);
-    const newItems = divisionItems.map(item => item.id === val.id ? val : item);
-    setDivisionItems(newItems);
   };
 
   useImperativeHandle(ref, () => ({ submitForm }));
@@ -147,7 +130,6 @@ export const EventOptions = forwardRef(({ setIsFormEdited, handleNextStep, ...pr
         </div>
         <p className='instructions'>Set the Entry Fee for each available Division</p>
         <p className='instructions italic'>* PLEASE NOTE: If choosing to offer Free Entry for any Division, you will still be responsible for providing payment as per standard TAGX fees prior to publishing your Event Draw.</p>
-        <div className='center-note'>Please create a Division - once created, Division Entry Fee options will be displayed here</div>
         <PlayerFees />
       </div>
 
@@ -157,3 +139,4 @@ export const EventOptions = forwardRef(({ setIsFormEdited, handleNextStep, ...pr
     </form >
   );
 });
+

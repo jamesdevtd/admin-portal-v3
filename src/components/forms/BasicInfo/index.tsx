@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { LatLngExpression } from 'leaflet';
+import { LatLngTuple } from 'leaflet';
 import moment from 'moment';
 import dynamic from 'next/dynamic';
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
@@ -11,7 +11,12 @@ import * as yup from 'yup';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '@/components/forms/styles/FormGroup.module.scss';
 
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { getNewEventData, setCurrentStep, setIsEditedById, updateNewEventData } from '@/features/eventCreation/eventCreationSlice';
+import { googleApiKey } from '@/static/geolocation';
 import seriesNames from '@/static/seriesNames';
+import { handleGetAddressByLatLng } from '@/utils/geoLocation';
+import { objectDatesToString, objectStringsToDates, removeNullElements } from '@/utils/objectUtils';
 
 import ContactDetails from './ContactDetails';
 import SeriesCheckboxes from './SeriesCheckboxes';
@@ -31,57 +36,106 @@ const schema = yup
   .object({
     additionalEvents: yup.array(),
     contactDetails: yup.array(),
-    eventEndDate: yup.date().required().nullable(),
+    eventEndDate: yup.date().required(),
     eventName: yup.string().required(),
     eventStartDate: yup.date().required(),
     eventStartTime: yup.date().required(),
-    eventYear: yup.number().positive().integer().required().nullable(),
-    facilityAddress: yup.array().required().nullable(),
+    eventYear: yup.number().positive().integer().required(),
+    facilityAddress: yup.array().required(),
     facilityName: yup.string().required(),
-    facilityNotes: yup.string().nullable(),
+    facilityNotes: yup.string(),
     registrationEndDate: yup.date().required(),
     registrationStartDate: yup.date().required(),
-    seriesMonth: yup.number().positive().integer().required().nullable(),
+    seriesMonth: yup.number().positive().integer().required(),
   })
   .required();
 
-const formDefaultValues = {
-  additionalEvents: [{}],
-  contactDetails: [{}],
-  eventEndDate: null,
-  eventName: null,
-  eventStartDate: null,
-  eventStartTime: null,
-  eventYear: null,
-  facilityAddress: null,
-  facilityName: null,
-  facilityNotes: '',
-  registrationEndDate: null,
-  registrationStartDate: null,
-  seriesMonth: null,
-}
-
 type Props = {
-  setIsFormEdited: React.Dispatch<React.SetStateAction<boolean>>,
-  handleNextStep: (val: number) => void
+  step: number,
+  eventStatus: { id: number, status: string }
 }
 
-export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props }: Props, ref) => {
+
+export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref) => {
+
+  // console.log('BasicInfo render...');
+
+  const dispatch = useAppDispatch();
+  const newEventData = useAppSelector(getNewEventData);
+
+  // console.log('newEventData: ', newEventData);
+
+  // TODO: get savedCoordinates from store set to null If none;
+  // sample to test:  [-27.444320, 153.039660];
+  const [savedCoordinates, setSavedCoordinates] = useState<LatLngTuple | null>(null);
+  const [addressPlaceHolder, setAddressPlaceHolder] = useState(newEventData.facilityAddressString || '');
+  const [isFormReady, setIsFormReady] = useState(false);
+
+  // TODO: set in store or get current user location
+  const latLongPlaceholder: LatLngTuple = [40.7959138, -73.9247479];
+
   const tomorrow = moment().add(1, 'day').toDate();
 
-  const [monthId, setMonthId] = useState<number>(moment().month() + 1);
-  const [yearSelected, setYearSelected] = useState<number>(moment().year());
+  const [monthId, setMonthId] = useState<number>(newEventData.seriesMonth && moment().month() + 1);
+  const [yearSelected, setYearSelected] = useState<number>(newEventData.eventYear || moment().year());
+  const [seriesSelected, setSeriesSelected] = useState<number>(newEventData.seriesMonth && 0);
 
-  const [minStartDate, setMinStartDate] = useState(tomorrow);
-  const [regStartDate, setRegStartDate] = useState(moment().toDate());
-  const [startDate, setStartDate] = useState(tomorrow);
+
+  const [minStartDate, setMinStartDate] = useState<Date>(tomorrow);
+  const [regStartDate, setRegStartDate] = useState<Date>(moment().toDate());
+  const [startDate, setStartDate] = useState<Date>(tomorrow);
 
   const [hasErrors, setHasErrors] = useState(false);
   const [hideErrorBox, setHideErrorBox] = useState(false);
 
   const [contactItems, setContactItems] = useState<ContactDetailsProps[]>([]);
-  const [coordinates, setCoordinates] = useState<LatLngExpression>([40.795817, -73.9247057]);
+  const [coordinates, setCoordinates] = useState<LatLngTuple>(
+    newEventData?.facilityAddress?.length ? newEventData.facilityAddress : latLongPlaceholder
+  );
+
   const [availableSeries, setAvailableSeries] = useState(seriesNames);
+
+
+  const setIsFormEdited = () => {
+    dispatch(setIsEditedById(step));
+  }
+  const handleNextStep = () => {
+    dispatch(setCurrentStep(step + 1));
+  }
+
+  const eventDateElements = {
+    eventStartDate: newEventData.eventStartDate || null,
+    eventEndDate: newEventData.eventEndDate || null,
+    eventStartTime: newEventData.eventStartTime || null,
+    registrationEndDate: newEventData.registrationEndDate || null,
+    registrationStartDate: newEventData.registrationStartDate || null
+  }
+
+  const stringsToDates = { ...objectStringsToDates(eventDateElements) };
+
+  const formDefaultValues = {
+    ...{
+      additionalEvents: newEventData.additionalEvents || [] as SeriesProps[],
+      contactDetails: newEventData.contactDetails || [] as ContactDetailsProps[],
+      eventName: newEventData.eventName || '',
+      eventYear: newEventData.eventYear || null,
+      facilityAddress: newEventData.facilityAddress || [] as number[],
+      facilityAddressString: newEventData.facilityAddressString || '',
+      facilityName: newEventData.facilityName || '',
+      facilityNotes: newEventData.facilityNotes || '',
+      seriesMonth: newEventData.seriesMonth || null,
+      eventStartDate: null,
+      eventEndDate: null,
+      eventStartTime: null,
+      registrationEndDate: null,
+      registrationStartDate: null
+    },
+    ...stringsToDates
+  };
+
+  // TODO assidng default dates on component mount if present is redux store
+  // console.log('formDefaultValues: ', formDefaultValues);
+
 
   const {
     handleSubmit,
@@ -97,24 +151,47 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
     defaultValues: formDefaultValues
   });
 
+
   useEffect(() => {
     if (formState.isDirty) {
-      setIsFormEdited(true);
+      setIsFormEdited();
     }
     Object.keys(formState.errors).length ? setHasErrors(true) : setHasErrors(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formState.errors, formState.isDirty]);
 
   useEffect(() => {
     if (contactItems.length) {
       setValue('contactDetails', contactItems);
     }
-  }, [contactItems]);
+    if (yearSelected) {
+      handleYearChange(yearSelected);
+    }
+    handleSelectSeries(seriesSelected);
+    // if (seriesSelected > 0) {
+    // }
+  }, [contactItems, yearSelected, seriesSelected]);
+
+
+
+  useEffect(() => {
+    // handl async loading of of address placeholder if data is present from event 
+    (async () => {
+      if (savedCoordinates) {
+        const address = await handleGetAddressByLatLng(savedCoordinates);
+        setAddressPlaceHolder(address);
+        setCoordinates(savedCoordinates);
+        setIsFormReady(true);
+      } else {
+        // console.log('no saved address coordinates');
+        setIsFormReady(true);
+      }
+
+    })();
+
+  }, [savedCoordinates]);
 
   const handleYearChange = (year: number) => {
 
-    setValue('seriesMonth', null);
-    setMonthId(0);
     clearEventsDatesFields();
 
     const currentDate = moment().date();
@@ -138,13 +215,15 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
   }
 
   const handleSelectSeries = (id: number) => {
-    setMonthId(id);
+    // setMonthId(id);
+    // console.log('init handleSelectSeries for: ', id);
+    // console.log('yearSelected: ', yearSelected);
     clearEventsDatesFields();
 
     // LOGIC: If selected year & month is current AND today's date is 7 or greater 
     // THEN minimun Event Start date is next month's day 1
     const month = id - 1;
-    const currentDate = 3;
+    const currentDate = moment().date();
     if (moment().year() === yearSelected && moment().month() === month && currentDate >= 7) {
       setMinStartDate(moment().set('year', yearSelected).set('month', month + 1).set('date', 1).toDate());
       return;
@@ -177,7 +256,7 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
 
   const handleAddContactItem = (val: ContactDetailsProps) => {
     setContactItems([...contactItems, val]);
-    setIsFormEdited(true);
+    setIsFormEdited();
   };
 
   const handleRemoveContactItem = (val: ContactDetailsProps) => {
@@ -186,33 +265,43 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
   };
 
   const handleUpdateContactItem = (val: ContactDetailsProps) => {
-    console.log('handleUpdateContactItem: ', val);
+    // console.log('handleUpdateContactItem: ', val);
     const newItems = contactItems.map(item => item.id === val.id ? val : item);
     setContactItems(newItems);
   };
 
 
-
-  // TODO: transfter googleApiKey to .env
-  const googleApiKey = 'AIzaSyA8vejxIx686PpYxiXBqGpovVCZRurJBLQ';
-
   const handleLocationInput = async (address: string) => {
     const results = await geocodeByAddress(address);
-    setValue('facilityAddress', results as any);
+    // console.log('handleLocationInput: ', results);
+    // console.log('formatted_address: ', results[0].formatted_address);
+    setValue('facilityAddressString', results[0].formatted_address);
     const latLng = await getLatLng(results[0]);
+    setValue('facilityAddress', [latLng.lat, latLng.lng]);
     setCoordinates([latLng.lat, latLng.lng]);
+    setIsFormEdited();
   };
 
+
   const onSubmit = (data: unknown) => {
-    //TODO: POST request to API
+    //TODO: send Redux state newEventData to API through redux middleware
     console.log('POST: sending data...');
     console.log(data);
-    handleNextStep(1);
+    handleNextStep();
   };
 
   const submitForm = () => {
     setHideErrorBox(false);
-    handleSubmit(onSubmit)();
+    let formValues = getValues();
+    // console.log('submitForm:getValues()', formValues);
+    const convertedDates = objectDatesToString(formValues);
+    formValues = { ...formValues, ...convertedDates };
+    const cleanedData = { ...eventStatus, ...formValues, ...removeNullElements(formValues) };
+    // console.log('submitForm:parsedValues :', cleanedData);
+    dispatch(updateNewEventData(cleanedData));
+    handleSubmit(onSubmit,
+      () => { console.log('Submit Failed - has Form Errors', formState.errors); }
+    )();
   };
 
   useImperativeHandle(ref, () => ({ submitForm }));
@@ -268,7 +357,7 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
               {...register('eventYear')}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 setYearSelected(parseInt(e.target.value));
-                handleYearChange(parseInt(e.target.value));
+                setValue('seriesMonth', 0);
                 clearErrors('eventYear');
               }}
             >
@@ -286,13 +375,16 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
           <div className='col'>
             <select
               {...register('seriesMonth')}
+              // value={monthId}
+              defaultValue={formDefaultValues.seriesMonth || 0}
               onChange={(e) => {
+                setSeriesSelected(Number(e.target.value));
                 clearErrors('seriesMonth');
-                handleSelectSeries(parseInt(e.target.value));
               }}
             >
               <option value='' hidden></option>
               {availableSeries.map((item) => {
+                // const isDefault = item.id === formDefaultValues.seriesMonth;
                 return <option key={item.month} value={item.month}>{item.name}</option>
               })}
             </select>
@@ -325,13 +417,17 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
                   maxDate={moment(minStartDate).endOf('year').toDate()}
                   onChange={(e) => {
                     field.onChange(e);
+                    setValue('eventStartTime', null);
+                    setValue('eventEndDate', null);
+                    setValue('registrationStartDate', null);
+                    setValue('registrationEndDate', null);
                     clearErrors('eventStartDate');
                   }}
                   onCalendarClose={() => {
                     // NOTE: state setter fx can't detect field.value actual onChange event
                     // NOTE: hence setter is called under onCalendarClose
                     if (field.value) {
-                      setStartDate(field.value);
+                      setStartDate(moment(field.value).toDate());
                     }
                   }}
                   disabledKeyboardNavigation
@@ -353,14 +449,15 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
               defaultValue={null}
               render={({ field }) => (
                 <DatePicker
+                  selected={field.value}
                   onChange={(e) => {
                     field.onChange(e);
                     clearErrors('eventStartTime');
                   }}
                   className='datepicker-group'
+                  openToDate={startDate}
                   showTimeSelect
                   showTimeSelectOnly
-                  selected={field.value}
                   placeholderText=''
                   timeIntervals={15}
                   timeCaption='Time'
@@ -377,7 +474,6 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
             <Controller
               name='eventEndDate'
               control={control}
-              defaultValue={null}
               render={({ field }) => (
                 <DatePicker
                   selected={field.value}
@@ -429,6 +525,7 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
                     // NOTE: state setter fx can't detect field.value actual onChange event
                     // NOTE: hence state setter is called under onCalendarClose
                     if (field.value) {
+                      setValue('registrationEndDate', null);
                       setRegStartDate(field.value);
                     }
                   }}
@@ -481,63 +578,65 @@ export const BasicInfo = forwardRef(({ setIsFormEdited, handleNextStep, ...props
         />
       </div>
 
-      <div className={styles.formGroup}>
-        <LocationIcon />
-        <div className='label'>
-          <span>Location</span>
-        </div>
-        <div className='location-group'>
-          <div className='col'>
-            <div className='fields-group'>
-              <div className='col'>
-                <input
-                  type='text'
-                  {...register('facilityName')}
-                  onChange={() => clearErrors('facilityName')}
-                />
-                {formState.errors.facilityName ? (
-                  <span className='error'>Facility Name is required</span>
-                ) : (
-                  <label>Name of Playing Facility</label>
-                )}
-              </div>
-              <div className='col'>
-                <GooglePlacesAutocomplete
-                  apiKey={googleApiKey}
-                  selectProps={{
-                    // FIX: for “Warning: Prop `id` did not match”
-                    instanceId: 'facilityAddressId',
-                    className: 'autocomplete-field',
-                    // TODO: trace type for the any below
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    onChange: (e: any) => {
-                      handleLocationInput(e.value.description);
-                    },
-                  }}
-                  {...register('facilityAddress')}
-                />
-                {formState.errors.facilityAddress ?
-                  <span className='error'>Playing Facility Address is required</span> :
-                  <label>Playing Facility Address</label>
-                }
-                <span className='icon map'></span>
-              </div>
-              <div className='col'>
-                <textarea
-                  {...register('facilityNotes')}
-                />
-                <label>Notes</label>
+      {isFormReady &&
+        <div className={styles.formGroup}>
+          <LocationIcon />
+          <div className='label'>
+            <span>Location</span>
+          </div>
+          <div className='location-group'>
+            <div className='col'>
+              <div className='fields-group'>
+                <div className='col'>
+                  <input
+                    type='text'
+                    {...register('facilityName')}
+                    onChange={() => clearErrors('facilityName')}
+                  />
+                  {formState.errors.facilityName ? (
+                    <span className='error'>Facility Name is required</span>
+                  ) : (
+                    <label>Name of Playing Facility</label>
+                  )}
+                </div>
+                <div className='col'>
+                  <GooglePlacesAutocomplete
+                    apiKey={googleApiKey}
+                    selectProps={{
+                      instanceId: 'facilityAddressId',  // FIX: for “Warning: Prop `id` did not match”
+                      className: 'autocomplete-field',
+                      defaultInputValue: addressPlaceHolder,
+                      // TODO: trace type for the any below
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      onChange: (e: any) => {
+                        handleLocationInput(e.value.description);
+                      }
+                    }}
+                    {...register('facilityAddress')}
+                  />
+                  {formState.errors.facilityAddress ?
+                    <span className='error'>Playing Facility Address is required</span> :
+                    <label>Playing Facility Address</label>
+                  }
+                  <span className='icon map'></span>
+                </div>
+                <div className='col'>
+                  <textarea
+                    {...register('facilityNotes')}
+                  />
+                  <label>Notes</label>
+                </div>
               </div>
             </div>
-          </div>
-          <div className='col map-col'>
-            <LeafletMap
-              // TODO: Optimize this form to prevent reloading of Leaflet Map on other formState changes 
-              coordinates={coordinates}
-              style={{ height: '250px', width: '250px' }} />
+            <div className='col map-col'>
+              <LeafletMap
+                // TODO: Optimize this form to prevent reloading of Leaflet Map on other formState changes 
+                coordinates={coordinates}
+                style={{ height: '250px', width: '250px' }} />
+            </div>
           </div>
         </div>
-      </div>
+      }
 
       <div className={`${styles.formGroup} border-none`}>
         <ContactIcon />

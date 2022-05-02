@@ -12,8 +12,8 @@ import SubmitButton from '@/components/buttons/SubmitButton';
 
 import { useAppDispatch } from '@/app/hooks';
 import { useAppSelector } from '@/app/hooks';
-import { getDivsionById, getTotalTeams, updateDivision } from '@/features/eventCreationSteps/divisionsSlice';
-import { adultLevels, adultMakeups, youthLevels, youthMakeups } from '@/static/divisionTypes';
+import { getDivsionById, getTotalTeams, setIsEdited, updateDivision } from '@/features/eventCreation/divisionsSlice';
+import { adultLevels, adultMakeups, youthLevels, youthMakeups } from '@/static/division';
 
 import Pools from './Pools';
 
@@ -33,6 +33,8 @@ type Props = {
 
 export const DivisionEditor = ({ divisionId }: Props) => {
 
+  // console.log('DivisionEditor rendered...');
+
   const dispatch = useAppDispatch();
   const item = useAppSelector(getDivsionById(divisionId));
   const totalTeamCount = useAppSelector(getTotalTeams(divisionId));
@@ -40,21 +42,11 @@ export const DivisionEditor = ({ divisionId }: Props) => {
   const poolsLength = item?.pools.length ?? 1;
   const defaultPool = { id: (poolsLength + 1), name: 'Pool ' + (poolsLength + 1), numberOfTeams: 8 };
 
-  const [divisionType, setDivisionType] = useState('');
-  const [makeUp, setMakeUp] = useState('');
-  const [competitionLevel, setCompetitionLevel] = useState('');
+  const [divisionType, setDivisionType] = useState(item?.divisionType || '');
+  const [makeUp, setMakeUp] = useState(item?.makeUp || '');
+  const [competitionLevel, setCompetitionLevel] = useState(item?.competitionLevel || '');
 
   const [expand, setExpand] = useState(true);
-  const [isEdited, setIsEdited] = useState(false);
-
-  const divisionRootPayload = {
-    id: divisionId,
-    divisionType: divisionType,
-    makeUp: makeUp,
-    competitionLevel: competitionLevel
-    // other itmes to add for dispatch
-    // numberOfPools, pools, isEdited, isValidated, playerFee
-  }
 
   const defaultValues = {
     divisionType: item?.divisionType ?? '',
@@ -64,8 +56,6 @@ export const DivisionEditor = ({ divisionId }: Props) => {
 
   const {
     register,
-    watch,
-    getValues,
     setValue,
     trigger,
     formState,
@@ -75,14 +65,17 @@ export const DivisionEditor = ({ divisionId }: Props) => {
     defaultValues: defaultValues
   });
 
+  // console.log('item: ', item);
+
   useEffect(() => {
 
     if (formState.isValid) {
       // Submit Division Form
       console.log('Division FORM is VALID');
-      saveDivision();
+      dispatch(setIsEdited({ id: divisionId, isEdited: false }));
     } else {
       console.log('Division form is NOT VALID');
+      dispatch(setIsEdited({ id: divisionId, isEdited: true }));
     }
 
   }, [formState.isValid]);
@@ -103,24 +96,24 @@ export const DivisionEditor = ({ divisionId }: Props) => {
     // console.log(getValues());
   }, [divisionType]);
 
+
   const handleSave = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
+    saveDivision();
     trigger();
   };
 
   const addPool = () => {
-    setIsEdited(true);
     if (item?.pools) {
       const updatedPools = [...item.pools, defaultPool];
       const payload = {
-        ...divisionRootPayload,
+        ...item,
         numberOfPools: item.numberOfPools + 1,
         pools: updatedPools,
         isEdited: true,
-        isValidated: true,
         playerFee: item?.playerFee
       };
-      // console.log('addPool: ', payload);
+      // console.log('addPool payload: ', payload);
       dispatch(updateDivision(payload));
     }
   }
@@ -132,12 +125,11 @@ export const DivisionEditor = ({ divisionId }: Props) => {
   }
 
   const subtractPool = () => {
-    setIsEdited(true);
     if (item?.pools && poolsLength > 1) {
       const updatedPools = [...item.pools];
       updatedPools.pop();
       const payload = {
-        ...divisionRootPayload,
+        ...item,
         numberOfPools: item.numberOfPools - 1,
         pools: updatedPools,
         isEdited: true,
@@ -152,7 +144,7 @@ export const DivisionEditor = ({ divisionId }: Props) => {
   const numerOfPoolsRef = useRef(0);
   const handleNumberOfPoolsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    setIsEdited(true);
+    dispatch(setIsEdited({ id: divisionId, isEdited: true }));
     const oldValue = numerOfPoolsRef.current;
     const newValue = Number(e.target.value);
     if (oldValue < newValue) {
@@ -178,12 +170,12 @@ export const DivisionEditor = ({ divisionId }: Props) => {
       isValidated: true,
       playerFee: item?.playerFee,
     };
+    // console.log('saveDivision: ', payload);
     dispatch(updateDivision(payload));
   }
 
 
-  console.log(`DivisionEditor id: ${divisionId} render...`);
-  console.log('form values:', getValues());
+  // console.log('form values:', getValues());
 
   return (
     <div className={`${formStyles.contactForm} ${divisionStyles.divisionEditor} ${expand ? formStyles['expanded'] : formStyles['collapsed']}`} >
@@ -205,7 +197,7 @@ export const DivisionEditor = ({ divisionId }: Props) => {
             {...register('divisionType')}
             onChange={(e) => {
               setDivisionType(e.target.value);
-              setIsEdited(true);
+              dispatch(setIsEdited({ id: divisionId, isEdited: true }));
             }}
           >
             <option value='adult'>Adult</option>
@@ -221,7 +213,7 @@ export const DivisionEditor = ({ divisionId }: Props) => {
             {...register('makeUp')}
             onChange={(e) => {
               setMakeUp(e.target.value);
-              setIsEdited(true);
+              dispatch(setIsEdited({ id: divisionId, isEdited: true }));
             }}
           >
             {(divisionType === 'youth') ?
@@ -243,8 +235,9 @@ export const DivisionEditor = ({ divisionId }: Props) => {
           <select
             {...register('competitionLevel')}
             onChange={(e) => {
+              e.preventDefault();
               setCompetitionLevel(e.target.value);
-              setIsEdited(true);
+              dispatch(setIsEdited({ id: divisionId, isEdited: true }));
             }}
           >
             {(divisionType === 'adult') ?
@@ -293,7 +286,7 @@ export const DivisionEditor = ({ divisionId }: Props) => {
         <div className='wrap'>
           <SubmitButton
             clickHander={handleSave}
-            disabled={!isEdited}
+            disabled={!item?.isEdited}
           >
             Save
           </SubmitButton>

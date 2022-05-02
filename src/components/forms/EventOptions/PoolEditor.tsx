@@ -1,84 +1,71 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
+import React, { useEffect, useState } from 'react';
 
 import fieldStyles from '@/components/forms/styles/FieldsGroup.module.scss';
 
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { getDivisions, getPoolbyParentAndId } from '@/features/eventCreationSteps/divisionsSlice';
-import { divisionNumberOfTeams } from '@/static/divisionTypes';
+import { getDivisionStatusById, getPoolbyParentAndId, updatePool } from '@/features/eventCreation/divisionsSlice';
+import { divisionNumberOfTeams } from '@/static/division';
+import { useDebounce } from '@/utils/customHooks';
 
 import { PoolItemProps } from '@/types/division';
 
-const schema = yup
-  .object({
-    name: yup.string().required(),
-    numberOfTeams: yup.number().positive()
-  })
-  .required();
+
 
 type Props = {
   divisionId: number,
-  itemData: PoolItemProps,
+  poolId: number,
 }
 
-export default function PoolEditor({ itemData, divisionId }: Props) {
+export default function PoolEditor({ divisionId, poolId, }: Props) {
 
   const dispatch = useAppDispatch();
-  const divisions = useAppSelector(getDivisions);
-  const item = divisions.find(i => i.id === divisionId);
+  const itemData: PoolItemProps | any = useAppSelector(getPoolbyParentAndId(divisionId, poolId));
+  const isValidated = useAppSelector(getDivisionStatusById(divisionId));
+  // console.log('poolId: ', poolId);
+  // console.log('itemData: ', itemData);
 
-  const poolData = useAppSelector(getPoolbyParentAndId(divisionId, itemData.id));
+  const [name, setName] = useState<string>(itemData?.name || ('Pool ' + poolId));
+  const debouncedValue = useDebounce<string>(name, 500);
 
-  const [name, setName] = useState<string>(itemData.name);
-  const [numberOfTeams, setNumberOfTeams] = useState<number>(itemData.numberOfTeams);
-
-  const defaultValues = {
-    name: itemData.name,
-    numberOfTeams: itemData.numberOfTeams
+  const handlChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setName(val);
   }
 
-  const {
-    register,
-    watch,
-    getValues,
-    setValue,
-    trigger,
-    formState,
-  } = useForm({
-    resolver: yupResolver(schema),
-    defaultValues: defaultValues
-  });
+  useEffect(() => {
+    dispatch(updatePool({
+      divId: divisionId,
+      poolIndex: itemData?.id - 1,
+      poolName: debouncedValue,
+      poolTeamCount: itemData?.numberOfTeams
+    }));
 
-  // console.log('Render: ' + name + ' | ' + numberOfTeams);
+  }, [debouncedValue]);
+
 
   return (
     <div className={`${fieldStyles.fieldsGroup} ${fieldStyles['inner-box']}`}>
       <div className='col'>
         <input
-          // value={name}
-          {...register('name')}
-          onChange={(e) => {
-            const val = e.target.value;
-            setValue('name', val);
-            setName(val);
-          }}
+          value={name}
+          onChange={handlChangeName}
         />
-        {formState.errors.name ?
-          <span className='error'>Pool Name is required</span> :
-          <label>Pool Name</label>
+        {name ?
+          <label>Pool Name</label> :
+          <span className='error'>Pool Name is required</span>
         }
       </div>
       <div className='col'>
         <select
-          {...register('numberOfTeams')}
-          // value={numberOfTeams}
+          value={itemData?.numberOfTeams}
           onChange={(e) => {
             const val = e.target.value;
-            setNumberOfTeams(Number(val));
-            console.log('changed number of teams: ' + val);
-            console.log('update a pool.numberOfTeams in division ID: ', divisionId);
+            dispatch(updatePool({
+              divId: divisionId,
+              poolIndex: itemData?.id - 1,
+              poolName: itemData?.name,
+              poolTeamCount: Number(val)
+            }));
           }}
         >
           {divisionNumberOfTeams.map((item, i) => {

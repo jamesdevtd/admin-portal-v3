@@ -4,7 +4,7 @@ import styles from './Divisions.module.scss';
 
 import { useAppDispatch } from '@/app/hooks';
 import { useAppSelector } from '@/app/hooks';
-import { addDivision, getDivisions } from '@/features/eventCreationSteps/divisionsSlice';
+import { addDivision, getDivisions } from '@/features/eventCreation/divisionsSlice';
 
 import { DivisionEditor } from './DivisionEditor';
 

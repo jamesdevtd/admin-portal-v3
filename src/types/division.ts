@@ -25,5 +25,5 @@ export type DivisionContextType = {
 export interface PlayerFeeItemProps {
   divisionId: number;
   isFree: boolean;
-  fee: number | null;
+  fee: number | string | null;
 }

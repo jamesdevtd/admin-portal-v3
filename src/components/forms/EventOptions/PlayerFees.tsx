@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useAppSelector } from '@/app/hooks';
-import { getDivisions } from '@/features/eventCreationSteps/divisionsSlice';
+import { getDivisions } from '@/features/eventCreation/divisionsSlice';
 
 import PlayerFeeEditor from './PlayerFeeEditor';
 
@@ -10,17 +10,32 @@ import PlayerFeeEditor from './PlayerFeeEditor';
 export default function PlayerFees() {
 
   const divisions = useAppSelector(getDivisions);
+  const [showFees, setShowFees] = useState(false);
+
+  useEffect(() => {
+    divisions.map((item) => {
+      if (item.divisionType) {
+        setShowFees(true);
+        return;
+      }
+    });
+  }, [divisions])
 
   return (
-    <div className="items flex flex-col gap-3">
-      {divisions &&
-        // TODO: sort by ID: elems.sort((a, b) => a.id - b.id);
-        divisions.map((item) => item.divisionType &&
-          <PlayerFeeEditor
-            key={item.id}
-            divisionId={item.id}
-          />
-        )}
-    </div>
+    <>
+      {showFees ?
+        <div className="fee-items">
+          {divisions &&
+            divisions.map((item) => item.divisionType &&
+              <PlayerFeeEditor
+                key={item.id}
+                divisionId={item.id}
+              />
+            )
+          }
+        </div> :
+        <div className='center-note'>Please create a Division - once created, Division Entry Fee options will be displayed here</div>
+      }
+    </>
   );
 }

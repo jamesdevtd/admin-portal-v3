@@ -82,7 +82,7 @@
         border-bottom-width: 1px;
         height: 30px;
         div:first-child {
-          @apply p-0;
+          @apply p-0 w-full;
         }
         > div > div:last-child {
           @apply w-full;

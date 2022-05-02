@@ -30,6 +30,6 @@ export const onboardingStepsSlice = createSlice({
 export const { increment, decrement, setCurrentStep } =
   onboardingStepsSlice.actions;
 
-export const selectStep = (state: RootState) => state.onboardingStep.value;
+export const getStep = (state: RootState) => state.onboardingStep.value;
 
 export default onboardingStepsSlice.reducer;

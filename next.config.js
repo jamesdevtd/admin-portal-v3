@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path');
 module.exports = {
   eslint: {
@@ -47,15 +48,15 @@ module.exports = {
     includePaths: [path.join(__dirname, 'styles')],
   },
 
-  // async redirects() {
-  //   return [
-  //     {
-  //       source: '/dashboard',
-  //       destination: '/events',
-  //       permanent: true,
-  //     },
-  //   ]
-  // }
+  async redirects() {
+    return [
+      {
+        source: '/events',
+        destination: '/events/1',
+        permanent: true,
+      },
+    ]
+  }
 
   //TODO: add next-http-proxy-middleware
   // async rewrites() {
