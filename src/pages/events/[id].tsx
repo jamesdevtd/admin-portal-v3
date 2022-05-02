@@ -10,10 +10,9 @@ import { EventPublicPage } from '@/components/forms/EventPublicPage';
 import Layout from '@/components/layout/Layout';
 import ButtonLink from '@/components/links/ButtonLink';
 
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { useAppSelector } from '@/app/hooks';
 import {
   getCurrentStep,
-  getNewEventData,
   getStepById
 } from '@/features/eventCreation/eventCreationSlice';
 
@@ -41,9 +40,7 @@ type Props = {
 
 export default function Events({ id }: Props) {
 
-  const dispatch = useAppDispatch();
   const currentStep = useAppSelector(getCurrentStep);
-  const newEventData = useAppSelector(getNewEventData);
   const isFormEdited = useAppSelector(getStepById(currentStep))?.isEdited;
 
   const eventStatus = { id: id, status: 'draft' };
@@ -68,7 +65,7 @@ export default function Events({ id }: Props) {
   };
 
   return (
-    <div className={`page-event event-id-${id}`}>
+    <div className={`page-event event-id-${id} ${isFormEdited ? 'is-edited' : ''}`}>
       <Layout>
 
         <div className={styles.Events}>

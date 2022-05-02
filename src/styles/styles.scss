@@ -1,5 +1,5 @@
-@import './base/typography.scss';
-@import './base/colors.scss';
+@import "./base/typography.scss";
+@import "./base/colors.scss";
 
 .container {
   @apply mx-auto block max-w-xl;
@@ -15,7 +15,7 @@
     @apply flex flex-col gap-5;
   }
   h1 {
-    @apply text-green-900;
+    @apply text-blue-brand;
   }
   p {
     @apply font-thin;
