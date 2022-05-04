@@ -9,7 +9,7 @@
 
 .CropperModal :global {
   @apply grid place-items-center w-full h-full top-0 left-0 fixed;
-  background: rgba(235, 237, 247, 0.8);
+  background: rgba(235, 237, 247, 0.9);
   .cropper-stage {
     // @apply overflow-hidden m-10;
     margin: auto;
