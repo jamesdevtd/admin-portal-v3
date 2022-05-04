@@ -215,9 +215,7 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
   }
 
   const handleSelectSeries = (id: number) => {
-    // setMonthId(id);
-    // console.log('init handleSelectSeries for: ', id);
-    // console.log('yearSelected: ', yearSelected);
+    setMonthId(id);
     clearEventsDatesFields();
 
     // LOGIC: If selected year & month is current AND today's date is 7 or greater 
