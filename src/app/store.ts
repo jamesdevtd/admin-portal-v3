@@ -3,6 +3,7 @@ import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import counterReducer from '@/features/counter/counterSlice';
 import divisionsReducer from '@/features/eventCreation/divisionsSlice';
 import eventCreationReducer from '@/features/eventCreation/eventCreationSlice';
+import eventPublicPageReducer from '@/features/eventCreation/eventPublicPageSlice';
 import onboardingStepReducer from '@/features/onboardingSteps/onboardingStepsSlice';
 
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
     onboardingStep: onboardingStepReducer,
     eventCreation: eventCreationReducer,
     divisions: divisionsReducer,
+    eventPublicPage: eventPublicPageReducer,
   },
 });
 

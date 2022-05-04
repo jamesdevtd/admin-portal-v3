@@ -12,7 +12,7 @@ import SubmitButton from '@/components/buttons/SubmitButton';
 
 import { useAppDispatch } from '@/app/hooks';
 import { useAppSelector } from '@/app/hooks';
-import { getDivsionById, getTotalTeams, setIsEdited, updateDivision } from '@/features/eventCreation/divisionsSlice';
+import { getDivisionById, getTotalTeams, setIsEdited, updateDivision } from '@/features/eventCreation/divisionsSlice';
 import { adultLevels, adultMakeups, youthLevels, youthMakeups } from '@/static/division';
 
 import Pools from './Pools';
@@ -36,7 +36,7 @@ export const DivisionEditor = ({ divisionId }: Props) => {
   // console.log('DivisionEditor rendered...');
 
   const dispatch = useAppDispatch();
-  const item = useAppSelector(getDivsionById(divisionId));
+  const item = useAppSelector(getDivisionById(divisionId));
   const totalTeamCount = useAppSelector(getTotalTeams(divisionId));
 
   const poolsLength = item?.pools.length ?? 1;

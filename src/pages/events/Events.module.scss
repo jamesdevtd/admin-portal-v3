@@ -121,7 +121,7 @@ $sidebarWidth: 150px;
     max-height: calc(100vh - 200px);
     margin-bottom: 20px;
     overflow-y: scroll;
-    form.main-form {
+    .main-form {
       @apply relative mb-5 flex flex-col gap-8 py-4 px-5 pb-20;
       > h3 {
         @apply mb-1 text-lg font-semibold text-blue-dark;

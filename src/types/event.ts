@@ -25,3 +25,11 @@ export interface EventProps {
   registrationStartDate: string; // string($date-time)
   seriesMonth: number;
 }
+
+export interface MainEventImageProps {
+  eventId: number;
+  src: string;
+  modalSrc: string;
+  output: string;
+  isModalOpen: boolean;
+}

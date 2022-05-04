@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import Image from 'next/image';
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -10,10 +9,10 @@ import styles from './EventPublicPage.module.scss';
 import { useAppDispatch } from '@/app/hooks';
 import { setCurrentStep, setIsEditedById } from '@/features/eventCreation/eventCreationSlice';
 
+import MainEventImage from './ImageDropCrop/MainEventImage';
+
 import CloseIcon from '~/icons/close.svg';
 import ErrorIcon from '~/icons/error.svg';
-import PlaceholderDescription from '~/images/wip-placeholders/description-placeholder.png';
-import PlaceholderMainEvent from '~/images/wip-placeholders/main-event-placeholder.png';
 
 const schema = yup
   .object({
@@ -51,10 +50,11 @@ const formDefaultValues = {
 
 
 type Props = {
-  step: number
+  step: number,
+  eventStatus: { id: number, status: string }
 }
 
-export const EventPublicPage = forwardRef(({ step, ...props }: Props, ref) => {
+export const EventPublicPage = forwardRef(({ step, eventStatus, ...props }: Props, ref) => {
 
   const dispatch = useAppDispatch();
 
@@ -129,7 +129,7 @@ export const EventPublicPage = forwardRef(({ step, ...props }: Props, ref) => {
 
 
   return (
-    <form
+    <div
       {...ref}
       {...props}
       onSubmit={handleSubmit(onSubmit)}
@@ -147,26 +147,9 @@ export const EventPublicPage = forwardRef(({ step, ...props }: Props, ref) => {
 
       <h3>Event Public Page</h3>
 
-      <div className={styles.formGroup}>
-        <Image
-          src={PlaceholderMainEvent}
-          alt='placeholder'
-          className='img-placeholder'
-        />
-
-      </div>
-
-      <div className={styles.formGroup}>
-        <Image
-          src={PlaceholderDescription}
-          alt='placeholder'
-          className='img-placeholder'
-        />
-      </div>
+      <MainEventImage eventId={eventStatus.id} />
 
 
-
-
-    </form >
+    </div >
   );
 });

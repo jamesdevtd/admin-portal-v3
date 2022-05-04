@@ -4,7 +4,7 @@ import styles from './Divisions.module.scss';
 import fieldStyles from '@/components/forms/styles/FieldsGroup.module.scss';
 
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { getDivsionById, updateDivisionFee } from '@/features/eventCreation/divisionsSlice';
+import { getDivisionById, updateDivisionFee } from '@/features/eventCreation/divisionsSlice';
 import useDebounce from '@/utils/customHooks';
 
 
@@ -14,9 +14,9 @@ type Props = {
 
 export default function PlayerFeeEditor({ divisionId }: Props) {
   const dispatch = useAppDispatch();
-  const division = useAppSelector(getDivsionById(divisionId));
+  const division = useAppSelector(getDivisionById(divisionId));
   const divisionName = `${division?.divisionType} ${division?.makeUp} ${division?.competitionLevel}`;
-  const item = useAppSelector(getDivsionById(divisionId))?.playerFee;
+  const item = useAppSelector(getDivisionById(divisionId))?.playerFee;
 
   const [isFree, setIsFree] = useState(item?.isFree || false);
   const [fee, setFee] = useState(item?.fee || '');

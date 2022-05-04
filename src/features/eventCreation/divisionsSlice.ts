@@ -100,7 +100,7 @@ export const getDivisions = (state: RootState) => state.divisions.items;
 export const getNumberOfDivisions = (state: RootState) =>
   state.divisions.items.length;
 
-export const getDivsionById = (id: number) => (state: RootState) => {
+export const getDivisionById = (id: number) => (state: RootState) => {
   return state.divisions.items.find((i) => i.id === id);
 };
 
