@@ -11,7 +11,7 @@ import UnstyledLink from '@/components/links/UnstyledLink';
 import { handleSignUp } from '@/services/signup';
 
 import TagxLogo from '~/svg/tagx.svg';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 import { signIn } from 'next-auth/react'
 
 export default function SignUpPage() {
