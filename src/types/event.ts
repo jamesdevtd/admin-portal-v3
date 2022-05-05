@@ -26,10 +26,21 @@ export interface EventProps {
   seriesMonth: number;
 }
 
-export interface MainEventImageProps {
+export interface EventImageProps {
   eventId: number;
   src: string;
   modalSrc: string;
   output: string;
   isModalOpen: boolean;
+}
+
+export interface CroppedImageProps {
+  id: number;
+  src: string;
+}
+export interface CropperModalProps {
+  imgId: number;
+  src: string;
+  isOpen: boolean;
+  isReCrop: boolean;
 }

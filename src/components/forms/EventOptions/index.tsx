@@ -7,7 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styles from './EventOptions.module.scss';
 
 import { useAppDispatch } from '@/app/hooks';
-import { setCurrentStep, setIsEditedById } from '@/features/eventCreation/eventCreationSlice';
+import { setCurrentStep, setIsEditedById, setIsValidatedById } from '@/features/eventCreation/eventCreationSlice';
 
 import Divisions from './Divisions';
 import PlayerFees from './PlayerFees';
@@ -84,7 +84,8 @@ export const EventOptions = forwardRef(({ step, ...props }: Props, ref) => {
     //TODO: POST request to API
     console.log('Sending EventOptions FORM data...');
     console.log(data);
-    // handleNextStep(2);
+    dispatch(setIsValidatedById(2));
+    handleNextStep();
   };
 
   const submitForm = () => {

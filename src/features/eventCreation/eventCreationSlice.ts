@@ -33,6 +33,7 @@ export const eventCreationSlice = createSlice({
     setIsValidatedById: (state, action: PayloadAction<number>) => {
       const index = state.steps.findIndex((i) => i.id === action.payload);
       if (index !== -1) state.steps[index].isValidated = true;
+      if (index !== -1) state.steps[index].isEdited = false;
     },
     updateNewEventData: (state, action: PayloadAction<EventProps>) => {
       state.newEventData = { ...state.newEventData, ...action.payload };

@@ -42,6 +42,12 @@ button,
   &.grey {
     @extend .bg-grey-gradient;
   }
+  &.blue-outline {
+    @apply bg-white border-blue-brand flex flex-row items-center bg-none border shadow-none text-blue-brand px-5;
+    svg {
+      @apply w-5 h-auto opacity-60 my-auto mr-3;
+    }
+  }
 }
 
 input:focus {

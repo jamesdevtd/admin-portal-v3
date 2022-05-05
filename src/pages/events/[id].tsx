@@ -16,7 +16,7 @@ import {
   getCurrentStep,
   getStepById
 } from '@/features/eventCreation/eventCreationSlice';
-import { getEventMainImage } from '@/features/eventCreation/eventPublicPageSlice';
+import { getCropperModal, getMainImage } from '@/features/eventCreation/eventPublicPageSlice';
 
 import EventsMenu from './EventsMenu';
 
@@ -44,7 +44,8 @@ export default function Events({ id }: Props) {
 
   const currentStep = useAppSelector(getCurrentStep);
   const isFormEdited = useAppSelector(getStepById(currentStep))?.isEdited;
-  const imgObject = useAppSelector(getEventMainImage);
+  const imgObject = useAppSelector(getMainImage);
+  const cropperModal = useAppSelector(getCropperModal);
 
 
   const eventStatus = { id: id, status: 'draft' };
@@ -54,7 +55,7 @@ export default function Events({ id }: Props) {
   useEffect(() => {
     // TODO: create actual API request or redux middleware 
     // EXAMPLE:
-    // const loadEvents = async () => {
+    // const loadEventData = async () => {
     //   const { data } = await axios.get(`/api/events/${id}`);
     //   console.log(data);
     // };
@@ -70,9 +71,10 @@ export default function Events({ id }: Props) {
 
   return (
     <div className={`page-event event-id-${id} ${isFormEdited ? 'is-edited' : ''}`}>
+
       <Layout>
 
-        <div className={styles.Events}>
+        <div className={`${styles.Events} white-box`}>
 
           <header className='content-header'>
             <CalendarIcon />
@@ -100,8 +102,6 @@ export default function Events({ id }: Props) {
           </div>
 
         </div>
-
-
       </Layout>
 
       <div className={`${styles.footerNav} ${isFormEdited ? '' : 'hidden'}`}>
@@ -119,9 +119,8 @@ export default function Events({ id }: Props) {
         </div>
       </div>
 
-      {imgObject.modalSrc &&
-        <CropperModal />
-      }
+      <CropperModal />
+
     </div>
   );
 }

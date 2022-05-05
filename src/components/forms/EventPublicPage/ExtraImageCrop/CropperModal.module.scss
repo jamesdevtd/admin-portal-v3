@@ -1,0 +1,36 @@
+.box {
+  display: inline-block;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.img-preview {
+  overflow: hidden;
+}
+
+.CropperModal :global {
+  @apply grid place-items-center w-full h-full top-0 left-0 fixed;
+  background: rgba(235, 237, 247, 0.9);
+  .cropper-stage {
+    // @apply overflow-hidden m-10;
+    margin: auto;
+    max-width: 800px;
+    width: calc(100% - 300px);
+    .cropper-bg {
+      // max-height: 400px;
+    }
+  }
+  .cropper-buttons {
+    @apply z-20 relative w-full p-10 flex flex-row gap-5 justify-end;
+    position: fixed;
+    height: auto;
+    width: 100%;
+    top: 0;
+    z-index: 2;
+  }
+  .cropper-output {
+    @apply border-2 border-black p-5;
+    img {
+      @apply block w-full;
+    }
+  }
+}

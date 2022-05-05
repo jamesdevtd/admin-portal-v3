@@ -4,74 +4,97 @@ import React, { useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone';
 
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { getEventMainImage, updateMainImage } from '@/features/eventCreation/eventPublicPageSlice';
+import { addCroppedImage, getCroppedImageById, updateCroppedImage, updateCropperModal } from '@/features/eventCreation/eventPublicPageSlice';
 
 import ImagePlaceholder from '~/svg/image-placeholder.svg';
 
 type Props = {
-  eventId: number
+  imgId: number
 }
 
-export default function MainEventImage({ eventId }: Props) {
+export default function ImageDropCrop({ imgId }: Props) {
+
 
   const dispatch = useAppDispatch();
-  const imgObject = useAppSelector(getEventMainImage);
+  const imgObject = useAppSelector(getCroppedImageById(imgId));
 
-  const [files, setFiles] = useState<any[]>([]);
+  // const [files, setFiles] = useState<any[]>([]);
+  const [thumbSrc, setThumbSrc] = useState('');
   const [error, setError] = useState('');
 
   const {
     getRootProps,
     getInputProps,
+    open
   } = useDropzone({
+    useFsAccessApi: false,
+    maxSize: 5000000,
     maxFiles: 1,
     accept: 'image/*',
     onDrop: acceptedFiles => {
-      setFiles(acceptedFiles.map(file => Object.assign(file, {
-        preview: URL.createObjectURL(file)
-      })));
+      // setFiles(acceptedFiles.map(file => Object.assign(file, {
+      //   preview: URL.createObjectURL(file)
+      // })));
+      acceptedFiles.map(file => {
+        const imgUrl = URL.createObjectURL(file);
+        // setThumbSrc(imgUrl);
+        setSourceImage(imgUrl);
+        return;
+      });
     },
     onDropRejected: fileRejections => {
-      fileRejections.map(file => setError(file.errors[0].message));
+      fileRejections.map(file => {
+        if (file.errors[0].code === 'file-too-large') {
+          setError('Not Allowed: File is larger than 5MB')
+        }
+        setError(file.errors[0].message);
+      });
     },
   });
 
   useEffect(() => {
-    if (files.length) {
-      setSourceImage(files[0]?.preview);
+    async function getImgData() {
+      const base64Response = await fetch(imgObject?.src as any);
+      const blob = await base64Response.blob();
+      const imgUrl = URL.createObjectURL(blob);
+      setThumbSrc(imgUrl);
+      // setThumbSrc(blob as any);
     }
-  }, [files])
-
+    if (imgObject?.src) {
+      // const imgUrl = URL.createObjectURL(file);
+      // setSourceImage(files[0]?.preview);
+      console.log('store img src changed, updating thumb src');
+      getImgData();
+    }
+  }, [imgObject])
 
   const setSourceImage = (val: string) => {
-    dispatch(updateMainImage({
-      ...imgObject,
-      ...{ src: val, modalSrc: files[0]?.preview }
-    }));
+    if (imgObject) {
+      dispatch(updateCroppedImage({ id: imgId, src: val }));
+    } else {
+      dispatch(addCroppedImage({ id: imgId, src: val }));
+    }
+    dispatch(updateCropperModal({ imgId: imgId, src: val, isOpen: true, isReCrop: false }));
   }
 
-  const removeImages = () => {
-    dispatch(updateMainImage({
-      ...imgObject,
-      ...{ src: '', output: '', modalSrc: '' }
-    }))
+  const removeImage = () => {
+    dispatch(updateCroppedImage({ id: imgId, src: '' }));
+    setThumbSrc('');
   }
 
   const reCrop = () => {
-    dispatch(updateMainImage({
-      ...imgObject,
-      ...{ modalSrc: imgObject.output }
-    }))
+    dispatch(updateCropperModal({ imgId: imgId, src: thumbSrc, isOpen: true, isReCrop: true }));
   }
 
   const thumb =
-    <div key={files[0]?.name}>
+    <div key={imgId}>
       <div >
         <img
-          alt={files[0]?.name}
-          src={imgObject.output || files[0]?.preview}
-          // Revoke data uri after image is loaded
-          onLoad={() => { URL.revokeObjectURL(files[0]?.preview) }}
+          alt={`cropped image ${imgId} `}
+          src={thumbSrc}
+        // TODO test performance on 10+ images
+        // Revoke data uri after image is loaded
+        // onLoad={() => { URL.revokeObjectURL(thumbSrc) }}
         />
       </div>
     </div>
@@ -80,25 +103,23 @@ export default function MainEventImage({ eventId }: Props) {
     <section className="dropzone-box">
       <div {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
-        {imgObject.output ?
+        {thumbSrc ?
           thumb :
-          <>
-            <div className="error">{error}</div>
-            <ImagePlaceholder />
+          <div className='placeholder-info'>
+            {error ?
+              <h3 className="error">{error}</h3> :
+              <ImagePlaceholder />
+            }
             <div className="instructions">
               <h3>Drag and drop some files here, or click to select files</h3>
-              <p>JPEG or PNG, no larger than 10MB.</p>
+              <p>JPEG or PNG, no larger than 5MB.</p>
             </div>
-          </>
+          </div>
         }
-
       </div>
 
-      {(files.length > 0 || imgObject.output) &&
-        <div className="flex gap-5 mt-3">
-          <button className='btn grey' onClick={removeImages}>Remove Image</button>
-          <button className='btn' onClick={reCrop}>Crop Image</button>
-        </div>
+      {thumbSrc &&
+        <button type="button" className="btn replace" onClick={open}>Replace Image</button>
       }
     </section>
   )

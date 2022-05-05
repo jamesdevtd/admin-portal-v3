@@ -176,7 +176,7 @@
   }
 
   .dropzone-box {
-    @apply p-10 text-center grid place-items-center w-full mt-2;
+    @apply text-center grid place-items-center w-full relative;
     @apply shadow-[0_0_2px_0_rgb(0,0,0,0.6)];
     background-color: #ebedf7;
     // border-color: #979797;
@@ -187,34 +187,25 @@
       height: 54px;
       opacity: 0.5;
     }
-    h3 {
-      @apply text-base text-gray-500;
-    }
-    p {
-      @apply text-xxs;
-    }
-  }
-
-  .draggable-fields {
-    @apply flex flex-col gap-10;
-    .box-input {
-      input {
-        @apply w-full border border-gray-400;
+    .placeholder-info {
+      @apply p-10;
+      .error {
+        @apply text-md text-red-500;
+      }
+      h3 {
+        @apply text-base text-gray-500;
+      }
+      p {
+        @apply text-xxs;
       }
     }
-    .rdw-editor-toolbar {
-      > div {
-        @apply hidden;
-        &:nth-child(1),
-        &:nth-child(2),
-        &:nth-child(3),
-        &:nth-child(4) {
-          @apply flex;
-        }
-      }
-    }
-    .rdw-editor-main {
-      @apply border border-gray-400 p-3;
+    .replace {
+      @apply absolute font-body capitalize hover:opacity-100;
+      position: absolute;
+      right: 15px;
+      bottom: 15px;
+      padding: 5px 20px;
+      opacity: 0.7;
     }
   }
 }
@@ -230,6 +221,11 @@
   }
   &:last-child:after {
     display: none;
+  }
+  &.no-b-line {
+    &:after {
+      content: none;
+    }
   }
 }
 

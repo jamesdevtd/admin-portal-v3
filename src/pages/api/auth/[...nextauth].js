@@ -1,3 +1,4 @@
+import jwt_decode from 'jwt-decode';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
@@ -14,9 +15,9 @@ export default NextAuth({
           type: 'email',
           placeholder: 'affiliate@tagx.dev',
         },
-        password: { 
-          label: 'Password', 
-          type: 'password' 
+        password: {
+          label: 'Password',
+          type: 'password'
         }
       },
       async authorize(credentials) {
@@ -25,7 +26,7 @@ export default NextAuth({
           password: credentials.password,
         };
 
-        const res = await fetch(process.env.API_BASE_URL + '/login', {
+        const res = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + '/login', {
           method: 'POST',
           body: JSON.stringify(payload),
           headers: {
@@ -53,18 +54,29 @@ export default NextAuth({
     signIn: '/login',
   },
   callbacks: {
-    async jwt({ token, user, account }) {
-      if (account && user) {
+    async jwt({ token, user }) {
+      if (user) {
         return {
           ...token,
-          accessToken: user.token
+          accessToken: user.token,
+          firstName: user.email
         };
       }
       return token;
     },
     async session({ session, token }) {
-      session.user.accessToken = token.accessToken;
-      session.user.accessTokenExpires = token.exp;
+      session.user = {
+        ...session.user
+      };
+      if (token) {
+        const decodedToken = jwt_decode(token.accessToken);
+        session.user = {
+          ...session.user,
+          ...decodedToken,
+        }
+        session.user.name = decodedToken?.firstName + ' ' + decodedToken?.lastName;
+        session.user.email = decodedToken?.username;
+      }
       return session;
     },
     async redirect({ url, baseUrl }) {

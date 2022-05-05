@@ -1,0 +1,107 @@
+@import "@/styles/base/animations.scss";
+
+.formGroup :global {
+  .draggable-fields {
+    @apply flex flex-col gap-10;
+    > section {
+      @apply grid items-center gap-3 inline-grid grid-cols-2;
+      grid-template-columns: auto 30px;
+    }
+    .box-input {
+      @apply flex flex-row items-center justify-center;
+      @apply w-full border border-gray-400;
+      svg {
+        @apply w-6 h-auto opacity-60 my-auto mx-3;
+      }
+      input {
+        @apply w-full border-none placeholder:opacity-80 placeholder:text-base;
+      }
+    }
+    .rdw-editor-toolbar {
+      @apply flex;
+      @apply border border-gray-400 flex mb-0 border-b-0 py-1 pb-0;
+      > div {
+        @apply hidden;
+      }
+      [class$="-wrapper"] {
+        @apply border-none;
+        img {
+          @apply border-none;
+        }
+      }
+      .rdw-inline-wrapper {
+        @apply flex;
+        > div {
+          @apply hidden;
+        }
+        [title~="Bold"],
+        [title~="Italic"] {
+          @apply flex;
+        }
+      }
+      .rdw-list-wrapper {
+        @apply flex;
+        > div {
+          @apply hidden;
+          &:nth-child(1),
+          &:nth-child(2) {
+            @apply flex;
+          }
+        }
+      }
+      .rdw-history-wrapper,
+      .rdw-block-wrapper {
+        @apply flex;
+      }
+      // order
+      .rdw-block-wrapper {
+        order: 1;
+        .rdw-dropdown-carettoopen {
+          @apply opacity-60;
+        }
+      }
+      .rdw-inline-wrapper {
+        order: 11;
+        @apply opacity-60;
+      }
+      .rdw-list-wrapper {
+        order: 12;
+        @apply opacity-60;
+      }
+      .rdw-history-wrapper {
+        @apply ml-auto;
+        order: 2;
+      }
+    }
+    .rdw-editor-main {
+      @apply border border-gray-400 p-3;
+    }
+    .buttons-row {
+      @apply flex flex-row gap-4 justify-center;
+      button:nth-child(1) {
+        svg {
+          width: 13px;
+        }
+      }
+    }
+    .DragButtons {
+      @apply grid gap-0 place-items-center;
+      button {
+        width: 18px;
+        height: auto;
+        opacity: 1;
+        svg {
+          @apply w-full h-auto;
+        }
+        &:not(.delete) {
+          height: 16px;
+          width: 22px;
+          opacity: 0.6;
+        }
+        &.delete {
+          @apply mt-3;
+        }
+      }
+    }
+  }
+}

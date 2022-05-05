@@ -4,25 +4,40 @@ import { useEffect, useState } from 'react';
 import styles from './Header.module.scss';
 
 import BellIcon from '~/icons/bell.svg';
-import UserInitials from '~/icons/user-init.svg';
 
 
 export default function Header() {
-  const [username, setUsername] = useState('');
+  const [userFullName, setUserFullName] = useState('');
+  const [userInitials, setUserInitials] = useState('G');
   
   function logoutHandler() {
     signOut();
   }
 
+  const getInitials = (fullName: string) => {
+    const allNames = fullName.trim().split(' ');
+    const initials = allNames.reduce((acc, curr, index) => {
+      if(index === 0 || index === allNames.length - 1){
+        acc = `${acc}${curr.charAt(0).toUpperCase()}`;
+      }
+      return acc;
+    }, '');
+    return initials;
+  }
+
   useEffect(() => {
     getSession().then(session => {
       if(!session) {
-        setUsername('Guest');  
+        setUserFullName('Guest');  
       } else {
-        setUsername('Sean Paul');  
+        setUserFullName(`${session?.user?.name}`);
       }
     });  
   }, []);
+
+  useEffect(() => {
+    setUserInitials(getInitials(userFullName));
+  }, [userFullName])
   
   
   return (
@@ -50,11 +65,11 @@ export default function Header() {
             <button>
               <BellIcon />
             </button>
-            <button>
-              <UserInitials />
-            </button>
+            <div className="m-1 mr-2 w-7 h-7 relative flex justify-center items-center rounded-full bg-red-500 border-2 border-white text-sm text-white uppercase">
+              {userInitials}
+            </div>
             <button onClick={logoutHandler}>
-              <span className='user-name'>{username}</span>
+              <span className='user-name'>{userFullName}</span>
             </button>
           </ul>
         </nav>

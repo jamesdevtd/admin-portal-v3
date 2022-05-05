@@ -10,6 +10,7 @@ import SubmitButton from '@/components/buttons/SubmitButton';
 
 import ContactDetailsProps from '@/types/contactDetails';
 
+// TODO: replace this icon with import from react-icons
 import ChevronIcon from '~/icons/chevron-down.svg';
 
 const schema = yup

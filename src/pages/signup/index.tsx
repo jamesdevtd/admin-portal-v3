@@ -1,4 +1,4 @@
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import RICIBs from 'react-individual-character-input-boxes';
@@ -8,13 +8,18 @@ import Input from '@/components/forms/fields/Input';
 import LoginLayout from '@/components/layout/LoginLayout';
 import UnstyledLink from '@/components/links/UnstyledLink';
 
+import { handleSignUp } from '@/services/signup';
+
 import TagxLogo from '~/svg/tagx.svg';
+import Cookies from 'js-cookie';
+import { signIn } from 'next-auth/react'
 
 export default function SignUpPage() {
   const [showReferralCode, setShowReferralCode] = useState<boolean>(false);
   const [referralCode, setReferralCode] = useState<string>('');
+  const [message, setMessage] = useState<string>('');
 
-  // TODO: const router = useRouter();
+  const router = useRouter();
   //#region  //*=========== Form ===========
   const methods = useForm({
     mode: 'onTouched',
@@ -24,7 +29,6 @@ export default function SignUpPage() {
 
   //#region  //*=========== Form Submit ===========
   const onSubmit = async (_data: unknown) => {
-    // eslint-disable-next-line no-console
     const firstName = getValues('firstName');
     const lastName = getValues('lastName');
     const username = getValues('username');
@@ -36,25 +40,23 @@ export default function SignUpPage() {
       password,
       referralCode,
     };
-    //handleSignUp(submitData);
-    const response = await fetch(process.env.API_BASE_URL + '/affiliate/signup', {
-      method: 'POST',
-      body: JSON.stringify(submitData),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
 
-    const data = await response.json();
 
-    console.log(data);
-    // if (await handleLogin({ username, password })) {
-    //   // TODO: set as protected route
-    //   router.push('/dashboard');
-    // } else {
-    //   setMessage('Invalid Credentials!');
-    // }
-    //router.push('/affiliate-setup');
+    await handleSignUp(submitData)
+      .then(async data => {
+        await signIn(
+          'credentials',
+          {
+            redirect: true,
+            username: username,
+            password: password,
+            callbackUrl: '/affiliate-setup'
+          }
+        );
+      })
+      .catch(err => {
+        setMessage(err.title);
+      });
   };
   //#endregion  //*======== Form Submit ===========
 
@@ -105,6 +107,11 @@ export default function SignUpPage() {
                 },
               }}
             />
+            {message && (
+              <div className='form-group'>
+                <span className='text-red-500'>{message}</span>
+              </div>
+            )}
             <Input
               id='password'
               label='Password'

@@ -1,16 +1,16 @@
-import dynamic from 'next/dynamic'
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
-import { EditorProps } from 'react-draft-wysiwyg';
 import { useForm } from 'react-hook-form';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import styles from './EventPublicPage.module.scss';
 import groupStyles from '@/components/forms/styles/FormGroup.module.scss';
 
 import { useAppDispatch } from '@/app/hooks';
 import { setCurrentStep, setIsEditedById } from '@/features/eventCreation/eventCreationSlice';
 
-import MainEventImage from './ImageDropCrop';
+import DraggableFields from './DraggableFields';
+import ImageDropCrop from './ImageDropCrop';
 
 import CloseIcon from '~/icons/close.svg';
 import ErrorIcon from '~/icons/error.svg';
@@ -23,25 +23,12 @@ type Props = {
   eventStatus: { id: number, status: string }
 }
 
-const Editor = dynamic<EditorProps>(
-  () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
-  { ssr: false }
-)
-
 export const EventPublicPage = forwardRef(({ step, eventStatus, ...props }: Props, ref) => {
 
   const dispatch = useAppDispatch();
 
   const [hasErrors, setHasErrors] = useState(false);
   const [hideErrorBox, setHideErrorBox] = useState(false);
-
-  const [editorVal, setEditorVal] = useState('');
-
-  const onHtmlChange = (e: any) => {
-    // setHtml(e.target.value);
-    console.log('onHtmlChange: ', e);
-
-  }
 
   const {
     handleSubmit,
@@ -117,40 +104,21 @@ export const EventPublicPage = forwardRef(({ step, eventStatus, ...props }: Prop
           <span>Main Event Image* </span>
         </div>
         <p className='instructions'>This is the first image athletes will see at the top of your event page and listing card. <br />Use a high quality image: 2160x1080px (2:1 ratio).</p>
-        <MainEventImage eventId={eventStatus.id} />
+
+        <div className="mt-2 mb-8">
+          <ImageDropCrop imgId={1} />
+        </div>
 
       </div>
 
-      <div className={groupStyles.formGroup}>
+      <div className={`${groupStyles.formGroup} ${styles.formGroup}`}>
         <DescriptionIcon />
-        <div className='label'>
+        <div className='label' draggable>
           <span>Description</span>
         </div>
-        <p className='instructions'>Add more details to your Event - these details will be shown to <br />Teams who are searching for Events to join, so make sure to include why they should register and what they can look forward to! </p>
+        <p className='instructions' draggable>Add more details to your Event - these details will be shown to <br />Teams who are searching for Events to join, so make sure to include why they should register and what they can look forward to! </p>
 
-        <div className="draggable-fields mt-5">
-
-          <section>
-            {/* <DefaultEditor value={html} onChange={onHtmlChange} /> */}
-            <Editor
-              // editorState={editorVal}
-              toolbarClassName="toolbarClassName"
-              wrapperClassName="wrapperClassName"
-              editorClassName="editorClassName"
-              onEditorStateChange={onHtmlChange}
-            />
-          </section>
-
-          <section>
-            <MainEventImage eventId={eventStatus.id} />
-          </section>
-          <section>
-            <div className="box-input">
-              <input type="text" placeholder='Video URL (Vimeo &amp; YouTube links currently supported)' />
-            </div>
-          </section>
-
-        </div>
+        <DraggableFields />
 
       </div>
 

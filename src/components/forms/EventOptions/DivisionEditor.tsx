@@ -13,10 +13,12 @@ import SubmitButton from '@/components/buttons/SubmitButton';
 import { useAppDispatch } from '@/app/hooks';
 import { useAppSelector } from '@/app/hooks';
 import { getDivisionById, getTotalTeams, setIsEdited, updateDivision } from '@/features/eventCreation/divisionsSlice';
+import { setIsEditedById } from '@/features/eventCreation/eventCreationSlice';
 import { adultLevels, adultMakeups, youthLevels, youthMakeups } from '@/static/division';
 
 import Pools from './Pools';
 
+// TODO: replace this icon with import from react-icons
 import ChevronIcon from '~/icons/chevron-down.svg';
 
 const schema = yup
@@ -170,8 +172,8 @@ export const DivisionEditor = ({ divisionId }: Props) => {
       isValidated: true,
       playerFee: item?.playerFee,
     };
-    // console.log('saveDivision: ', payload);
     dispatch(updateDivision(payload));
+    dispatch(setIsEditedById(2));
   }
 
 

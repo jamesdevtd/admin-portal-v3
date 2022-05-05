@@ -99,6 +99,7 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
   const setIsFormEdited = () => {
     dispatch(setIsEditedById(step));
   }
+
   const handleNextStep = () => {
     dispatch(setCurrentStep(step + 1));
   }
