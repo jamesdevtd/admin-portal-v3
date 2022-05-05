@@ -1,5 +1,5 @@
 import axios, { Method } from 'axios';
-import Cookie from 'js-cookie';
+// import Cookie from 'js-cookie';
 import Router from 'next/router';
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -76,34 +76,34 @@ export const DELETE = (path: string) => {
   return request('DELETE', path);
 };
 
-axios.interceptors.request.use((request) => {
-  const token = Cookie.get('s_TxgKyE');
-  const headers = {} as any;
-  if (token) {
-    headers['x-auth-token'] = `${token}`;
-  }
+// axios.interceptors.request.use((request) => {
+//   // const token = Cookie.get('s_TxgKyE');
+//   const headers = {} as any;
+//   if (token) {
+//     headers['x-auth-token'] = `${token}`;
+//   }
 
-  request.headers = headers;
+//   request.headers = headers;
 
-  return request;
-});
+//   return request;
+// });
 
 /**
  * RESPONSE INTERCEPTOR
  */
-axios.interceptors.response.use(
-  (response) => {
-    // Do something with response data
-    return response.data;
-  },
-  (error) => {
-    if (error.response.status === 401) {
-      Cookie.remove('s_TxgKyE');
-      Router.push('/');
-    }
-    // else if (error.response.status === 400) {
-    //   return error.response.data;
-    // }
-    return Promise.reject(error.response.data);
-  }
-);
+// axios.interceptors.response.use(
+//   (response) => {
+//     // Do something with response data
+//     return response.data;
+//   },
+//   (error) => {
+//     if (error.response.status === 401) {
+//       Cookie.remove('s_TxgKyE');
+//       Router.push('/');
+//     }
+//     // else if (error.response.status === 400) {
+//     //   return error.response.data;
+//     // }
+//     return Promise.reject(error.response.data);
+//   }
+// );
