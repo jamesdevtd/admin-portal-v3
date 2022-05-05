@@ -29,9 +29,6 @@ export interface EventProps {
 export interface EventImageProps {
   eventId: number;
   src: string;
-  modalSrc: string;
-  output: string;
-  isModalOpen: boolean;
 }
 
 export interface CroppedImageProps {

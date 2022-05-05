@@ -5,7 +5,7 @@ import fieldStyles from '@/components/forms/styles/FieldsGroup.module.scss';
 
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { getDivisionById, updateDivisionFee } from '@/features/eventCreation/divisionsSlice';
-import useDebounce from '@/utils/customHooks';
+import { useDebounce } from '@/utils/customHooks';
 
 
 type Props = {

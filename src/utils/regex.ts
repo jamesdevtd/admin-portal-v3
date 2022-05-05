@@ -7,3 +7,13 @@ export const emailRegExp =
 export const priceRegExp = /[(0-9)+.?(0-9)*]+/gim;
 
 export const cleanNumber = (val: string) => val.replace(/\b0+/g, '');
+
+export const getYoutubeId = (url: string) => {
+  const urlArray = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+  return undefined !== urlArray[2]
+    ? urlArray[2].split(/[^0-9a-z_-]/i)[0]
+    : urlArray[0];
+};
+
+export const youtubeUrl =
+  /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;

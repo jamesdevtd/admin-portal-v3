@@ -1,6 +1,5 @@
 
 import React, { useEffect, useState } from 'react'
-// React Dropzone
 import { useDropzone } from 'react-dropzone';
 
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
@@ -18,7 +17,6 @@ export default function ImageDropCrop({ imgId }: Props) {
   const dispatch = useAppDispatch();
   const imgObject = useAppSelector(getCroppedImageById(imgId));
 
-  // const [files, setFiles] = useState<any[]>([]);
   const [thumbSrc, setThumbSrc] = useState('');
   const [error, setError] = useState('');
 
@@ -32,12 +30,8 @@ export default function ImageDropCrop({ imgId }: Props) {
     maxFiles: 1,
     accept: 'image/*',
     onDrop: acceptedFiles => {
-      // setFiles(acceptedFiles.map(file => Object.assign(file, {
-      //   preview: URL.createObjectURL(file)
-      // })));
       acceptedFiles.map(file => {
         const imgUrl = URL.createObjectURL(file);
-        // setThumbSrc(imgUrl);
         setSourceImage(imgUrl);
         return;
       });
@@ -58,12 +52,8 @@ export default function ImageDropCrop({ imgId }: Props) {
       const blob = await base64Response.blob();
       const imgUrl = URL.createObjectURL(blob);
       setThumbSrc(imgUrl);
-      // setThumbSrc(blob as any);
     }
     if (imgObject?.src) {
-      // const imgUrl = URL.createObjectURL(file);
-      // setSourceImage(files[0]?.preview);
-      console.log('store img src changed, updating thumb src');
       getImgData();
     }
   }, [imgObject])
@@ -92,7 +82,7 @@ export default function ImageDropCrop({ imgId }: Props) {
         <img
           alt={`cropped image ${imgId} `}
           src={thumbSrc}
-        // TODO test performance on 10+ images
+        // TODO test performance on 10+ images and check if revoking logic is needed i.e. below
         // Revoke data uri after image is loaded
         // onLoad={() => { URL.revokeObjectURL(thumbSrc) }}
         />
@@ -100,7 +90,7 @@ export default function ImageDropCrop({ imgId }: Props) {
     </div>
 
   return (
-    <section className="dropzone-box">
+    <section className={`dropzone-box ${thumbSrc && 'has-thumb'}`}>
       <div {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
         {thumbSrc ?

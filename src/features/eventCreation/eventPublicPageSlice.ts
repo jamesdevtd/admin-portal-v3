@@ -20,9 +20,6 @@ const initialState: EventPupublicPageProps = {
   eventMainImage: {
     eventId: 0,
     src: '',
-    isModalOpen: false,
-    output: '',
-    modalSrc: '',
   },
   items: [],
   croppedImages: [],
@@ -38,13 +35,6 @@ export const eventPublicPageSlice = createSlice({
   name: 'eventPublicPage',
   initialState,
   reducers: {
-    updateMainImage: (state, action: PayloadAction<EventImageProps>) => {
-      state.eventMainImage.eventId = action.payload.eventId;
-      state.eventMainImage.src = action.payload.src;
-      state.eventMainImage.isModalOpen = action.payload.isModalOpen;
-      state.eventMainImage.modalSrc = action.payload.modalSrc;
-      state.eventMainImage.output = action.payload.output;
-    },
     addCroppedImage: (state, action: PayloadAction<CroppedImageProps>) => {
       const { id, src } = action.payload;
       state.croppedImages.push({ id: id, src: src });
@@ -60,11 +50,6 @@ export const eventPublicPageSlice = createSlice({
     },
     updateCropperModal: (state, action: PayloadAction<any>) => {
       state.cropperModal = { ...state.cropperModal, ...action.payload };
-      // const { imgId, isOpen, src, isReCrop } = action.payload;
-      // state.cropperModal.imgId = imgId;
-      // state.cropperModal.src = src;
-      // state.cropperModal.isOpen = isOpen;
-      // state.cropperModal.isReCrop = isReCrop;
     },
     removedCroppedImageById: (state, action: PayloadAction<number>) => {
       const index = state.items.findIndex((i) => i.id === action.payload);
@@ -74,15 +59,11 @@ export const eventPublicPageSlice = createSlice({
 });
 
 export const {
-  updateMainImage,
   updateCropperModal,
   removedCroppedImageById,
   addCroppedImage,
   updateCroppedImage,
 } = eventPublicPageSlice.actions;
-
-export const getMainImage = (state: RootState) =>
-  state.eventPublicPage.eventMainImage;
 
 export const getCropperModal = (state: RootState) =>
   state.eventPublicPage.cropperModal;

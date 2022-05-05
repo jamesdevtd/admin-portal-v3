@@ -1,0 +1,63 @@
+.box {
+  display: inline-block;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.img-preview {
+  overflow: hidden;
+}
+
+.CropperModal :global {
+  @apply grid place-items-center w-full h-full top-0 left-0 fixed;
+  background: rgba(235, 237, 247, 0.9);
+  .cropper-stage {
+    @apply m-auto relative;
+    max-width: 900px;
+    width: calc(100% - 22vw);
+    &.re-crop {
+      .cropper-drag-box {
+        opacity: 0;
+        z-index: 2;
+      }
+    }
+  }
+  .cropper-drag-box {
+    background-color: #9ca5b4;
+  }
+  .cropper-buttons {
+    @apply z-20 relative w-full flex flex-row gap-5 justify-end pt-7 pb-5 h-auto;
+    top: 0;
+    z-index: 2;
+    .save {
+      @apply m-auto flex flex-col items-center justify-center text-center gap-2;
+      svg {
+        width: 20px;
+        height: auto;
+      }
+      h3 {
+        @apply text-lg text-blue-dark font-title font-semibold;
+      }
+    }
+    .close {
+      @apply mr-0 relative;
+      right: -50px;
+      bottom: -14px;
+      svg {
+        width: 22px;
+        height: auto;
+      }
+    }
+  }
+  .cropper-output {
+    @apply border-2 border-black p-5;
+    img {
+      @apply block w-full;
+    }
+  }
+}
+
+.CropperModal {
+  &.inactive {
+    @apply hidden;
+  }
+}

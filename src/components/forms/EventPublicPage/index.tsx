@@ -10,7 +10,7 @@ import { useAppDispatch } from '@/app/hooks';
 import { setCurrentStep, setIsEditedById } from '@/features/eventCreation/eventCreationSlice';
 
 import DraggableFields from './DraggableFields';
-import ImageDropCrop from './ImageDropCrop';
+import ImageDropCrop from '../fields/ImageDropCrop';
 
 import CloseIcon from '~/icons/close.svg';
 import ErrorIcon from '~/icons/error.svg';
@@ -98,20 +98,20 @@ export const EventPublicPage = forwardRef(({ step, eventStatus, ...props }: Prop
 
       <h3>Event Public Page</h3>
 
-      <div className={groupStyles.formGroup}>
+      <div className={`${groupStyles.formGroup} ${styles.formGroup}`}>
         <ImageIcon />
         <div className='label'>
           <span>Main Event Image* </span>
         </div>
         <p className='instructions'>This is the first image athletes will see at the top of your event page and listing card. <br />Use a high quality image: 2160x1080px (2:1 ratio).</p>
 
-        <div className="mt-2 mb-8">
+        <div className="main-event-img">
           <ImageDropCrop imgId={1} />
         </div>
 
       </div>
 
-      <div className={`${groupStyles.formGroup} ${styles.formGroup}`}>
+      <div className={groupStyles.formGroup}>
         <DescriptionIcon />
         <div className='label' draggable>
           <span>Description</span>

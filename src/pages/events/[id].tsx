@@ -7,7 +7,7 @@ import SubmitButton from '@/components/buttons/SubmitButton';
 import { BasicInfo } from '@/components/forms/BasicInfo';
 import { EventOptions } from '@/components/forms/EventOptions';
 import { EventPublicPage } from '@/components/forms/EventPublicPage';
-import CropperModal from '@/components/forms/EventPublicPage/ImageDropCrop/CropperModal';
+import CropperModal from '@/components/forms/fields/ImageDropCrop/CropperModal';
 import Layout from '@/components/layout/Layout';
 import ButtonLink from '@/components/links/ButtonLink';
 
@@ -16,7 +16,6 @@ import {
   getCurrentStep,
   getStepById
 } from '@/features/eventCreation/eventCreationSlice';
-import { getCropperModal, getMainImage } from '@/features/eventCreation/eventPublicPageSlice';
 
 import EventsMenu from './EventsMenu';
 
@@ -44,9 +43,6 @@ export default function Events({ id }: Props) {
 
   const currentStep = useAppSelector(getCurrentStep);
   const isFormEdited = useAppSelector(getStepById(currentStep))?.isEdited;
-  const imgObject = useAppSelector(getMainImage);
-  const cropperModal = useAppSelector(getCropperModal);
-
 
   const eventStatus = { id: id, status: 'draft' };
   /* eslint-disable @typescript-eslint/no-explicit-any */

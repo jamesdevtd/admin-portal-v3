@@ -179,8 +179,12 @@
     @apply text-center grid place-items-center w-full relative;
     @apply shadow-[0_0_2px_0_rgb(0,0,0,0.6)];
     background-color: #ebedf7;
-    // border-color: #979797;
-    // border-width: 1px;
+    &.has-thumb {
+      @apply block;
+      img {
+        @apply block w-full;
+      }
+    }
     svg {
       @apply m-auto;
       width: auto;

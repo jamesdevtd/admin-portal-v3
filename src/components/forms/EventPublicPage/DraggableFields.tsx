@@ -3,8 +3,11 @@ import React, { useState } from 'react'
 import { EditorProps } from 'react-draft-wysiwyg';
 import { FiYoutube } from 'react-icons/fi';
 
+import styles from './EventPublicPage.module.scss';
+
 import DragButtons from './DragButtons';
-import ExtraImageDropCrop from './ImageDropCrop';
+import YoutubeLink from './YoutubeLink';
+import ExtraImageDropCrop from '../fields/ImageDropCrop';
 
 import ImageIcon from '~/icons/blue/image.svg';
 import TextIcon from '~/icons/blue/text-t.svg';
@@ -18,9 +21,7 @@ const Editor = dynamic<EditorProps>(
   { ssr: false }
 )
 
-
 export default function DraggableFields({ eventId }: Props) {
-
 
   const [editorVal, setEditorVal] = useState('');
 
@@ -41,29 +42,24 @@ export default function DraggableFields({ eventId }: Props) {
   }
 
   return (
-    <div className="draggable-fields mt-5">
+    <div className={`${styles.draggableFields} mt-5`}>
 
-      <section draggable>
+      <section>
         <Editor
           // editorState={editorVal}
-          toolbarClassName="toolbarClassName"
-          wrapperClassName="wrapperClassName"
-          editorClassName="editorClassName"
+          wrapperClassName="Wysiwyg"
           onEditorStateChange={onHtmlChange}
         />
         <DragButtons itemId={1} />
       </section>
 
-      <section draggable>
+      <section>
         <ExtraImageDropCrop imgId={2} />
         <DragButtons itemId={2} />
       </section>
 
-      <section draggable>
-        <div className="box-input">
-          <FiYoutube />
-          <input type="text" placeholder='Video URL (Vimeo &amp; YouTube links currently supported)' />
-        </div>
+      <section>
+        <YoutubeLink />
         <DragButtons itemId={3} />
       </section>
 

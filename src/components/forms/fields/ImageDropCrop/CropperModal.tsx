@@ -7,6 +7,8 @@ import styles from "./CropModal.module.scss";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { getCropperModal, updateCroppedImage, updateCropperModal } from '@/features/eventCreation/eventPublicPageSlice';
 
+import CloseIcon from '~/icons/blue/close-modal.svg';
+import CropIcon from '~/icons/blue/crop.svg';
 
 export const CropperModal = () => {
 
@@ -14,6 +16,7 @@ export const CropperModal = () => {
   const cropperModal = useAppSelector(getCropperModal);
 
   const [image, setImage] = useState('');
+  // TODO: test if using cropData is more optimal in saving cropped image to store 
   const [cropData, setCropData] = useState("#");
   const [cropper, setCropper] = useState<any>();
 
@@ -22,8 +25,6 @@ export const CropperModal = () => {
   }, [cropperModal]);
 
   const onChange = (e: any) => {
-    console.log('onChange : ', e.target.value);
-
     e.preventDefault();
     let files;
     if (e.dataTransfer) {
@@ -39,39 +40,29 @@ export const CropperModal = () => {
   };
 
   const getCropData = async () => {
-    console.log('cropperRef?.current: ', cropperRef?.current);
     if (typeof cropper !== "undefined") {
       const src = cropper.getCroppedCanvas().toDataURL('image/jpeg');
-      console.log('src: ', src);
-
       // convert bas64 to blob
       const base64Response = await fetch(src);
       const blob = await base64Response.blob();
       const imgUrl = URL.createObjectURL(blob);
       saveImage(imgUrl);
-      // const imgUrl = URL.createObjectURL(src);
-      // console.log('parsed: ', imgUrl);
-
-      // saveImage(src);
     }
   };
 
   const cropperRef = useRef<HTMLImageElement>(null);
 
   const onCrop = () => {
-
+    // TODO: test if onCrop event is more optimal
     // const imageElement: any = cropperRef?.current;
     // const cropper: any = imageElement?.cropper;
     // const imgData = cropper.getCroppedCanvas().toDataURL();
-    console.log('on crop: ');
+    // console.log('on crop');
   };
 
   const cropEnd = () => {
-    console.log('on cropEnd');
-  }
-
-  const handleCancel = () => {
-    dispatch(updateCropperModal({ imgId: 0, src: '', isOpen: false, isReCrop: false }));
+    // TODO: test if onCrop event is more optimal
+    // console.log('on cropEnd');
   }
 
   const saveImage = (val: string) => {
@@ -79,54 +70,47 @@ export const CropperModal = () => {
     handleCancel();
   }
 
-  console.log('init modal with src: ', image);
+  const handleCancel = () => {
+    dispatch(updateCropperModal({ imgId: 0, src: '', isOpen: false, isReCrop: false }));
+  }
 
   return (
-    <>
-      {/* {image ? */}
-      <h3>test element here...</h3>
+    <div className={`${styles.CropperModal} ${cropperModal.src ? styles[`active`] : styles[`inactive`]}`}>
 
-      <div className={`${styles.CropperModal} ${cropperModal.src ? styles[`active`] : styles[`inactive`]}`}>
-        <div className={`cropper-stage ${cropperModal.isReCrop && 're-crop'}`}>
-          <Cropper
-            // style={{ height: 400, width: "100%" }}
-            zoomTo={0}
-            initialAspectRatio={2.66}
-            preview=".img-preview"
-            src={image}
-            viewMode={2}
-            dragMode='move'
-            movable={true}
-            cropBoxMovable={true}
-            cropBoxResizable={false}
-            // minCropBoxHeight={80}
-            // minCropBoxWidth={10}
-            background={true}
-            responsive={true}
-            autoCropArea={1}
-            checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
-            onInitialized={(instance) => {
-              setCropper(instance);
-              // console.log('onInitialized...');
-            }}
-            guides={false}
-            crop={onCrop}
-            ref={cropperRef}
-          />
-        </div>
+      <div className={`cropper-stage ${cropperModal.isReCrop && 're-crop'}`}>
         <div className="cropper-buttons" >
-          <button style={{ float: "right" }}
-            onClick={handleCancel} className='btn grey'>
-            Cancel Crop
+          <button onClick={getCropData} className='save'>
+            <CropIcon />
+            <h3>Crop Main Event Image</h3>
           </button>
-          <button style={{ float: "right" }} onClick={getCropData} className='btn'>
-            Crop Image
+          <button onClick={getCropData} className='close'>
+            <CloseIcon />
           </button>
         </div>
+        <Cropper
+          zoomTo={0}
+          initialAspectRatio={2.66}
+          src={image}
+          viewMode={2}
+          dragMode='move'
+          movable={true}
+          cropBoxMovable={true}
+          cropBoxResizable={false}
+          background={false}
+          responsive={true}
+          autoCropArea={1}
+          guides={false}
+          checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
+          onInitialized={(instance) => {
+            setCropper(instance);
+          }}
+          crop={onCrop}
+          ref={cropperRef}
+        />
       </div>
 
-      <div className="empty-img-cropper"></div>
-    </>
+    </div>
+
 
 
   );
