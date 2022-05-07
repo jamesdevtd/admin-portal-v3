@@ -16,6 +16,11 @@ export const startingEventCreationSteps = [
   },
   {
     id: 4,
+    isEdited: true,
+    isValidated: false,
+  },
+  {
+    id: 5,
     isEdited: false,
     isValidated: false,
   },

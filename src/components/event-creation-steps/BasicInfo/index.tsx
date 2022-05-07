@@ -95,7 +95,6 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
 
   const [availableSeries, setAvailableSeries] = useState(seriesNames);
 
-
   const setIsFormEdited = () => {
     dispatch(setIsEditedById(step));
   }
@@ -151,7 +150,6 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
     mode: 'onSubmit',
     defaultValues: formDefaultValues
   });
-
 
   useEffect(() => {
     if (formState.isDirty) {

@@ -212,6 +212,70 @@
       opacity: 0.7;
     }
   }
+
+  .Wysiwyg {
+    .rdw-editor-toolbar {
+      @apply flex;
+      @apply border border-gray-400 flex mb-0 border-b-0 py-1 pb-0;
+      > div {
+        @apply hidden;
+      }
+      [class$="-wrapper"] {
+        @apply border-none;
+        img {
+          @apply border-none;
+        }
+      }
+      .rdw-inline-wrapper {
+        @apply flex;
+        > div {
+          @apply hidden;
+        }
+        [title~="Bold"],
+        [title~="Italic"] {
+          @apply flex;
+        }
+      }
+      .rdw-list-wrapper {
+        @apply flex;
+        > div {
+          @apply hidden;
+          &:nth-child(1),
+          &:nth-child(2) {
+            @apply flex;
+          }
+        }
+      }
+      .rdw-history-wrapper,
+      .rdw-block-wrapper {
+        @apply flex;
+      }
+      // order
+      .rdw-block-wrapper {
+        // TODO style text dropdown to match mock-up
+        @apply hidden;
+        order: 1;
+        .rdw-dropdown-carettoopen {
+          @apply opacity-60;
+        }
+      }
+      .rdw-inline-wrapper {
+        order: 11;
+        @apply opacity-60;
+      }
+      .rdw-list-wrapper {
+        order: 12;
+        @apply opacity-60;
+      }
+      .rdw-history-wrapper {
+        @apply ml-auto;
+        order: 2;
+      }
+    }
+    .rdw-editor-main {
+      @apply border border-gray-400 p-3;
+    }
+  }
 }
 
 .formGroup {

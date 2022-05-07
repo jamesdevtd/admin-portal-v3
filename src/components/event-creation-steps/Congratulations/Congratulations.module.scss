@@ -1,0 +1,72 @@
+@import "@/styles/base/animations.scss";
+
+.congratulations {
+  @apply relative mb-2 flex flex-col gap-2 pl-8;
+  max-width: 750px;
+  min-height: 750px;
+  background-image: url(/images/backgrounds/Rectangle.png);
+  font-weight: 600;
+  color: #000;
+  :global {
+    a {
+      color: #26a1ff;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+      font-weight: 700;
+      --tw-text-opacity: 1;
+      color: rgb(2 47 89 / var(--tw-text-opacity));
+    }
+
+    .border_b {
+      border-bottom: 1px solid #f00;
+    }
+
+    .event_url {
+      margin: 0.7rem 0;
+
+      a {
+        margin: 0 0.2rem;
+      }
+    }
+
+    .my-5 {
+      margin: 0.5rem 0;
+    }
+
+    hr {
+      border: 1px solid #979797;
+      width: 70px;
+      margin-top: 0.2rem;
+    }
+
+    .arrow {
+      p {
+        font-weight: normal;
+      }
+
+      h3 span {
+        color: #26a1ff;
+      }
+    }
+
+    .arrow::before {
+      content: url(/icons/arrow.svg);
+      width: 0;
+      height: 0;
+      top: 80px;
+      left: 70px;
+      position: relative;
+    }
+
+    .editEventWrapper {
+      margin: 1rem 0;
+
+      a {
+        text-decoration: underline;
+      }
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
@@ -15,13 +16,15 @@ interface MenuItems {
   items: MenuSubItems[];
 }
 
-export default function EventsMenu() {
+export default function RootEventsMenu() {
 
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const currentStep = useAppSelector(getCurrentStep);
 
   const handleSetStep = (val: number) => {
     dispatch(setCurrentStep(val));
+    router.push('/events/1', undefined, { shallow: true });
   }
 
   const [menuItems, setMenuItems] = useState<MenuItems[]>([]);
@@ -31,7 +34,7 @@ export default function EventsMenu() {
   }, []);
 
   return (
-    <div className='nav'>
+    <div className='nav root-nav'>
       {menuItems &&
         menuItems.map((group, i) => (
           <div key={i}>
@@ -39,8 +42,8 @@ export default function EventsMenu() {
               {group.items &&
                 group.items.map((item, i) => {
                   ++i;
-                  let className = i > 3 ? 'inactive ' : 'active ';
-                  className += (i === currentStep) ? 'current ' : ' ';
+                  let className = i > 4 ? 'inactive ' : 'active ';
+                  // className += (i === currentStep) ? 'current ' : ' ';
                   className += (currentStep > i) ? 'checked ' : ' ';
                   return (
                     <li key={i} className={className}>

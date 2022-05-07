@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { FiYoutube } from 'react-icons/fi';
 
-import { useAppDispatch } from '@/app/hooks';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { getFieldById, updateField } from '@/features/eventCreation/eventPublicPageSlice';
 import { useDebounce } from '@/utils/customHooks';
 import { getYoutubeId, youtubeUrl } from '@/utils/regex';
 
 import YoutubeEmbed from './YoutubeEmbed';
 
 type Props = {
-  itemId?: number,
+  itemId: number,
 }
 
 export default function YoutubeLink({ itemId }: Props) {
   const dispatch = useAppDispatch();
-  // const itemState = useAppSelector(getItemById(itemId));
-  const [link, setLink] = useState('');
-  const [testImg, setTestImg] = useState('');
-  const [id, setId] = useState('');
+  const itemState = useAppSelector(getFieldById(itemId));
+  const [link, setLink] = useState(itemState?.data.url);
+
+  // TEST: 
+  // sample youtube urls:
+  // https://www.youtube.com/watch?v=J1TQLPfctpc
+  // https://www.youtube.com/watch?v=YL8OUWxCtXs
 
   const debouncedValue = useDebounce<string>(link, 500);
 
@@ -33,13 +37,22 @@ export default function YoutubeLink({ itemId }: Props) {
     }
   }
 
-  useEffect(() => {
-    validateYoutubeUrl(debouncedValue);
-    const id = getYoutubeId(debouncedValue);
-    if (validateYoutubeUrl(debouncedValue)) {
-      setId(id);
+  function handleYoutubeLinkvalue(val: string) {
+    const id = getYoutubeId(val);
+    if (validateYoutubeUrl(val)) {
+      dispatch(updateField({
+        id: itemId, data: { youtubeId: id, url: val }
+      }));
     } else {
-      setId('');
+      dispatch(updateField({
+        id: itemId, data: { youtubeId: '', url: val }
+      }));
+    }
+  }
+
+  useEffect(() => {
+    if (debouncedValue) {
+      handleYoutubeLinkvalue(debouncedValue);
     }
   }, [debouncedValue]);
 
@@ -48,14 +61,15 @@ export default function YoutubeLink({ itemId }: Props) {
       <div className="box-input">
         <FiYoutube />
         <input
+          defaultValue={itemState?.data.url}
           type="text"
           placeholder='Video URL (Vimeo &amp; YouTube links currently supported)'
           onChange={handleLinkChange}
         />
 
       </div>
-      {id &&
-        <YoutubeEmbed embedId={id} />
+      {itemState?.data.youtubeId &&
+        <YoutubeEmbed embedId={itemState.data.youtubeId} />
       }
     </div>
   )

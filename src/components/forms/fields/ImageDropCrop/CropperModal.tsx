@@ -88,25 +88,31 @@ export const CropperModal = () => {
           </button>
         </div>
         <Cropper
+          // style={{ height: 400, width: "100%" }}
           zoomTo={0}
           initialAspectRatio={2.66}
+          preview=".img-preview"
           src={image}
           viewMode={2}
           dragMode='move'
           movable={true}
           cropBoxMovable={true}
           cropBoxResizable={false}
-          background={false}
+          minCropBoxHeight={80}
+          minCropBoxWidth={10}
+          background={true}
           responsive={true}
           autoCropArea={1}
-          guides={false}
           checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
           onInitialized={(instance) => {
             setCropper(instance);
+            // console.log('onInitialized...');
           }}
+          guides={false}
           crop={onCrop}
           ref={cropperRef}
         />
+
       </div>
 
     </div>

@@ -1,27 +1,41 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import styles from './EventPublicPage.module.scss';
 import groupStyles from '@/components/forms/styles/FormGroup.module.scss';
 
+import ImageDropCrop from '@/components/forms/fields/ImageDropCrop';
+
 import { useAppDispatch } from '@/app/hooks';
 import { setCurrentStep, setIsEditedById } from '@/features/eventCreation/eventCreationSlice';
 
-import DraggableFields from './DraggableFields';
-import ImageDropCrop from '../fields/ImageDropCrop';
+import OrderedFields from './OrderedFields';
 
 import CloseIcon from '~/icons/close.svg';
 import ErrorIcon from '~/icons/error.svg';
 import DescriptionIcon from '~/icons/grey/description.svg';
 import ImageIcon from '~/icons/grey/image.svg';
 
+const schema = yup
+  .object({
+    mainEventImage: yup.string().required(),
+    description: yup.string().required()
+  })
+  .required();
 
 type Props = {
   step: number,
   eventStatus: { id: number, status: string }
 }
+
+// const Editor = dynamic<EditorProps>(
+//   () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
+//   { ssr: false }
+// )
 
 export const EventPublicPage = forwardRef(({ step, eventStatus, ...props }: Props, ref) => {
 
@@ -29,14 +43,21 @@ export const EventPublicPage = forwardRef(({ step, eventStatus, ...props }: Prop
 
   const [hasErrors, setHasErrors] = useState(false);
   const [hideErrorBox, setHideErrorBox] = useState(false);
+  const [editorState, setEditorState] = useState('');
+
+  const formDefaultValues = {
+    mainEventImage: 'imasdalasdsdk',
+    description: 'descasdaslkdj'
+  };
 
   const {
     handleSubmit,
     getValues,
-    setValue,
     formState,
   } = useForm({
+    resolver: yupResolver(schema),
     mode: 'onSubmit',
+    defaultValues: formDefaultValues
   });
 
 
@@ -63,10 +84,14 @@ export const EventPublicPage = forwardRef(({ step, eventStatus, ...props }: Prop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formState.errors, formState.isDirty]);
 
+  const onEditorStateChange = (editorState: any) => {
+    // setEditorState(editorState);
+    // console.log('editorState: ', editorState);
+  };
 
   const onSubmit = (data: unknown) => {
     //TODO: POST request to API
-    console.log('POST: sending data...');
+    console.log('POST: sending data from EventPublicPage...');
     console.log(data);
     handleNextStep();
   };
@@ -77,7 +102,6 @@ export const EventPublicPage = forwardRef(({ step, eventStatus, ...props }: Prop
   };
 
   useImperativeHandle(ref, () => ({ submitForm }));
-
 
   return (
     <div
@@ -111,14 +135,22 @@ export const EventPublicPage = forwardRef(({ step, eventStatus, ...props }: Prop
 
       </div>
 
-      <div className={groupStyles.formGroup}>
+      <div className={`${groupStyles.formGroup} ${styles.formGroup}`}>
         <DescriptionIcon />
-        <div className='label' draggable>
-          <span>Description</span>
+        <div className='label' >
+          <span>Description*</span>
         </div>
-        <p className='instructions' draggable>Add more details to your Event - these details will be shown to <br />Teams who are searching for Events to join, so make sure to include why they should register and what they can look forward to! </p>
+        <p className='instructions' >Add more details to your Event - these details will be shown to Teams who are searching for Events to join, so make sure to include why they should register and what they can look forward to! </p>
 
-        <DraggableFields />
+        <section className='main-description'>
+          <textarea name="" id="" cols={30} rows={2} className='w-full'></textarea>
+          {/* <Editor
+            // editorState={editorState}
+            wrapperClassName="Wysiwyg"
+            onEditorStateChange={onEditorStateChange}
+          /> */}
+        </section>
+        <OrderedFields />
 
       </div>
 

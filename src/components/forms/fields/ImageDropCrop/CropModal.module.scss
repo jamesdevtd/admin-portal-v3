@@ -12,17 +12,19 @@
   background: rgba(235, 237, 247, 0.9);
   .cropper-stage {
     @apply m-auto relative;
+    // @apply m-auto;
     max-width: 900px;
     width: calc(100% - 22vw);
-    &.re-crop {
-      .cropper-drag-box {
-        opacity: 0;
-        z-index: 2;
-      }
-    }
+    // &.re-crop {
+    //   .cropper-drag-box {
+    //     opacity: 0;
+    //     z-index: 2;
+    //   }
+    // }
   }
   .cropper-drag-box {
     background-color: #9ca5b4;
+    opacity: 0.8;
   }
   .cropper-buttons {
     @apply z-20 relative w-full flex flex-row gap-5 justify-end pt-7 pb-5 h-auto;
@@ -46,6 +48,39 @@
         width: 22px;
         height: auto;
       }
+    }
+  }
+  .cropper-crop-box {
+    .cropper-view-box {
+      outline: none;
+    }
+    .point-ne {
+      right: -10px;
+      top: -10px;
+    }
+    .point-nw {
+      left: -10px;
+      top: -10px;
+    }
+    .point-se {
+      right: -10px;
+      bottom: -10px;
+    }
+    .point-sw {
+      left: -10px;
+      bottom: -10px;
+    }
+    .point-ne,
+    .point-nw,
+    .point-se,
+    .point-sw {
+      @apply border border-blue-brand border;
+      display: block !important;
+      height: 20px;
+      width: 20px;
+      opacity: 1;
+      background-color: white;
+      border-radius: 50%;
     }
   }
   .cropper-output {

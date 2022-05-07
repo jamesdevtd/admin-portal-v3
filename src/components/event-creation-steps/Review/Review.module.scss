@@ -1,0 +1,64 @@
+@import "@/styles/base/animations.scss";
+
+.formGroup :global {
+  .main-event-img {
+    @apply mt-2 mb-8;
+    margin-right: 42px;
+  }
+  .instructions {
+    max-width: 520px;
+  }
+  .main-description {
+    @apply mt-2 mb-8;
+    margin-right: 42px;
+  }
+}
+
+.eventCard :global {
+  @apply flex flex-row gap-3;
+  .image {
+    @apply block relative;
+    max-width: 200px;
+    .tag {
+      @apply absolute text-xs uppercase p-0 px-2 rounded-lg z-10 font-semibold font-title;
+      @apply text-black;
+      background-color: #66ebb0;
+      left: 10px;
+      top: 10px;
+    }
+    img {
+      @apply block;
+    }
+  }
+  .text {
+    @apply flex flex-col gap-1 relative;
+    flex: 1;
+    .event-country {
+      @apply absolute;
+      right: 10px;
+      top: 0;
+      width: 30px;
+      height: 30px;
+    }
+    > div,
+    > h3,
+    > h4 {
+      @apply flex flex-row gap-2 items-center justify-items-center;
+      svg {
+        @apply opacity-40;
+        path {
+          fill: black;
+          stroke: black;
+        }
+      }
+    }
+    .event-name {
+      > .logo {
+        @apply block relative;
+        width: 18px;
+        height: 18px;
+        left: -5px;
+      }
+    }
+  }
+}

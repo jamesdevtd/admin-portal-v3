@@ -3,15 +3,16 @@ import React, { useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone';
 
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { addCroppedImage, getCroppedImageById, updateCroppedImage, updateCropperModal } from '@/features/eventCreation/eventPublicPageSlice';
+import { addCroppedImage, getCroppedImageById, updateCroppedImage, updateCropperModal, updateField } from '@/features/eventCreation/eventPublicPageSlice';
 
 import ImagePlaceholder from '~/svg/image-placeholder.svg';
 
 type Props = {
+  fieldId?: number,
   imgId: number
 }
 
-export default function ImageDropCrop({ imgId }: Props) {
+export default function ImageDropCrop({ fieldId, imgId }: Props) {
 
 
   const dispatch = useAppDispatch();
@@ -32,33 +33,44 @@ export default function ImageDropCrop({ imgId }: Props) {
     onDrop: acceptedFiles => {
       acceptedFiles.map(file => {
         const imgUrl = URL.createObjectURL(file);
-        setSourceImage(imgUrl);
+        setModalSrc(imgUrl);
         return;
       });
     },
     onDropRejected: fileRejections => {
       fileRejections.map(file => {
+        console.log(file);
+
         if (file.errors[0].code === 'file-too-large') {
           setError('Not Allowed: File is larger than 5MB')
+        } else {
+          setError(file.errors[0].message);
         }
-        setError(file.errors[0].message);
       });
     },
   });
 
   useEffect(() => {
     async function getImgData() {
-      const base64Response = await fetch(imgObject?.src as any);
-      const blob = await base64Response.blob();
-      const imgUrl = URL.createObjectURL(blob);
-      setThumbSrc(imgUrl);
+      if (imgObject?.src) {
+        const base64Response = await fetch(imgObject?.src as any);
+        const blob = await base64Response.blob();
+        const imgUrl = URL.createObjectURL(blob);
+        setThumbSrc(imgUrl);
+        if (fieldId) {
+          dispatch(updateField({
+            id: fieldId,
+            data: { imgId: imgId, src: imgUrl }
+          }));
+        }
+      }
     }
     if (imgObject?.src) {
       getImgData();
     }
   }, [imgObject])
 
-  const setSourceImage = (val: string) => {
+  const setModalSrc = (val: string) => {
     if (imgObject) {
       dispatch(updateCroppedImage({ id: imgId, src: val }));
     } else {
@@ -90,7 +102,7 @@ export default function ImageDropCrop({ imgId }: Props) {
     </div>
 
   return (
-    <section className={`dropzone-box ${thumbSrc && 'has-thumb'}`}>
+    <div className={`dropzone-box ${thumbSrc && 'has-thumb'}`}>
       <div {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
         {thumbSrc ?
@@ -111,7 +123,7 @@ export default function ImageDropCrop({ imgId }: Props) {
       {thumbSrc &&
         <button type="button" className="btn replace" onClick={open}>Replace Image</button>
       }
-    </section>
+    </div>
   )
 }
 

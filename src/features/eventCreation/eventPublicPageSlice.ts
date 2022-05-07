@@ -9,9 +9,15 @@ import {
 } from '@/types/event';
 
 // declaring the types for our state
+export type OrderedField = {
+  id: number;
+  type: 'text' | 'image' | 'video';
+  data: any;
+};
+
 export type EventPupublicPageProps = {
   eventMainImage: EventImageProps;
-  items: any[];
+  fields: OrderedField[];
   croppedImages: CroppedImageProps[];
   cropperModal: CropperModalProps;
 };
@@ -21,7 +27,7 @@ const initialState: EventPupublicPageProps = {
     eventId: 0,
     src: '',
   },
-  items: [],
+  fields: [],
   croppedImages: [],
   cropperModal: {
     imgId: 0,
@@ -52,17 +58,57 @@ export const eventPublicPageSlice = createSlice({
       state.cropperModal = { ...state.cropperModal, ...action.payload };
     },
     removedCroppedImageById: (state, action: PayloadAction<number>) => {
-      const index = state.items.findIndex((i) => i.id === action.payload);
-      if (index !== -1) state.items.splice(index, 1);
+      const index = state.croppedImages.findIndex(
+        (i) => i.id === action.payload
+      );
+      if (index !== -1) state.croppedImages.splice(index, 1);
+    },
+    addField: (state, action: PayloadAction<OrderedField>) => {
+      state.fields.push(action.payload);
+    },
+    updateField: (state, action: PayloadAction<{ id: number; data: any }>) => {
+      const index = state.fields.findIndex((i) => i.id === action.payload.id);
+      if (index !== -1) state.fields[index].data = action.payload.data;
+    },
+    deleteField: (state, action: PayloadAction<number>) => {
+      const index = state.fields.findIndex((i) => i.id === action.payload);
+      if (index !== -1) state.fields.splice(index, 1);
+    },
+    moveFieldUp: (state, action: PayloadAction<number>) => {
+      const fromIndex = state.fields.findIndex((i) => i.id === action.payload);
+      if (fromIndex > 0) {
+        const toIndex = fromIndex - 1;
+        const element = state.fields[fromIndex];
+        state.fields.splice(fromIndex, 1);
+        state.fields.splice(toIndex, 0, element);
+      } else {
+        console.log('field is already first');
+      }
+    },
+    moveFieldDown: (state, action: PayloadAction<number>) => {
+      const fromIndex = state.fields.findIndex((i) => i.id === action.payload);
+      if (fromIndex < state.fields.length - 1) {
+        const toIndex = fromIndex - 1;
+        const element = state.fields[fromIndex];
+        state.fields.splice(fromIndex, 1);
+        state.fields.splice(toIndex, 0, element);
+      } else {
+        console.log('field is already last');
+      }
     },
   },
 });
 
 export const {
+  deleteField,
+  updateField,
   updateCropperModal,
   removedCroppedImageById,
   addCroppedImage,
   updateCroppedImage,
+  addField,
+  moveFieldUp,
+  moveFieldDown,
 } = eventPublicPageSlice.actions;
 
 export const getCropperModal = (state: RootState) =>
@@ -70,6 +116,18 @@ export const getCropperModal = (state: RootState) =>
 
 export const getCroppedImageById = (id: number) => (state: RootState) => {
   return state.eventPublicPage.croppedImages.find((i) => i.id === id);
+};
+
+export const getFieldById = (id: number) => (state: RootState) => {
+  return state.eventPublicPage.fields.find((i) => i.id === id);
+};
+
+export const getFields = (state: RootState) => {
+  return state.eventPublicPage.fields;
+};
+
+export const getFieldsLength = (state: RootState) => {
+  return state.eventPublicPage.fields.length;
 };
 
 export const getCroppedImagesCount = (state: RootState) => {

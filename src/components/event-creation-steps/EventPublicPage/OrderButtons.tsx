@@ -2,6 +2,8 @@ import React from 'react'
 import { HiOutlineChevronDown, HiOutlineChevronUp } from 'react-icons/hi';
 
 import { useAppDispatch } from '@/app/hooks';
+import { setIsEditedById } from '@/features/eventCreation/eventCreationSlice';
+import { deleteField, moveFieldDown, moveFieldUp } from '@/features/eventCreation/eventPublicPageSlice';
 
 import TrashIcon from '~/icons/grey/trash.svg';
 
@@ -11,16 +13,21 @@ type Props = {
 
 export default function DragButtons({ itemId }: Props) {
   const dispatch = useAppDispatch();
-  // const itemState = useAppSelector(getItemById(itemId));
 
+  const setIsFormEdited = () => {
+    dispatch(setIsEditedById(3));
+  }
   function handleUp() {
-    console.log('up');
+    dispatch(moveFieldUp(itemId));
+    setIsFormEdited();
   }
   function handleDown() {
-    console.log('down');
+    dispatch(moveFieldDown(itemId));
+    setIsFormEdited();
   }
   function handleDelete() {
-    console.log('delete');
+    dispatch(deleteField(itemId));
+    setIsFormEdited();
   }
 
   return (

@@ -4,20 +4,20 @@ import { useEffect, useRef } from 'react';
 import styles from "./Events.module.scss";
 
 import SubmitButton from '@/components/buttons/SubmitButton';
-import { BasicInfo } from '@/components/forms/BasicInfo';
-import { EventOptions } from '@/components/forms/EventOptions';
-import { EventPublicPage } from '@/components/forms/EventPublicPage';
+import { BasicInfo } from '@/components/event-creation-steps/BasicInfo';
+import { EventOptions } from '@/components/event-creation-steps/EventOptions';
+import { EventPublicPage } from '@/components/event-creation-steps/EventPublicPage';
+import { Review } from '@/components/event-creation-steps/Review';
 import CropperModal from '@/components/forms/fields/ImageDropCrop/CropperModal';
 import Layout from '@/components/layout/Layout';
 import ButtonLink from '@/components/links/ButtonLink';
+import EventsMenu from '@/components/navigation/EventsMenu';
 
 import { useAppSelector } from '@/app/hooks';
 import {
   getCurrentStep,
   getStepById
 } from '@/features/eventCreation/eventCreationSlice';
-
-import EventsMenu from './EventsMenu';
 
 import CalendarIcon from '~/icons/blue/calendar.svg';
 
@@ -94,6 +94,9 @@ export default function Events({ id }: Props) {
               {currentStep === 3 &&
                 <EventPublicPage ref={eventFormRef} step={3} eventStatus={eventStatus} />
               }
+              {currentStep === 4 &&
+                <Review ref={eventFormRef} step={4} eventStatus={eventStatus} />
+              }
             </div>
           </div>
 
@@ -102,7 +105,7 @@ export default function Events({ id }: Props) {
 
       <div className={`${styles.footerNav} ${isFormEdited ? '' : 'hidden'}`}>
         <div className='wrap'>
-          <ButtonLink variant='grey' href='/dashboard'>
+          <ButtonLink variant='grey' href='/events'>
             Cancel
           </ButtonLink>
           <SubmitButton
