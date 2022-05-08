@@ -1,3 +1,5 @@
+import { OrderedField } from '@/types/event';
+
 export const startingEventCreationSteps = [
   {
     id: 1,
@@ -42,3 +44,11 @@ export const startingEventData = {
   registrationStartDate: null,
   seriesMonth: null,
 };
+
+export const startingOrderedFields: OrderedField[] = [
+  {
+    id: 1,
+    type: 'text',
+    data: {} as any,
+  },
+];

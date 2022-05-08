@@ -23,32 +23,8 @@
       @apply grid items-center gap-3 inline-grid grid-cols-2 w-full;
       grid-template-columns: auto 30px;
     }
-    .YoutubeLink {
-      .box-input {
-        @apply flex flex-row items-center justify-center mb-3;
-        @apply w-full border border-gray-400;
-        svg {
-          @apply w-6 h-auto opacity-60 my-auto mx-3;
-        }
-        input {
-          @apply w-full border-none placeholder:opacity-80 placeholder:text-base;
-        }
-      }
-      .YoutubeEmbed {
-        overflow: hidden;
-        padding-bottom: 56.25%;
-        position: relative;
-        height: 0;
-        iframe {
-          left: 0;
-          top: 0;
-          height: 100%;
-          width: 100%;
-          position: absolute;
-        }
-      }
-    }
-    .DragButtons {
+
+    .OrderButtons {
       @apply grid gap-0 place-items-center;
       button {
         width: 18px;

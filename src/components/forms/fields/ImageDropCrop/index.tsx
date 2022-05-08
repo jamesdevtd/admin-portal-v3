@@ -60,6 +60,7 @@ export default function ImageDropCrop({ fieldId, imgId }: Props) {
         if (fieldId) {
           dispatch(updateField({
             id: fieldId,
+            type: 'image',
             data: { imgId: imgId, src: imgUrl }
           }));
         }
@@ -102,7 +103,7 @@ export default function ImageDropCrop({ fieldId, imgId }: Props) {
     </div>
 
   return (
-    <div className={`dropzone-box ${thumbSrc && 'has-thumb'}`}>
+    <div className={`dropzone-box ${thumbSrc && 'has-thumb'}`} data-id={fieldId}>
       <div {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
         {thumbSrc ?

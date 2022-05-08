@@ -47,6 +47,9 @@ button,
     svg {
       @apply w-5 h-auto opacity-60 my-auto mr-3;
     }
+    &:disabled {
+      opacity: 0.5;
+    }
   }
 }
 
@@ -55,10 +58,14 @@ input:focus {
 }
 
 .content {
+  h1,
   h2,
   h2,
   h3 {
     @apply font-semibold text-blue-dark;
+  }
+  h1 {
+    @apply text-2xl;
   }
   h2 {
     @apply text-xl;

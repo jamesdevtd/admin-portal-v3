@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import styles from './Review.module.scss';
 import groupStyles from '@/components/forms/styles/FormGroup.module.scss';
 

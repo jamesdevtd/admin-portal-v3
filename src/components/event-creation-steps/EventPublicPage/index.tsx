@@ -1,10 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import dynamic from 'next/dynamic';
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import styles from './EventPublicPage.module.scss';
 import groupStyles from '@/components/forms/styles/FormGroup.module.scss';
 
@@ -32,10 +32,10 @@ type Props = {
   eventStatus: { id: number, status: string }
 }
 
-// const Editor = dynamic<EditorProps>(
-//   () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
-//   { ssr: false }
-// )
+const DraftEditor = dynamic(
+  () => import('@/components/forms/fields/DraftEditor'),
+  { ssr: false }
+)
 
 export const EventPublicPage = forwardRef(({ step, eventStatus, ...props }: Props, ref) => {
 
@@ -59,7 +59,6 @@ export const EventPublicPage = forwardRef(({ step, eventStatus, ...props }: Prop
     mode: 'onSubmit',
     defaultValues: formDefaultValues
   });
-
 
   const setIsFormEdited = () => {
     dispatch(setIsEditedById(step));
@@ -142,14 +141,6 @@ export const EventPublicPage = forwardRef(({ step, eventStatus, ...props }: Prop
         </div>
         <p className='instructions' >Add more details to your Event - these details will be shown to Teams who are searching for Events to join, so make sure to include why they should register and what they can look forward to! </p>
 
-        <section className='main-description'>
-          <textarea name="" id="" cols={30} rows={2} className='w-full'></textarea>
-          {/* <Editor
-            // editorState={editorState}
-            wrapperClassName="Wysiwyg"
-            onEditorStateChange={onEditorStateChange}
-          /> */}
-        </section>
         <OrderedFields />
 
       </div>

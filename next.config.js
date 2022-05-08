@@ -48,17 +48,18 @@ module.exports = {
     includePaths: [path.join(__dirname, 'styles')],
   },
 
-  async redirects() {
-    return [
-      {
-        source: '/events',
-        destination: '/events/1',
-        permanent: true,
-      },
-    ]
-  }
+  // TODO: add redirects only as needed for events testing
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: '/events',
+  //       destination: '/events/1',
+  //       permanent: true,
+  //     },
+  //   ]
+  // }
 
-  //TODO: add next-http-proxy-middleware
+  // TODO: add next-http-proxy-middleware
   // async rewrites() {
   //   return [
   //     {

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { FiYoutube } from 'react-icons/fi';
 
+import styles from './VideoLink.module.scss';
+
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { getFieldById, updateField } from '@/features/eventCreation/eventPublicPageSlice';
 import { useDebounce } from '@/utils/customHooks';
@@ -9,12 +11,12 @@ import { getYoutubeId, youtubeUrl } from '@/utils/regex';
 import YoutubeEmbed from './YoutubeEmbed';
 
 type Props = {
-  itemId: number,
+  fieldId: number,
 }
 
-export default function YoutubeLink({ itemId }: Props) {
+export default function YoutubeLink({ fieldId }: Props) {
   const dispatch = useAppDispatch();
-  const itemState = useAppSelector(getFieldById(itemId));
+  const itemState = useAppSelector(getFieldById(fieldId));
   const [link, setLink] = useState(itemState?.data.url);
 
   // TEST: 
@@ -41,11 +43,11 @@ export default function YoutubeLink({ itemId }: Props) {
     const id = getYoutubeId(val);
     if (validateYoutubeUrl(val)) {
       dispatch(updateField({
-        id: itemId, data: { youtubeId: id, url: val }
+        id: fieldId, type: 'video', data: { youtubeId: id, url: val }
       }));
     } else {
       dispatch(updateField({
-        id: itemId, data: { youtubeId: '', url: val }
+        id: fieldId, type: 'video', data: { youtubeId: '', url: val }
       }));
     }
   }
@@ -57,7 +59,7 @@ export default function YoutubeLink({ itemId }: Props) {
   }, [debouncedValue]);
 
   return (
-    <div className='YoutubeLink'>
+    <div className={styles.VideoLink} data-id={fieldId}>
       <div className="box-input">
         <FiYoutube />
         <input

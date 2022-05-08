@@ -1,19 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { startingOrderedFields } from '@/static/event';
+
 import type { RootState } from '../../app/store';
 
 import {
   CroppedImageProps,
   CropperModalProps,
   EventImageProps,
+  OrderedField,
 } from '@/types/event';
-
-// declaring the types for our state
-export type OrderedField = {
-  id: number;
-  type: 'text' | 'image' | 'video';
-  data: any;
-};
 
 export type EventPupublicPageProps = {
   eventMainImage: EventImageProps;
@@ -27,7 +23,7 @@ const initialState: EventPupublicPageProps = {
     eventId: 0,
     src: '',
   },
-  fields: [],
+  fields: startingOrderedFields,
   croppedImages: [],
   cropperModal: {
     imgId: 0,
@@ -66,34 +62,47 @@ export const eventPublicPageSlice = createSlice({
     addField: (state, action: PayloadAction<OrderedField>) => {
       state.fields.push(action.payload);
     },
-    updateField: (state, action: PayloadAction<{ id: number; data: any }>) => {
+    updateField: (
+      state,
+      action: PayloadAction<{ id: number; type: string; data: any }>
+    ) => {
       const index = state.fields.findIndex((i) => i.id === action.payload.id);
       if (index !== -1) state.fields[index].data = action.payload.data;
     },
     deleteField: (state, action: PayloadAction<number>) => {
-      const index = state.fields.findIndex((i) => i.id === action.payload);
+      const index = action.payload;
       if (index !== -1) state.fields.splice(index, 1);
     },
     moveFieldUp: (state, action: PayloadAction<number>) => {
-      const fromIndex = state.fields.findIndex((i) => i.id === action.payload);
+      const fromIndex = action.payload;
       if (fromIndex > 0) {
         const toIndex = fromIndex - 1;
-        const element = state.fields[fromIndex];
-        state.fields.splice(fromIndex, 1);
-        state.fields.splice(toIndex, 0, element);
-      } else {
-        console.log('field is already first');
+        if (
+          state.fields[fromIndex].type === 'text' &&
+          state.fields[toIndex].type === 'text'
+        ) {
+          console.log('NOT permitted: field above is also text');
+        } else {
+          const element = state.fields[fromIndex];
+          state.fields.splice(fromIndex, 1);
+          state.fields.splice(toIndex, 0, element);
+        }
       }
     },
     moveFieldDown: (state, action: PayloadAction<number>) => {
-      const fromIndex = state.fields.findIndex((i) => i.id === action.payload);
+      const fromIndex = action.payload;
       if (fromIndex < state.fields.length - 1) {
-        const toIndex = fromIndex - 1;
-        const element = state.fields[fromIndex];
-        state.fields.splice(fromIndex, 1);
-        state.fields.splice(toIndex, 0, element);
-      } else {
-        console.log('field is already last');
+        const toIndex = fromIndex + 1;
+        if (
+          state.fields[fromIndex].type === 'text' &&
+          state.fields[toIndex].type === 'text'
+        ) {
+          console.log('NOT permitted: field below is also text');
+        } else {
+          const element = state.fields[fromIndex];
+          state.fields.splice(fromIndex, 1);
+          state.fields.splice(toIndex, 0, element);
+        }
       }
     },
   },

@@ -41,3 +41,9 @@ export interface CropperModalProps {
   isOpen: boolean;
   isReCrop: boolean;
 }
+
+export type OrderedField = {
+  id: number;
+  type: 'text' | 'image' | 'video';
+  data: any;
+};
