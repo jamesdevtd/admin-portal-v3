@@ -40,6 +40,7 @@ export const Review = forwardRef(({ step, eventStatus, ...props }: Props, ref) =
   const eventPublic = useAppSelector(getEventPublicPage);
   const basicInfo = useAppSelector(getBasicInfo);
   const divisions = useAppSelector(getDivisions);
+  const descHtml = eventPublic.fields.find(i => i.type === 'text')?.html;
 
   const router = useRouter();
   const [hasErrors, setHasErrors] = useState(false);
@@ -128,10 +129,18 @@ export const Review = forwardRef(({ step, eventStatus, ...props }: Props, ref) =
               <span>Fee - ${divisions[0]?.playerFee?.fee}</span>
             }
           </div>
-          <div className="division">
-            <DivisionIcon />
-            <span>Adult Mens Social, Adult Coed Social</span>
-          </div>
+          {divisions.length &&
+            <div className="divisions">
+              <DivisionIcon />
+              <ul>
+                {divisions.map(i =>
+                  <li key={i.id}>
+                    {i.divisionType} {i.makeUp} {i.competitionLevel}{(divisions.length > 1 && i.id < divisions.length) ? ',  ' : ''}
+                  </li>
+                )}
+              </ul>
+            </div>
+          }
           <div className="event-country">
             <Image src={FlagSrc} />
           </div>
@@ -144,7 +153,8 @@ export const Review = forwardRef(({ step, eventStatus, ...props }: Props, ref) =
           <span>Description*</span>
         </div>
         <p className='instructions'>
-          <Interweave content={eventPublic?.description} />
+          {/* <Interweave content={eventPublic?.description} /> */}
+          <Interweave content={descHtml} />
         </p>
 
       </div>

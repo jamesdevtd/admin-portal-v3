@@ -69,10 +69,20 @@ export const eventPublicPageSlice = createSlice({
     },
     updateField: (
       state,
-      action: PayloadAction<{ id: number; type: string; data: any }>
+      action: PayloadAction<{
+        id: number;
+        type: string;
+        html?: string;
+        data: any;
+      }>
     ) => {
       const index = state.fields.findIndex((i) => i.id === action.payload.id);
-      if (index !== -1) state.fields[index].data = action.payload.data;
+      if (index !== -1) {
+        state.fields[index].data = action.payload.data;
+        if (action.payload.html) {
+          state.fields[index].html = action.payload.html;
+        }
+      }
     },
     deleteField: (state, action: PayloadAction<number>) => {
       const index = action.payload;

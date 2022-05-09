@@ -76,7 +76,7 @@ export const EventPublicPage = forwardRef(({ step, eventStatus, ...props }: Prop
       console.log('first render');
       dispatch(setIsValidatedById(step));
     } else {
-      console.log('not first render');
+      // console.log('not first render');
       if (eventPublicPage?.croppedImages.length) {
         clearErrors('mainEventImage');
         setValue('mainEventImage', eventPublicPage?.croppedImages[0].src);

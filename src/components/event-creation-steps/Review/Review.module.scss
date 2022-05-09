@@ -26,7 +26,7 @@
     @apply block relative overflow-hidden rounded-l-lg;
     max-width: 200px;
     width: 200px;
-    height: 160px;
+    height: 185px;
     > span:not(.tag) {
       width: 200px;
       height: 160px;
@@ -44,7 +44,7 @@
     }
   }
   .text {
-    @apply flex flex-col gap-1 relative;
+    @apply flex flex-col gap-1 relative font-semibold text-base text-blue-dark;
     flex: 1;
     .event-country {
       @apply absolute;
@@ -66,15 +66,66 @@
       }
     }
     .event-name {
+      b {
+        @apply text-md;
+      }
       > .logo {
         @apply block relative;
-        width: 18px;
-        height: 18px;
+        width: 20px;
+        height: 20px;
         left: -2px;
       }
     }
-    .division {
+    .divisions {
       @apply pt-2 mt-1 border-t border-gray-200;
+      ul {
+        @apply inline-block;
+        li {
+          @apply inline capitalize;
+        }
+      }
+    }
+  }
+}
+
+.ClonedEvents :global {
+  @apply flex flex-col gap-5;
+  .item {
+    @apply flex flex-row items-center justify-between rounded-md py-3 px-4;
+    @apply cursor-pointer gap-2 overflow-auto bg-white;
+    @apply shadow-[0_0_2px_0_rgb(0,0,0,0.1)];
+    border-radius: 12px;
+    border-width: 1px;
+    h3 {
+      @apply flex items-center w-full;
+      svg {
+        @apply ml-auto;
+      }
+    }
+    &.expanded {
+      h3 {
+        @apply capitalize;
+      }
+      h3 + div {
+        @apply flex;
+      }
+    }
+    &.collapsed :global {
+      h3 {
+        @apply uppercase;
+        svg {
+          @apply rotate-90;
+        }
+      }
+      h3 + div {
+        @apply hidden;
+      }
+      .buttons {
+        @apply hidden;
+      }
+      .togglelable {
+        @apply hidden;
+      }
     }
   }
 }

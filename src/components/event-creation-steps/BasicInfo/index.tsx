@@ -64,7 +64,7 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
   const basicInfo = useAppSelector(getBasicInfo);
 
   const isFirstRender = useIsFirstRender();
-  console.log('BasicInfo render...:', basicInfo);
+  // console.log('BasicInfo render...:', basicInfo);
   // console.log('isFirstRender:', isFirstRender);
 
 
@@ -79,7 +79,9 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
 
   const tomorrow = moment().add(1, 'day').toDate();
 
-  const [monthId, setMonthId] = useState<number>(basicInfo.seriesMonth && moment().month() + 1);
+  const [monthId, setMonthId] = useState<number>(basicInfo.seriesMonth || 12);
+  console.log('monthId: ', monthId);
+
   const [yearSelected, setYearSelected] = useState<number>(basicInfo.eventYear || moment().year());
   const [seriesSelected, setSeriesSelected] = useState<number>(basicInfo.seriesMonth || 0);
 
@@ -97,10 +99,8 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
     basicInfo?.facilityAddress.length ? basicInfo.facilityAddress : latLongPlaceholder
   );
 
-  const [availableSeries, setAvailableSeries] = useState<SeriesProps[]>(
-    basicInfo?.additionalEvents.length ? basicInfo.additionalEvents : seriesNames
-  );
-
+  const [availableSeries, setAvailableSeries] = useState<SeriesProps[]>(seriesNames);
+  // console.log('availableSeries: ', availableSeries);
   const setIsFormEdited = () => {
     dispatch(setIsEditedById(step));
   }
@@ -221,7 +221,9 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
       return;
     }
 
-    setAvailableSeries(seriesNames);
+    if (!isFirstRender) {
+      setAvailableSeries(seriesNames);
+    }
 
   }
 
@@ -585,6 +587,7 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
           seriesMonth={monthId}
           items={seriesNames}
           handleAdditionalEvents={handleAdditionalEvents}
+          initCheckedItems={basicInfo.additionalEvents}
         />
       </div>
 

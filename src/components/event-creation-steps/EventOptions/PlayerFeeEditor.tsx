@@ -73,7 +73,7 @@ export default function PlayerFeeEditor({ divisionId }: Props) {
           <span className="currency">$</span>
           {isFree ?
             <input type='number' value='0' className='is-fee' disabled /> :
-            <input type='number' onChange={handleChange} value={fee} />
+            <input type='number' defaultValue={0} onChange={handleChange} value={fee} />
           }
         </div>
       </div>

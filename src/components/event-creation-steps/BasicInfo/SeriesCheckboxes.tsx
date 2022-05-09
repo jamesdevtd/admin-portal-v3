@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 
 import styles from './SeriesCheckboxes.module.scss';
 
+import { useIsFirstRender } from '@/utils/customHooks';
+
 import SeriesProps from '@/types/series'
 
 interface Props {
   heading: string;
   items: SeriesProps[];
   seriesMonth: number;
+  initCheckedItems: SeriesProps[],
 }
 
 // Optional props
@@ -20,11 +23,13 @@ interface SeriesCheckboxesProps extends Props, OptionalProps { }
 const defaultProps: Props = {
   heading: 'Additional Events',
   items: [],
-  seriesMonth: 1
+  seriesMonth: 1,
+  initCheckedItems: []
 };
 
-export default function SeriesCheckboxes({ heading, items, seriesMonth, handleAdditionalEvents }: SeriesCheckboxesProps) {
-  const [checkedItems, setCheckedItems] = useState<SeriesProps[]>([]);
+export default function SeriesCheckboxes({ heading, items, seriesMonth, initCheckedItems, handleAdditionalEvents }: SeriesCheckboxesProps) {
+  const [checkedItems, setCheckedItems] = useState<SeriesProps[]>(initCheckedItems);
+  const isFirstRender = useIsFirstRender();
 
   useEffect(() => {
     handleAdditionalEvents(checkedItems);
@@ -32,7 +37,9 @@ export default function SeriesCheckboxes({ heading, items, seriesMonth, handleAd
 
   useEffect(() => {
     // TODO: add Clear all button as option after select all is clicked?
-    clearCheckedItems();
+    if (!isFirstRender) {
+      clearCheckedItems();
+    }
   }, [seriesMonth]);
 
   const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,6 +54,7 @@ export default function SeriesCheckboxes({ heading, items, seriesMonth, handleAd
   };
 
   const clearCheckedItems = () => {
+    console.log('inti clearCheckedItems');
     setCheckedItems([]);
   };
 

@@ -2,6 +2,7 @@ import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 
 import counterReducer from '@/features/counter/counterSlice';
 import basicInfoReducer from '@/features/eventCreation/basicInfoSlice';
+import clonedEventsReducer from '@/features/eventCreation/clonedEventsSlice';
 import divisionsReducer from '@/features/eventCreation/divisionsSlice';
 import eventCreationReducer from '@/features/eventCreation/eventCreationSlice';
 import eventPublicPageReducer from '@/features/eventCreation/eventPublicPageSlice';
@@ -15,6 +16,7 @@ export const store = configureStore({
     basicInfo: basicInfoReducer,
     divisions: divisionsReducer,
     eventPublicPage: eventPublicPageReducer,
+    clonedEvents: clonedEventsReducer,
   },
 });
 

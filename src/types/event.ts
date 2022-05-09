@@ -45,5 +45,20 @@ export interface CropperModalProps {
 export type OrderedField = {
   id: number;
   type: 'text' | 'image' | 'video';
+  html?: string;
   data: any;
+};
+
+export type ClonedEventProps = {
+  id: number;
+  isEdited: boolean;
+  eventName: string;
+  eventStartDate: string; // string($date-time)
+  eventEndDate: string; // string($date-time)
+  eventStartTime: string; // string($date-time)
+  registrationStartDate: string; // string($date-time)
+  registrationEndDate: string; // string($date-time)
+  facilityAddress: number[]; // lat long array
+  facilityAddressString: string; // String address
+  facilityName: string;
 };

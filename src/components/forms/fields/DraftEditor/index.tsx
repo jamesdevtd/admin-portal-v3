@@ -43,10 +43,11 @@ export default function DraftEditor({ fieldId }: Props) {
   function saveContent() {
     const raw = convertToRaw(editorState.getCurrentContent());
     const html = convertToHTML(editorState.getCurrentContent());
-    dispatch(updateField({ id: fieldId, type: 'text', data: raw }));
     setHtmlOutput(html);
+    const payload = { id: fieldId, type: 'text', html: html, data: raw };
+    console.log('payload: ', payload);
+    dispatch(updateField(payload));
     if (editorState.getCurrentContent().hasText()) {
-      console.log('html: ', html);
       dispatch(updateDescription(html));
     } else {
       dispatch(updateDescription(''));
