@@ -1,101 +1,126 @@
-.DraftEditor :global {
-  @apply border border-gray-400;
+.DraftEditor {
   // border-color: #5e656f;
-  .toolbars {
-    @apply flex justify-between flex-row border-b border-gray-300 gap-2;
-    padding: 3px 12px;
-    > div {
-      @apply flex flex-row gap-1;
-      &:nth-child(2) {
-        @apply ml-auto;
-      }
-      &:last-child {
-        &:before {
-          @apply border border-gray-300 relative;
-          content: "";
-          left: -3px;
-          height: 23px;
-          top: 2px;
+  @apply border border-gray-400;
+  :global {
+    .toolbars {
+      @apply flex justify-between flex-row border-b border-gray-300 gap-2;
+      padding: 3px 12px;
+      > div {
+        @apply flex flex-row gap-1;
+        &:nth-child(2) {
+          @apply ml-auto;
         }
-      }
-    }
-    button {
-      @apply shadow-sm py-1 px-2 bg-no-repeat bg-center;
-      background-size: 20px;
-      min-width: 30px;
-      text-indent: -9999px;
-      &.unordered-list-item {
-        background-image: url(/icons/editor-icons/list-unordered.svg);
-        background-size: 20px;
-      }
-      &.ordered-list-item {
-        background-image: url(/icons/editor-icons/list-ordered.svg);
-        background-size: 16px;
-      }
-      &.BOLD {
-        background-image: url(/icons/editor-icons/text-bold.svg);
-        background-size: 11px;
-      }
-      &.ITALIC {
-        background-image: url(/icons/editor-icons/text-italic.svg);
-        background-size: 14px;
-      }
-      &.link {
-        background-image: url(/icons/editor-icons/text-link.svg);
-        background-size: 14px;
-      }
-    }
-    .style-selector {
-      @apply relative w-9 h-7 bg-no-repeat bg-left;
-      background-image: url(/icons/editor-icons/text-size.svg);
-      background-size: 16px;
-      .items {
-        @apply hidden bg-white rounded-md overflow-hidden;
-        @apply z-10 absolute;
-        @apply shadow-[0_0_4px_0_rgb(0,0,0,0.3)];
-        width: 110px;
-        height: auto;
-        top: -30px;
-        left: 0;
-        > div {
-          @apply flex flex-col items-baseline;
-          button {
-            @apply p-0 px-2 block w-full text-left;
-            text-indent: 0 !important;
-            &.header-one {
-              @apply text-lg font-semibold;
-            }
-            &.header-two {
-              @apply text-md font-semibold;
-            }
-            &.header-three {
-              @apply text-base font-semibold;
-            }
-            &:hover {
-              @apply bg-gray-200;
-            }
+        &:last-child {
+          &:before {
+            @apply border border-gray-300 relative;
+            content: "";
+            left: -3px;
+            height: 23px;
+            top: 2px;
           }
         }
       }
-      &:hover,
-      &:focus {
+      button {
+        @apply shadow-sm py-1 px-2 bg-no-repeat bg-center;
+        background-size: 20px;
+        min-width: 30px;
+        text-indent: -9999px;
+        &.unordered-list-item {
+          background-image: url(/icons/editor-icons/list-unordered.svg);
+          background-size: 20px;
+        }
+        &.ordered-list-item {
+          background-image: url(/icons/editor-icons/list-ordered.svg);
+          background-size: 16px;
+        }
+        &.BOLD {
+          background-image: url(/icons/editor-icons/text-bold.svg);
+          background-size: 11px;
+        }
+        &.ITALIC {
+          background-image: url(/icons/editor-icons/text-italic.svg);
+          background-size: 14px;
+        }
+        &.link {
+          background-image: url(/icons/editor-icons/text-link.svg);
+          background-size: 14px;
+        }
+      }
+      .style-selector {
+        @apply relative w-9 h-7 bg-no-repeat bg-left;
+        background-image: url(/icons/editor-icons/text-size.svg);
+        background-size: 16px;
         .items {
-          @apply block;
+          @apply hidden bg-white rounded-md overflow-hidden;
+          @apply z-10 absolute;
+          @apply shadow-[0_0_4px_0_rgb(0,0,0,0.3)];
+          width: 110px;
+          height: auto;
+          top: -30px;
+          left: 0;
+          > div {
+            @apply flex flex-col items-baseline;
+            button {
+              @apply p-0 px-2 block w-full text-left;
+              text-indent: 0 !important;
+              &.header-one {
+                @apply text-lg font-semibold;
+              }
+              &.header-two {
+                @apply text-md font-semibold;
+              }
+              &.header-three {
+                @apply text-base font-semibold;
+              }
+              &:hover {
+                @apply bg-gray-200;
+              }
+            }
+          }
+        }
+        &:hover,
+        &:focus {
+          .items {
+            @apply block;
+          }
         }
       }
     }
+    .stage {
+      @apply py-2 px-3;
+      min-height: 100px;
+      &.read-only {
+        @apply p-0;
+      }
+      h1 {
+        @apply text-lg font-semibold;
+      }
+      h2 {
+        @apply text-md font-semibold;
+      }
+      h3 {
+        @apply text-base font-semibold;
+      }
+    }
+  }
+}
+
+.DraftEditor.read-only {
+  @apply border-none border-0 #{!important};
+  hr {
+    @apply hidden;
   }
   .stage {
-    @apply py-2 px-3;
-    min-height: 100px;
-    h1 {
-      @apply text-lg font-semibold;
-    }
-    h2 {
-      @apply text-md font-semibold;
-    }
-    h3 {
-      @apply text-base font-semibold;
-    }
+    min-height: auto !important;
+  }
+  div,
+  .stage,
+  .fields {
+    padding: 0px;
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    text-shadow: none !important;
+    @apply border-none border-0 shadow-none outline-none border-transparent #{!important};
   }
 }

@@ -26,7 +26,7 @@
     "**/*.ts",
     "**/*.tsx",
     "src/pages/affiliate-setup/steps/LeagueName.tsx_TODO"
-, "src/components/forms/fields/DraftEditor/BlockStyleControls.BAK_tsx", "src/components/event-creation-steps/Review/ClonedEventEditor.WIPtsx"  ],
+, "src/components/forms/fields/DraftEditor/BlockStyleControls.BAK_tsx"  ],
   "exclude": ["node_modules"],
   "moduleResolution": ["node_modules", ".next", "node"]
 }

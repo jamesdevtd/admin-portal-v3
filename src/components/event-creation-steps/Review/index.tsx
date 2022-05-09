@@ -1,4 +1,3 @@
-import { Interweave } from 'interweave';
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -16,6 +15,7 @@ import { setCurrentStep, setIsEditedById } from '@/features/eventCreation/eventC
 import { getEventPublicPage } from '@/features/eventCreation/eventPublicPageSlice';
 
 import ClonedEvents from './ClonedEvents';
+import OrderedFields from '../EventPublicPage/OrderedFields';
 
 import CalendarIcon from '~/icons/blue/calendar-dark.svg';
 import DivisionIcon from '~/icons/blue/division.svg';
@@ -60,8 +60,6 @@ export const Review = forwardRef(({ step, eventStatus, ...props }: Props, ref) =
     dispatch(setCurrentStep(4.5));
     router.push('/events/congratulations', undefined, { shallow: true });
   }
-
-
 
   const onSubmit = (data: unknown) => {
     //TODO: POST request to API
@@ -152,10 +150,7 @@ export const Review = forwardRef(({ step, eventStatus, ...props }: Props, ref) =
         <div className='label'>
           <span>Description*</span>
         </div>
-        <p className='instructions'>
-          {/* <Interweave content={eventPublic?.description} /> */}
-          <Interweave content={descHtml} />
-        </p>
+        <OrderedFields isReadOnly />
 
       </div>
 

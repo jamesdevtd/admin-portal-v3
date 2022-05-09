@@ -17,9 +17,10 @@ import { useDebounce } from '@/utils/customHooks';
 
 type Props = {
   fieldId: number,
+  isReadOnly?: boolean
 }
 
-export default function DraftEditor({ fieldId }: Props) {
+export default function DraftEditor({ fieldId, isReadOnly }: Props) {
   const dispatch = useAppDispatch();
 
   const itemState = useAppSelector(getFieldById(fieldId));
@@ -152,17 +153,19 @@ export default function DraftEditor({ fieldId }: Props) {
 
   return (
     <>
-      <div className={styles.DraftEditor} onClick={focusEditor}>
-        <div className='toolbars'>
-          <div className="style-selector">
-            <div className="items">
-              <BlockStyleControls onToggle={onBlockClick} />
+      <div className={`${styles.DraftEditor} ${isReadOnly ? styles['read-only'] : ''}`} onClick={focusEditor}>
+        {!isReadOnly &&
+          <div className='toolbars'>
+            <div className="style-selector">
+              <div className="items">
+                <BlockStyleControls onToggle={onBlockClick} />
+              </div>
             </div>
+            <InlineStyleControls onToggle={onInlineClick} />
+            <BlockStyleControls2 onToggle={onBlockClick} />
           </div>
-          <InlineStyleControls onToggle={onInlineClick} />
-          <BlockStyleControls2 onToggle={onBlockClick} />
-        </div>
-        <div className='stage'>
+        }
+        <div className={`stage ${isReadOnly ? 'read-only' : ''}`}>
           <Editor
             ref={editor}
             editorState={editorState}
@@ -170,6 +173,7 @@ export default function DraftEditor({ fieldId }: Props) {
               setEditorState(editorState);
               dispatch(setIsEditedById(3));
             }}
+            readOnly={isReadOnly}
           />
         </div>
         <hr />

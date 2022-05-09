@@ -9,10 +9,11 @@ import ImagePlaceholder from '~/svg/image-placeholder.svg';
 
 type Props = {
   fieldId?: number,
-  imgId: number
+  imgId: number,
+  isReadOnly?: boolean
 }
 
-export default function ImageDropCrop({ fieldId, imgId }: Props) {
+export default function ImageDropCrop({ fieldId, imgId, isReadOnly }: Props) {
 
 
   const dispatch = useAppDispatch();
@@ -26,6 +27,7 @@ export default function ImageDropCrop({ fieldId, imgId }: Props) {
     getInputProps,
     open
   } = useDropzone({
+    disabled: isReadOnly,
     useFsAccessApi: false,
     maxSize: 5000000,
     maxFiles: 1,
@@ -121,7 +123,7 @@ export default function ImageDropCrop({ fieldId, imgId }: Props) {
         }
       </div>
 
-      {thumbSrc &&
+      {(thumbSrc && !isReadOnly) &&
         <button type="button" className="btn replace" onClick={open}>Replace Image</button>
       }
     </div>

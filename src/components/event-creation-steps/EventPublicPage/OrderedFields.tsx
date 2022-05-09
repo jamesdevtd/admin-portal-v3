@@ -17,17 +17,17 @@ import DragButtons from './OrderButtons';
 import ImageIcon from '~/icons/blue/image.svg';
 import TextIcon from '~/icons/blue/text-t.svg';
 
-
 const DraftEditor = dynamic(
   () => import('@/components/forms/fields/DraftEditor'),
   { loading: () => <p>Editor is loading</p>, ssr: false }
 );
 
 type Props = {
-  eventId?: number
+  eventId?: number,
+  isReadOnly?: boolean
 }
 
-export default function OrderedFields({ eventId }: Props) {
+export default function OrderedFields({ eventId, isReadOnly }: Props) {
 
   const dispatch = useAppDispatch();
   const fieldsLength = useAppSelector(getFieldsLength);
@@ -52,33 +52,36 @@ export default function OrderedFields({ eventId }: Props) {
   }
 
   return (
-    <div className={`${styles.orderedFields}`}>
+    <div className={`${styles.orderedFields} ${isReadOnly ? 'read-only' : ''}`}>
 
       {(fieldsLength > 0) &&
         <div className="fields">
           {fields.map((i, index) =>
             <section key={index} data-id={i.id}>
               {i.type === 'text' &&
-                <DraftEditor fieldId={i.id} />
+                <DraftEditor fieldId={i.id} isReadOnly={isReadOnly} />
               }
               {i.type === 'image' &&
-                <ImageDropCrop fieldId={i.id} imgId={i.id + 1} />
+                <ImageDropCrop fieldId={i.id} imgId={i.id + 1} isReadOnly={isReadOnly} />
               }
               {i.type === 'video' &&
-                <VideoLink fieldId={i.id} />
+                <VideoLink fieldId={i.id} isReadOnly={isReadOnly} />
               }
-              <DragButtons fieldId={i.id} itemIndex={index} />
+              {!isReadOnly &&
+                <DragButtons fieldId={i.id} itemIndex={index} />
+              }
             </section>
           )}
         </div>
       }
 
-      <div className="buttons-row">
-        <button className='btn blue-outline' onClick={addText} disabled={isTextButtonDisabled}><TextIcon />Add Text</button>
-        <button className='btn blue-outline' onClick={addImage}><ImageIcon />Add Image</button>
-        <button className='btn blue-outline' onClick={addVideo}> <FiYoutube /> Add Video </button>
-      </div>
-
+      {!isReadOnly &&
+        <div className="buttons-row">
+          <button className='btn blue-outline' onClick={addText} disabled={isTextButtonDisabled}><TextIcon />Add Text</button>
+          <button className='btn blue-outline' onClick={addImage}><ImageIcon />Add Image</button>
+          <button className='btn blue-outline' onClick={addVideo}> <FiYoutube /> Add Video </button>
+        </div>
+      }
     </div>
   )
 }

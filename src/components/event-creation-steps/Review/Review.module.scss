@@ -110,7 +110,7 @@
         @apply flex;
       }
     }
-    &.collapsed :global {
+    &.collapsed {
       h3 {
         @apply uppercase;
         svg {

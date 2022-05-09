@@ -12,9 +12,10 @@ import YoutubeEmbed from './YoutubeEmbed';
 
 type Props = {
   fieldId: number,
+  isReadOnly?: boolean
 }
 
-export default function YoutubeLink({ fieldId }: Props) {
+export default function YoutubeLink({ fieldId, isReadOnly }: Props) {
   const dispatch = useAppDispatch();
   const itemState = useAppSelector(getFieldById(fieldId));
   const [link, setLink] = useState(itemState?.data.url);
@@ -60,16 +61,19 @@ export default function YoutubeLink({ fieldId }: Props) {
 
   return (
     <div className={styles.VideoLink} data-id={fieldId}>
-      <div className="box-input">
-        <FiYoutube />
-        <input
-          defaultValue={itemState?.data.url}
-          type="text"
-          placeholder='Video URL (Vimeo &amp; YouTube links currently supported)'
-          onChange={handleLinkChange}
-        />
+      {!isReadOnly &&
+        <div className="box-input">
+          <FiYoutube />
+          <input
+            defaultValue={itemState?.data.url}
+            type="text"
+            placeholder='Video URL (Vimeo &amp; YouTube links currently supported)'
+            onChange={handleLinkChange}
+            className={isReadOnly ? 'hidden' : ''}
+          />
 
-      </div>
+        </div>
+      }
       {itemState?.data.youtubeId &&
         <YoutubeEmbed embedId={itemState.data.youtubeId} />
       }
