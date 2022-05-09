@@ -51,10 +51,11 @@ export const Review = forwardRef(({ step, eventStatus, ...props }: Props, ref) =
   const maxFee: number = Math.max(...fees);
   console.log('minFee: ', minFee);
   console.log('minFee: ', maxFee);
+  let feeRange: string;
   if (maxFee <= 0) {
-    const freeRange = null;
+    feeRange = '';
   } else {
-    const feeRange = fees.length ? `${minFee} - ${maxFee}` : '';
+    feeRange = fees.length ? `${minFee} - ${maxFee}` : '';
   }
 
   const {
@@ -133,11 +134,11 @@ export const Review = forwardRef(({ step, eventStatus, ...props }: Props, ref) =
           </div>
           <div className="fee">
             <FeeIcon />
-            {(divisions[0]?.playerFee?.isFree && (!feeRange))
+            {(divisions[0]?.playerFee?.isFree && (feeRange === ''))
               ?
               <span>Free - $0</span>
               :
-              <span>Fee - ${feeRange && feeRange}</span>
+              <span>Fee - ${(fees.length > 1) ? feeRange : divisions[0]?.playerFee?.fee}</span>
             }
           </div>
           {divisions.length &&
