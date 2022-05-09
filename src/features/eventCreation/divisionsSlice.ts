@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { starterDivisions } from '@/static/division';
+// import { starterDivisions } from '@/static/division';
 import { getSumByKey } from '@/utils/arrayUtils';
 
 import type { RootState } from '../../app/store';
@@ -13,7 +13,7 @@ export type DivisionsState = {
 };
 
 const initialState: DivisionsState = {
-  items: starterDivisions,
+  items: [],
 };
 
 export const divisionsSlice = createSlice({
