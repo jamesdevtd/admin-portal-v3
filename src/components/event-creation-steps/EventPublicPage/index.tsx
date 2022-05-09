@@ -10,8 +10,10 @@ import groupStyles from '@/components/forms/styles/FormGroup.module.scss';
 
 import ImageDropCrop from '@/components/forms/fields/ImageDropCrop';
 
-import { useAppDispatch } from '@/app/hooks';
-import { setCurrentStep, setIsEditedById } from '@/features/eventCreation/eventCreationSlice';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { setCurrentStep, setIsEditedById, setIsValidatedById } from '@/features/eventCreation/eventCreationSlice';
+import { getEventPublicPage } from '@/features/eventCreation/eventPublicPageSlice';
+import { useIsFirstRender } from '@/utils/customHooks';
 
 import OrderedFields from './OrderedFields';
 
@@ -40,19 +42,21 @@ const DraftEditor = dynamic(
 export const EventPublicPage = forwardRef(({ step, eventStatus, ...props }: Props, ref) => {
 
   const dispatch = useAppDispatch();
-
+  const eventPublicPage = useAppSelector(getEventPublicPage);
   const [hasErrors, setHasErrors] = useState(false);
   const [hideErrorBox, setHideErrorBox] = useState(false);
-  const [editorState, setEditorState] = useState('');
+  const isFirstRender = useIsFirstRender();
 
   const formDefaultValues = {
-    mainEventImage: 'imasdalasdsdk',
-    description: 'descasdaslkdj'
+    mainEventImage: eventPublicPage?.croppedImages.length ? eventPublicPage?.croppedImages[0]?.src : '',
+    description: eventPublicPage?.description || ''
   };
 
   const {
     handleSubmit,
     getValues,
+    setValue,
+    clearErrors,
     formState,
   } = useForm({
     resolver: yupResolver(schema),
@@ -66,6 +70,25 @@ export const EventPublicPage = forwardRef(({ step, eventStatus, ...props }: Prop
   const handleNextStep = () => {
     dispatch(setCurrentStep(step + 1));
   }
+
+  useEffect(() => {
+    if (isFirstRender) {
+      console.log('first render');
+      dispatch(setIsValidatedById(step));
+    } else {
+      console.log('not first render');
+      if (eventPublicPage?.croppedImages.length) {
+        clearErrors('mainEventImage');
+        setValue('mainEventImage', eventPublicPage?.croppedImages[0].src);
+      }
+      if (eventPublicPage?.description) {
+        clearErrors('description');
+        setValue('description', eventPublicPage?.description);
+      } else {
+        setValue('description', '');
+      }
+    }
+  }, [eventPublicPage])
 
   useEffect(() => {
     if (formState.isDirty) {
@@ -83,10 +106,6 @@ export const EventPublicPage = forwardRef(({ step, eventStatus, ...props }: Prop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formState.errors, formState.isDirty]);
 
-  const onEditorStateChange = (editorState: any) => {
-    // setEditorState(editorState);
-    // console.log('editorState: ', editorState);
-  };
 
   const onSubmit = (data: unknown) => {
     //TODO: POST request to API
@@ -130,6 +149,9 @@ export const EventPublicPage = forwardRef(({ step, eventStatus, ...props }: Prop
 
         <div className="main-event-img">
           <ImageDropCrop imgId={1} />
+          {formState.errors.mainEventImage &&
+            <span className='error'>Main Event Image is required</span>
+          }
         </div>
 
       </div>
@@ -142,7 +164,9 @@ export const EventPublicPage = forwardRef(({ step, eventStatus, ...props }: Prop
         <p className='instructions' >Add more details to your Event - these details will be shown to Teams who are searching for Events to join, so make sure to include why they should register and what they can look forward to! </p>
 
         <OrderedFields />
-
+        {formState.errors.description &&
+          <span className='error'>Event Description is required</span>
+        }
       </div>
 
     </div >

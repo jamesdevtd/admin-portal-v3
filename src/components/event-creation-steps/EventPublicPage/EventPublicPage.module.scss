@@ -12,6 +12,9 @@
     @apply mt-2 mb-8;
     margin-right: 42px;
   }
+  .error {
+    @apply text-red-600 block mt-3;
+  }
 }
 
 .orderedFields {

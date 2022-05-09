@@ -93,3 +93,15 @@ export const useAsync = <T, E = string>(
   }, [execute, immediate]);
   return { execute, status, value, error };
 };
+
+export function useIsFirstRender(): boolean {
+  const isFirst = useRef(true);
+
+  if (isFirst.current) {
+    isFirst.current = false;
+
+    return true;
+  }
+
+  return isFirst.current;
+}

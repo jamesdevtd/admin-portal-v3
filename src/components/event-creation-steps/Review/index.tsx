@@ -1,31 +1,32 @@
-import { yupResolver } from '@hookform/resolvers/yup';
+import { Interweave } from 'interweave';
+import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './Review.module.scss';
 import groupStyles from '@/components/forms/styles/FormGroup.module.scss';
 
-import { useAppDispatch } from '@/app/hooks';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { getBasicInfo } from '@/features/eventCreation/basicInfoSlice';
+import { getDivisions } from '@/features/eventCreation/divisionsSlice';
 import { setCurrentStep, setIsEditedById } from '@/features/eventCreation/eventCreationSlice';
+import { getEventPublicPage } from '@/features/eventCreation/eventPublicPageSlice';
 
-import CalendarIcon from '~/icons/blue/calendar.svg';
+import ClonedEvents from './ClonedEvents';
+
+import CalendarIcon from '~/icons/blue/calendar-dark.svg';
+import DivisionIcon from '~/icons/blue/division.svg';
+import FeeIcon from '~/icons/blue/fee.svg';
+import PinIcon from '~/icons/blue/map-pin.svg';
 import CloseIcon from '~/icons/close.svg';
 import ErrorIcon from '~/icons/error.svg';
 import DescriptionIcon from '~/icons/grey/description.svg';
 import EventImgSrc from '~/images/mock/event-photo.png';
 import FlagSrc from '~/images/mock/flag-us.png'
 import LogoSrc from '~/images/mock/league-logo.png'
-
-const schema = yup
-  .object({
-    mainEventImage: yup.string().required(),
-    description: yup.string().required()
-  })
-  .required();
 
 type Props = {
   step: number,
@@ -36,24 +37,18 @@ type Props = {
 export const Review = forwardRef(({ step, eventStatus, ...props }: Props, ref) => {
 
   const dispatch = useAppDispatch();
+  const eventPublic = useAppSelector(getEventPublicPage);
+  const basicInfo = useAppSelector(getBasicInfo);
+  const divisions = useAppSelector(getDivisions);
+
   const router = useRouter();
   const [hasErrors, setHasErrors] = useState(false);
   const [hideErrorBox, setHideErrorBox] = useState(false);
-  const [editorState, setEditorState] = useState('');
-
-  const formDefaultValues = {
-    mainEventImage: 'imasdal;sdk',
-    description: 'descasdaslkdj'
-  };
 
   const {
     handleSubmit,
-    getValues,
-    formState,
   } = useForm({
-    resolver: yupResolver(schema),
     mode: 'onSubmit',
-    defaultValues: formDefaultValues
   });
 
 
@@ -65,26 +60,7 @@ export const Review = forwardRef(({ step, eventStatus, ...props }: Props, ref) =
     router.push('/events/congratulations', undefined, { shallow: true });
   }
 
-  useEffect(() => {
-    if (formState.isDirty) {
-      setIsFormEdited();
-      console.log('FORM VALUES: ');
-      console.log(getValues());
-    }
-    Object.keys(formState.errors).length ? setHasErrors(true) : setHasErrors(false);
-    if (Object.keys(formState.errors).length) {
-      console.log('FORM VALUES: ');
-      console.log(getValues());
-      console.log('FORM ERRORS: ');
-      console.log(formState.errors);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formState.errors, formState.isDirty]);
 
-  const onEditorStateChange = (editorState: any) => {
-    // setEditorState(editorState);
-    // console.log('editorState: ', editorState);
-  };
 
   const onSubmit = (data: unknown) => {
     //TODO: POST request to API
@@ -120,34 +96,40 @@ export const Review = forwardRef(({ step, eventStatus, ...props }: Props, ref) =
       <h3>Review &amp; Publish</h3>
 
       <div className={styles.eventCard}>
+
         <div className="image">
           <span className="tag">open</span>
-          <Image src={EventImgSrc} alt="event image" />
+          <Image src={eventPublic?.croppedImages[0]?.src || EventImgSrc} alt="event image" layout='fill'
+            objectFit='contain' />
         </div>
         <div className="text">
           <h3>
-            NY SEVENS
+            {basicInfo?.eventName}
           </h3>
           <h4 className='event-name'>
             <div className="logo">
               <Image src={LogoSrc} />
             </div>
-            <b>HomeBush</b> | Series 9
+            <b>{divisions[0]?.pools[0].name}</b><span>|</span>Series {basicInfo?.seriesMonth}
           </h4>
           <div className="date">
             <CalendarIcon />
-            <span>Sat, Sep 14, 2022 at 4:00 PM EST</span>
+            <span>{moment(basicInfo?.eventStartDate).format("ddd, MMMM Do YYYY, h:mm:ss a")}</span>
           </div>
           <div className="location">
-            <CalendarIcon />
-            <span>Randall&apos;s Island Manhattan, NY</span>
+            <PinIcon />
+            {basicInfo?.facilityName}
+            {/* <span>Randall&apos;s Island Manhattan, NY</span> */}
           </div>
           <div className="fee">
-            <CalendarIcon />
-            <CalendarIcon />
-            <span>Fee- $25</span>
+            <FeeIcon />
+            {divisions[0]?.playerFee?.isFree ?
+              <span>Free - $0</span> :
+              <span>Fee - ${divisions[0]?.playerFee?.fee}</span>
+            }
           </div>
           <div className="division">
+            <DivisionIcon />
             <span>Adult Mens Social, Adult Coed Social</span>
           </div>
           <div className="event-country">
@@ -161,7 +143,9 @@ export const Review = forwardRef(({ step, eventStatus, ...props }: Props, ref) =
         <div className='label'>
           <span>Description*</span>
         </div>
-        <p className='instructions'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lacus laoreet non curabitur gravida. Aliquet nibh praesent tristique magna sit amet purus gravida quis. Diam maecenas sed enim ut sem. Ac placerat vestibulum lectus mauris. Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus et. Faucibus a pellentesque sit amet. Duis tristique sollicitudin nibh sit amet commodo. Non enim praesent elementum facilisis leo vel fringilla est. Malesuada fames ac turpis egestas integer eget aliquet. Sit amet consectetur adipiscing elit pellentesque. Libero volutpat sed cras ornare arcu dui vivamus arcu. Non enim praesent elementum facilisis leo vel fringilla. In aliquam sem fringilla ut morbi. Aenean euismod elementum nisi quis eleifend. Elit eget gravida cum sociis natoque. Consequat semper viverra nam libero justo.</p>
+        <p className='instructions'>
+          <Interweave content={eventPublic?.description} />
+        </p>
 
       </div>
 
@@ -171,7 +155,7 @@ export const Review = forwardRef(({ step, eventStatus, ...props }: Props, ref) =
           <span>Events</span>
         </div>
         <p className='instructions'>When publishing this Event, the following Events will be created automatically and saved as Drafts - you can update Basic Info for each below, and can access additional options and public page settings from the Event Draft page.</p>
-
+        <ClonedEvents />
       </div>
 
     </div >

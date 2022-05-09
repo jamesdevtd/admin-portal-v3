@@ -13,6 +13,7 @@ import {
 
 export type EventPupublicPageProps = {
   eventMainImage: EventImageProps;
+  description: string;
   fields: OrderedField[];
   croppedImages: CroppedImageProps[];
   cropperModal: CropperModalProps;
@@ -23,6 +24,7 @@ const initialState: EventPupublicPageProps = {
     eventId: 0,
     src: '',
   },
+  description: '',
   fields: startingOrderedFields,
   croppedImages: [],
   cropperModal: {
@@ -52,6 +54,9 @@ export const eventPublicPageSlice = createSlice({
     },
     updateCropperModal: (state, action: PayloadAction<any>) => {
       state.cropperModal = { ...state.cropperModal, ...action.payload };
+    },
+    updateDescription: (state, action: PayloadAction<string>) => {
+      state.description = action.payload;
     },
     removedCroppedImageById: (state, action: PayloadAction<number>) => {
       const index = state.croppedImages.findIndex(
@@ -114,11 +119,14 @@ export const {
   updateCropperModal,
   removedCroppedImageById,
   addCroppedImage,
+  updateDescription,
   updateCroppedImage,
   addField,
   moveFieldUp,
   moveFieldDown,
 } = eventPublicPageSlice.actions;
+
+export const getEventPublicPage = (state: RootState) => state.eventPublicPage;
 
 export const getCropperModal = (state: RootState) =>
   state.eventPublicPage.cropperModal;

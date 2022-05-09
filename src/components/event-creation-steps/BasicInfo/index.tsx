@@ -12,9 +12,11 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styles from '@/components/forms/styles/FormGroup.module.scss';
 
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { getNewEventData, setCurrentStep, setIsEditedById, updateNewEventData } from '@/features/eventCreation/eventCreationSlice';
+import { getBasicInfo, updateBasicInfo } from '@/features/eventCreation/basicInfoSlice';
+import { setCurrentStep, setIsEditedById } from '@/features/eventCreation/eventCreationSlice';
 import { googleApiKey } from '@/static/geolocation';
 import seriesNames from '@/static/seriesNames';
+import { useIsFirstRender } from '@/utils/customHooks';
 import { handleGetAddressByLatLng } from '@/utils/geoLocation';
 import { objectDatesToString, objectStringsToDates, removeNullElements } from '@/utils/objectUtils';
 
@@ -58,17 +60,18 @@ type Props = {
 
 export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref) => {
 
-  // console.log('BasicInfo render...');
-
   const dispatch = useAppDispatch();
-  const newEventData = useAppSelector(getNewEventData);
+  const basicInfo = useAppSelector(getBasicInfo);
 
-  // console.log('newEventData: ', newEventData);
+  const isFirstRender = useIsFirstRender();
+  console.log('BasicInfo render...:', basicInfo);
+  // console.log('isFirstRender:', isFirstRender);
+
 
   // TODO: get savedCoordinates from store set to null If none;
   // sample to test:  [-27.444320, 153.039660];
   const [savedCoordinates, setSavedCoordinates] = useState<LatLngTuple | null>(null);
-  const [addressPlaceHolder, setAddressPlaceHolder] = useState(newEventData.facilityAddressString || '');
+  const [addressPlaceHolder, setAddressPlaceHolder] = useState(basicInfo.facilityAddressString || '');
   const [isFormReady, setIsFormReady] = useState(false);
 
   // TODO: set in store or get current user location
@@ -76,9 +79,9 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
 
   const tomorrow = moment().add(1, 'day').toDate();
 
-  const [monthId, setMonthId] = useState<number>(newEventData.seriesMonth && moment().month() + 1);
-  const [yearSelected, setYearSelected] = useState<number>(newEventData.eventYear || moment().year());
-  const [seriesSelected, setSeriesSelected] = useState<number>(newEventData.seriesMonth && 0);
+  const [monthId, setMonthId] = useState<number>(basicInfo.seriesMonth && moment().month() + 1);
+  const [yearSelected, setYearSelected] = useState<number>(basicInfo.eventYear || moment().year());
+  const [seriesSelected, setSeriesSelected] = useState<number>(basicInfo.seriesMonth || 0);
 
 
   const [minStartDate, setMinStartDate] = useState<Date>(tomorrow);
@@ -88,12 +91,15 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
   const [hasErrors, setHasErrors] = useState(false);
   const [hideErrorBox, setHideErrorBox] = useState(false);
 
-  const [contactItems, setContactItems] = useState<ContactDetailsProps[]>([]);
-  const [coordinates, setCoordinates] = useState<LatLngTuple>(
-    newEventData?.facilityAddress?.length ? newEventData.facilityAddress : latLongPlaceholder
+  const [contactItems, setContactItems] = useState<ContactDetailsProps[]>(
+    basicInfo?.contactDetails.length ? basicInfo.contactDetails : []);
+  const [coordinates, setCoordinates] = useState<number[]>(
+    basicInfo?.facilityAddress.length ? basicInfo.facilityAddress : latLongPlaceholder
   );
 
-  const [availableSeries, setAvailableSeries] = useState(seriesNames);
+  const [availableSeries, setAvailableSeries] = useState<SeriesProps[]>(
+    basicInfo?.additionalEvents.length ? basicInfo.additionalEvents : seriesNames
+  );
 
   const setIsFormEdited = () => {
     dispatch(setIsEditedById(step));
@@ -104,26 +110,26 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
   }
 
   const eventDateElements = {
-    eventStartDate: newEventData.eventStartDate || null,
-    eventEndDate: newEventData.eventEndDate || null,
-    eventStartTime: newEventData.eventStartTime || null,
-    registrationEndDate: newEventData.registrationEndDate || null,
-    registrationStartDate: newEventData.registrationStartDate || null
+    eventStartDate: basicInfo.eventStartDate || null,
+    eventEndDate: basicInfo.eventEndDate || null,
+    eventStartTime: basicInfo.eventStartTime || null,
+    registrationEndDate: basicInfo.registrationEndDate || null,
+    registrationStartDate: basicInfo.registrationStartDate || null
   }
 
   const stringsToDates = { ...objectStringsToDates(eventDateElements) };
 
   const formDefaultValues = {
     ...{
-      additionalEvents: newEventData.additionalEvents || [] as SeriesProps[],
-      contactDetails: newEventData.contactDetails || [] as ContactDetailsProps[],
-      eventName: newEventData.eventName || '',
-      eventYear: newEventData.eventYear || null,
-      facilityAddress: newEventData.facilityAddress || [] as number[],
-      facilityAddressString: newEventData.facilityAddressString || '',
-      facilityName: newEventData.facilityName || '',
-      facilityNotes: newEventData.facilityNotes || '',
-      seriesMonth: newEventData.seriesMonth || null,
+      additionalEvents: basicInfo.additionalEvents || [] as SeriesProps[],
+      contactDetails: basicInfo.contactDetails || [] as ContactDetailsProps[],
+      eventName: basicInfo.eventName || '',
+      eventYear: basicInfo.eventYear || null,
+      facilityAddress: basicInfo.facilityAddress || [] as number[],
+      facilityAddressString: basicInfo.facilityAddressString || '',
+      facilityName: basicInfo.facilityName || '',
+      facilityNotes: basicInfo.facilityNotes || '',
+      seriesMonth: basicInfo.seriesMonth || null,
       eventStartDate: null,
       eventEndDate: null,
       eventStartTime: null,
@@ -158,17 +164,24 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
     Object.keys(formState.errors).length ? setHasErrors(true) : setHasErrors(false);
   }, [formState.errors, formState.isDirty]);
 
+  // CHANGE HANDLERS
   useEffect(() => {
-    if (contactItems.length) {
-      setValue('contactDetails', contactItems);
-    }
-    if (yearSelected) {
+    if (yearSelected && !isFirstRender) {
       handleYearChange(yearSelected);
     }
-    handleSelectSeries(seriesSelected);
-    // if (seriesSelected > 0) {
-    // }
-  }, [contactItems, yearSelected, seriesSelected]);
+  }, [yearSelected]);
+
+  useEffect(() => {
+    if (seriesSelected && !isFirstRender) {
+      handleSelectSeries(seriesSelected);
+    }
+  }, [seriesSelected]);
+  useEffect(() => {
+    if (contactItems.length && !isFirstRender) {
+      setValue('contactDetails', contactItems);
+    }
+  }, [contactItems]);
+
 
 
 
@@ -184,15 +197,14 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
         // console.log('no saved address coordinates');
         setIsFormReady(true);
       }
-
     })();
 
   }, [savedCoordinates]);
 
   const handleYearChange = (year: number) => {
+    console.log('init handleYearChange');
 
     clearEventsDatesFields();
-
     const currentDate = moment().date();
     const currentMonth = moment().month();
 
@@ -214,6 +226,7 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
   }
 
   const handleSelectSeries = (id: number) => {
+    console.log('init handleSelectSeries');
     setMonthId(id);
     clearEventsDatesFields();
 
@@ -231,7 +244,6 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
       setMinStartDate(moment().add(1, 'day').toDate());
       return;
     }
-
     // LOGIC: If year selected is NOT current year, THEN min. event start date is day 1 of month selected.
     setMinStartDate(moment().set('year', yearSelected).set('month', month).set('date', 1).toDate());
 
@@ -281,7 +293,7 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
 
 
   const onSubmit = (data: unknown) => {
-    //TODO: send Redux state newEventData to API through redux middleware
+    //TODO: send Redux state basicInfo to API through redux middleware
     console.log('POST: sending data...');
     console.log(data);
     handleNextStep();
@@ -294,8 +306,8 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
     const convertedDates = objectDatesToString(formValues);
     formValues = { ...formValues, ...convertedDates };
     const cleanedData = { ...eventStatus, ...formValues, ...removeNullElements(formValues) };
-    // console.log('submitForm:parsedValues :', cleanedData);
-    dispatch(updateNewEventData(cleanedData));
+    console.log('submitForm:parsedValues :', cleanedData);
+    dispatch(updateBasicInfo(cleanedData));
     handleSubmit(onSubmit,
       () => { console.log('Submit Failed - has Form Errors', formState.errors); }
     )();
@@ -373,7 +385,8 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
             <select
               {...register('seriesMonth')}
               // value={monthId}
-              defaultValue={formDefaultValues.seriesMonth || 0}
+              // defaultValue={formDefaultValues.seriesMonth || 0}
+              defaultValue={monthId}
               onChange={(e) => {
                 setSeriesSelected(Number(e.target.value));
                 clearErrors('seriesMonth');

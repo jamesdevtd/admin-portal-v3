@@ -109,6 +109,9 @@
         @apply mt-0;
       }
     }
+    textarea {
+      @apply text-md;
+    }
     @media (max-width: 991px) {
       @apply flex-col;
       .map-col {

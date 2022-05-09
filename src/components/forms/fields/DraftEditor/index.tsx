@@ -11,19 +11,9 @@ import "draft-js/dist/Draft.css";
 import styles from './DraftEditor.module.scss';
 
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { getFieldById, updateField } from '@/features/eventCreation/eventPublicPageSlice';
+import { setIsEditedById } from "@/features/eventCreation/eventCreationSlice";
+import { getFieldById, updateDescription, updateField } from '@/features/eventCreation/eventPublicPageSlice';
 import { useDebounce } from '@/utils/customHooks';
-
-// import IconSize from './icons/text-size.svg';
-// import IconOrdered from './icons/list-ordered.svg';
-// import IconUnorderd from './icons/list-unordered.svg';
-// import IconBold from './icons/text-bold';
-// import IconItalic from './icons/text-italic.svg';
-// import IconLink from './icons/text-link.svg';
-
-
-
-// const defaultHtmlContent = "ContentState.createFromText("hello world!");"
 
 type Props = {
   fieldId: number,
@@ -55,6 +45,12 @@ export default function DraftEditor({ fieldId }: Props) {
     const html = convertToHTML(editorState.getCurrentContent());
     dispatch(updateField({ id: fieldId, type: 'text', data: raw }));
     setHtmlOutput(html);
+    if (editorState.getCurrentContent().hasText()) {
+      console.log('html: ', html);
+      dispatch(updateDescription(html));
+    } else {
+      dispatch(updateDescription(''));
+    }
   }
 
   useEffect(() => {
@@ -169,7 +165,10 @@ export default function DraftEditor({ fieldId }: Props) {
           <Editor
             ref={editor}
             editorState={editorState}
-            onChange={(editorState) => setEditorState(editorState)}
+            onChange={(editorState) => {
+              setEditorState(editorState);
+              dispatch(setIsEditedById(3));
+            }}
           />
         </div>
         <hr />

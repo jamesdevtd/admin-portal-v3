@@ -9,7 +9,7 @@ export interface EventCreationStepProps {
 
 export interface EventProps {
   id: number;
-  status: 'draft' | 'published';
+  status: string;
   additionalEvents: SeriesProps[];
   contactDetails: ContactDetailsProps[];
   eventEndDate: string; // string($date-time)
@@ -17,7 +17,7 @@ export interface EventProps {
   eventStartDate: string; // string($date-time)
   eventStartTime: string; // string($date-time)
   eventYear: number;
-  facilityAddress: [number, number]; // lat long array
+  facilityAddress: number[]; // lat long array
   facilityAddressString: string; // String address
   facilityName: string;
   facilityNotes: string;

@@ -5,6 +5,7 @@ import "cropperjs/dist/cropper.css";
 import styles from "./CropModal.module.scss";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { setIsEditedById } from "@/features/eventCreation/eventCreationSlice";
 import { getCropperModal, updateCroppedImage, updateCropperModal } from '@/features/eventCreation/eventPublicPageSlice';
 
 import CloseIcon from '~/icons/blue/close-modal.svg';
@@ -47,6 +48,7 @@ export const CropperModal = () => {
       const blob = await base64Response.blob();
       const imgUrl = URL.createObjectURL(blob);
       saveImage(imgUrl);
+      dispatch(setIsEditedById(3));
     }
   };
 

@@ -6,7 +6,7 @@
     margin-right: 42px;
   }
   .instructions {
-    max-width: 520px;
+    // max-width: 520px;
   }
   .main-description {
     @apply mt-2 mb-8;
@@ -16,9 +16,21 @@
 
 .eventCard :global {
   @apply flex flex-row gap-3;
+  @apply shadow-[0_0_2px_0_rgb(0,0,0,0.1)];
+  border-radius: 12px;
+  border-width: 1px;
+  max-width: 770px;
+  margin-left: 30px;
+  margin-top: -20px;
   .image {
-    @apply block relative;
+    @apply block relative overflow-hidden rounded-l-lg;
     max-width: 200px;
+    width: 200px;
+    height: 160px;
+    > span:not(.tag) {
+      width: 200px;
+      height: 160px;
+    }
     .tag {
       @apply absolute text-xs uppercase p-0 px-2 rounded-lg z-10 font-semibold font-title;
       @apply text-black;
@@ -28,6 +40,7 @@
     }
     img {
       @apply block;
+      object-fit: cover !important;
     }
   }
   .text {
@@ -36,19 +49,19 @@
     .event-country {
       @apply absolute;
       right: 10px;
-      top: 0;
-      width: 30px;
-      height: 30px;
+      top: 10px;
+      width: 25px;
+      height: 25px;
     }
     > div,
     > h3,
     > h4 {
       @apply flex flex-row gap-2 items-center justify-items-center;
       svg {
-        @apply opacity-40;
+        @apply opacity-40 overflow-visible;
         path {
-          fill: black;
-          stroke: black;
+          // fill: black;
+          // stroke: black;
         }
       }
     }
@@ -57,8 +70,11 @@
         @apply block relative;
         width: 18px;
         height: 18px;
-        left: -5px;
+        left: -2px;
       }
+    }
+    .division {
+      @apply pt-2 mt-1 border-t border-gray-200;
     }
   }
 }
