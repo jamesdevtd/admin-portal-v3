@@ -210,16 +210,16 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
 
     // LOGIC: If selected year is current & today is 7th or later 
     // then you can't select current month
-    if (moment().year() === year && currentDate >= 7) {
-      setAvailableSeries(seriesNames.slice(currentMonth + 1));
-      return;
-    }
+    // if (moment().year() === year && currentDate >= 7) {
+    //   setAvailableSeries(seriesNames.slice(currentMonth + 1));
+    //   return;
+    // }
 
     // LOGIC: If selected year is current then you can only select starting from current month 
-    if (moment().year() === year && currentDate < 7) {
-      setAvailableSeries(seriesNames.slice(currentMonth));
-      return;
-    }
+    // if (moment().year() === year && currentDate < 7) {
+    //   setAvailableSeries(seriesNames.slice(currentMonth));
+    //   return;
+    // }
 
     if (!isFirstRender) {
       setAvailableSeries(seriesNames);
