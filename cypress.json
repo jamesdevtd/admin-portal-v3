@@ -1,0 +1,20 @@
+{
+  "baseUrl": "http://localhost:3000/",
+  "testFiles": "**/*.spec.ts",
+  "supportFile": "src/__tests__/cypress/support/index.ts",
+  "video": false,
+  "integrationFolder": "src/__tests__/cypress/integration",
+  "fixturesFolder": "src/__tests__/cypress/fixtures",
+  "pluginsFile": "src/__tests__/cypress/plugins/index.ts",
+  "screenshotsFolder": "target/cypress/screenshots",
+  "chromeWebSecurity": true,
+  "scrollBehavior": "center",
+  "viewportWidth": 1200,
+  "viewportHeight": 720,
+  "retries": 2,
+  "env": {
+    "authenticationUrl": "/api/login",
+    "jwtStorageName": "tagx-auth-token"
+  },
+  "experimentalSessionAndOrigin": true
+}

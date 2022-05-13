@@ -28,6 +28,9 @@
     &.arrow.prev {
       transform: scaleX(-1);
     }
+    &.filled{
+      background-color: #26A1FF;
+    }
   }
   a.setup-payout {
     max-width: 300px;

@@ -1,6 +1,6 @@
 import axios, { Method } from 'axios';
-import Cookie from 'js-cookie';
 import Router from 'next/router';
+import { getSession } from 'next-auth/react';
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -76,11 +76,12 @@ export const DELETE = (path: string) => {
   return request('DELETE', path);
 };
 
-axios.interceptors.request.use((request) => {
-  const token = Cookie.get('s_TxgKyE');
-  const headers = {} as any;
-  if (token) {
-    headers['x-auth-token'] = `${token}`;
+axios.interceptors.request.use(async request => {
+  const headers: any = {};
+  const session: any = await getSession()
+
+  if (session) {
+    headers['Authorization'] = `Bearer ${session.user.accessToken}`;
   }
 
   request.headers = headers;
@@ -98,12 +99,11 @@ axios.interceptors.response.use(
   },
   (error) => {
     if (error.response.status === 401) {
-      Cookie.remove('s_TxgKyE');
       Router.push('/');
     }
-    // else if (error.response.status === 400) {
-    //   return error.response.data;
-    // }
+    else if (error.response.status === 500) {
+      return Promise.reject(error);
+    }
     return Promise.reject(error.response.data);
   }
 );

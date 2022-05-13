@@ -91,7 +91,6 @@
       min-height: 100px;
       &.read-only {
         @apply p-0;
-        min-height: auto !important;
       }
       h1 {
         @apply text-lg font-semibold;

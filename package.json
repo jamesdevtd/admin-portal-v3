@@ -12,12 +12,12 @@
     "typecheck": "tsc --noEmit --incremental false",
     "test:watch": "jest --watch",
     "test": "jest",
+    "e2e": "cypress run --browser chrome --headed",
     "format": "prettier -w .",
     "format:check": "prettier -c .",
     "release": "standard-version",
     "push-release": "git push --follow-tags origin main",
-    "postbuild": "next-sitemap",
-    "prepare": "cd .. && husky install admin-portal/.husky"
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@hookform/resolvers": "^2.8.8",
@@ -27,6 +27,9 @@
     "axios": "^0.26.1",
     "clsx": "^1.1.1",
     "cookie": "^0.4.2",
+    "cypress": "^9.6.0",
+    "cypress-audit": "^1.1.0",
+    "fs": "^0.0.1-security",
     "draft-convert": "^2.1.12",
     "draft-js-export-html": "^1.4.1",
     "interweave": "^13.0.0",
@@ -57,8 +60,6 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
-    "@commitlint/cli": "^13.2.1",
-    "@commitlint/config-conventional": "^13.2.0",
     "@svgr/webpack": "^6.2.1",
     "@tailwindcss/forms": "^0.4.1",
     "@testing-library/jest-dom": "^5.16.2",
@@ -80,7 +81,6 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-unused-imports": "^1.1.5",
-    "husky": "^7.0.4",
     "jest": "^27.5.1",
     "lint-staged": "^11.2.6",
     "next-sitemap": "^1.9.12",

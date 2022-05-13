@@ -24,15 +24,19 @@ export default function LoginPage() {
   const onSubmit = async () => {
     const username = getValues('username');
     const password = getValues('password');
-    await signIn(
-      'credentials', 
+    const { error }: any = await signIn(
+      'credentials',
       {
-        redirect: true,
+        redirect: false,
         username: username,
-        password: password,
-        callbackUrl: '/dashboard' 
+        password: password
       }
     );
+    if (error) {
+      setMessage('Login Failed.');
+    } else {
+      router.push('/dashboard');
+    }
   };
   //#endregion  //*======== Form Submit ===========
 
@@ -40,7 +44,7 @@ export default function LoginPage() {
     <LoginLayout pageTitle='TagX Affiliate Log In'>
       <div className='form-wrap m-auto flex w-full flex-col gap-5'>
         <TagxLogo className='logo m-auto h-10 w-36' />
-        <div className='forms-nav'>
+        <div id='login-headers' className='forms-nav'>
           <ul className='list-style-none text-center'>
             <li className='active'>
               <UnstyledLink href='/login'>Log in</UnstyledLink>
@@ -76,7 +80,7 @@ export default function LoginPage() {
               }}
             />
             {message && (
-              <div className='form-group'>
+              <div cy-marker='login-errors' className='form-group'>
                 <span className='text-red-500'>{message}</span>
               </div>
             )}

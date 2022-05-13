@@ -9,6 +9,7 @@ import { EventOptions } from '@/components/event-creation-steps/EventOptions';
 import { EventPublicPage } from '@/components/event-creation-steps/EventPublicPage';
 import { Review } from '@/components/event-creation-steps/Review';
 import CropperModal from '@/components/forms/fields/ImageDropCrop/CropperModal';
+import ContentWrap from '@/components/layout/ContentWrap';
 import Layout from '@/components/layout/Layout';
 import ButtonLink from '@/components/links/ButtonLink';
 import EventsMenu from '@/components/navigation/EventsMenu';
@@ -70,8 +71,7 @@ export default function Events({ id }: Props) {
 
       <Layout>
 
-        <div className={`${styles.Events} white-box`}>
-
+        <ContentWrap className={styles.Events}>
           <header className='content-header'>
             <CalendarIcon />
             <h2>New Open Series</h2>
@@ -99,8 +99,8 @@ export default function Events({ id }: Props) {
               }
             </div>
           </div>
+        </ContentWrap>
 
-        </div>
       </Layout>
 
       <div className={`${styles.footerNav} ${isFormEdited ? '' : 'hidden'}`}>

@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import styles from "./Events.module.scss";
 
 import { Congratulations } from '@/components/event-creation-steps/Congratulations';
+import ContentWrap from '@/components/layout/ContentWrap';
 import Layout from '@/components/layout/Layout';
 import RootEventsMenu from '@/components/navigation/RootEventsMenu';
 
@@ -37,7 +38,7 @@ export default function Events() {
 
       <Layout>
 
-        <div className={`${styles.Events} white-box`}>
+        <ContentWrap className={styles.Events}>
 
           <header className='content-header'>
             <CalendarIcon />
@@ -55,7 +56,7 @@ export default function Events() {
             </div>
           </div>
 
-        </div>
+        </ContentWrap>
       </Layout>
 
     </div>

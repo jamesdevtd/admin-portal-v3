@@ -26,7 +26,7 @@ export default NextAuth({
           password: credentials.password,
         };
 
-        const res = await fetch(process.env.NEXT_PUBLIC_API_BASE_URL + '/login', {
+        const res = await fetch(process.env.API_BASE_URL + '/login', {
           method: 'POST',
           body: JSON.stringify(payload),
           headers: {
@@ -76,6 +76,7 @@ export default NextAuth({
         }
         session.user.name = decodedToken?.firstName + ' ' + decodedToken?.lastName;
         session.user.email = decodedToken?.username;
+        session.user.accessToken = token.accessToken;
       }
       return session;
     },

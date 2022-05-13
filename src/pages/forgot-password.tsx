@@ -1,8 +1,8 @@
-import Layout from '@/components/layout/Layout';
+import LoginLayout from '@/components/layout/LoginLayout';
 
 export default function Dashboard() {
   return (
-    <Layout pageTitle='Forgot password'>
+    <LoginLayout pageTitle='Forgot password'>
       <div className=''>
         <div className='content'>
           <div className='content-wrap'>
@@ -14,6 +14,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-    </Layout>
+    </LoginLayout>
   );
 }

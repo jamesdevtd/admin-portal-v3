@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { MdOutlineSportsRugby } from 'react-icons/md';
 
+import ContentWrap from '@/components/layout/ContentWrap';
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
 import Seo from '@/components/Seo';
@@ -11,8 +12,8 @@ export default function NotFoundPage() {
       <Seo templateTitle='Not Found' />
 
       <main>
-        <section className='bg-white'>
-          <div className='layout flex min-h-screen flex-col items-center justify-center text-center text-black'>
+        <ContentWrap>
+          <div className='layout flex py-52 flex-col items-center justify-center text-center text-black'>
             <MdOutlineSportsRugby
               size={60}
               className='drop-shadow-glow animate-flicker text-sky-500'
@@ -27,7 +28,7 @@ export default function NotFoundPage() {
               let&apos;s head back home.
             </ArrowLink>
           </div>
-        </section>
+        </ContentWrap>
       </main>
     </Layout>
   );

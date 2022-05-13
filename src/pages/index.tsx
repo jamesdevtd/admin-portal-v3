@@ -1,5 +1,5 @@
 
-   
+
 import { GetServerSideProps } from "next"
 import type { Session } from "next-auth"
 import { getSession } from "next-auth/react"
@@ -24,7 +24,7 @@ export default function HomePage() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<{session: Session | null}> = async (context) => {
+export const getServerSideProps: GetServerSideProps<{ session: Session | null }> = async (context) => {
   return {
     props: {
       session: await getSession(context),

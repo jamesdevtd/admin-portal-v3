@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import styles from './Events.module.scss';
 
+import ContentWrap from '@/components/layout/ContentWrap';
 import Layout from '@/components/layout/Layout';
 
 import CalendarIcon from '~/icons/blue/calendar.svg';
@@ -19,7 +20,7 @@ export default function Events() {
   return (
     <Layout>
       {!creatingEvent && (
-        <div className='white-box'>
+        <ContentWrap>
           <div className={styles.Events}>
             <header className='content-header'>
               <CalendarIcon />
@@ -47,17 +48,17 @@ export default function Events() {
               ))}
             </div>
           </div>
-        </div>
+        </ContentWrap>
       )}
 
-      <div className="white-box text-center">
+      <ContentWrap>
         <br />
         <br />
         <h3>Another white box contained content here...</h3>
         <br />
         <br />
         <br />
-      </div>
+      </ContentWrap>
 
     </Layout>
   );

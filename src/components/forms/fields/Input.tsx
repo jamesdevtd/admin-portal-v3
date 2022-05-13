@@ -94,7 +94,7 @@ export default function Input({
           </div>
         )}
         {!hideError && errors[id] && (
-          <span className='text-red-500'>{errors[id].message}</span>
+          <span cy-marker='form-input-error' className='text-red-500'>{errors[id].message}</span>
         )}
       </div>
     </div>

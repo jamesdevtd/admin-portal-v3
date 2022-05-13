@@ -4,7 +4,7 @@ $sidebarWidth: 180px;
 $sidebarCollapsedWidth: 65px;
 
 .dashboardLayout :global {
-  @apply relative flex h-screen flex-row overflow-hidden bg-offWhite;
+  @apply relative flex h-auto flex-row bg-offWhite min-h-screen;
   .wall-bg {
     @apply fixed top-0 h-screen w-full bg-white;
     height: 900px;
@@ -64,7 +64,7 @@ $sidebarCollapsedWidth: 65px;
   }
 
   .sidebar.outer {
-    @apply relative p-5 transition-all duration-500 ease-in-out;
+    @apply p-5 transition-all duration-500 ease-in-out left-0 top-0 fixed;
     width: calc($sidebarWidth);
     .logo {
       @apply my-3 block h-auto w-full;
@@ -137,7 +137,8 @@ $sidebarCollapsedWidth: 65px;
   }
 
   .content {
-    @apply transition-all duration-500 ease-in-out;
+    @apply transition-all duration-500 ease-in-out ml-auto;
+    margin-right: 15px;
     width: calc(100% - $sidebarWidth - 15px);
     .content-wrap {
       @apply flex flex-col gap-5;
@@ -145,6 +146,7 @@ $sidebarCollapsedWidth: 65px;
       // max-height: calc(100vh - 50px);
       position: relative;
     }
+    .ContentWrap,
     .white-box {
       @apply mt-1 w-full bg-white drop-shadow-lg p-5 relative;
       border-radius: 10px;

@@ -21,7 +21,7 @@ const LoginLayout = (props: Props) => {
           className='absolute block h-full w-full object-cover'
         />
         <TagxLogo className='logo absolute top-5 left-5 h-9 w-11' />
-        <div className='text relative m-16 max-w-xs'>
+        <div cy-marker='page-title' className='text relative m-16 max-w-xs'>
           {props.pageTitle && (
             <h2 className='font-title text-3xl font-bold text-white'>
               {props.pageTitle}

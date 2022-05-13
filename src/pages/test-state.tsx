@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import ContentWrap from '@/components/layout/ContentWrap';
 import Layout from '@/components/layout/Layout';
 
 import { useAppDispatch, useAppSelector } from '../app/hooks';
@@ -16,7 +17,7 @@ const TestState: React.FC = () => {
   const [incrementAmount, setIncrementAmount] = useState<number>(0);
   return (
     <Layout>
-      <main>
+      <ContentWrap>
         <section className='my-10 mx-auto flex max-w-md flex-col gap-5'>
           <h2 className='text-3xl'>The current number is: {count}</h2>
           <div className='flex flex-col gap-5'>
@@ -51,7 +52,7 @@ const TestState: React.FC = () => {
             </button>
           </div>
         </section>
-      </main>
+      </ContentWrap>
     </Layout>
   );
 };
