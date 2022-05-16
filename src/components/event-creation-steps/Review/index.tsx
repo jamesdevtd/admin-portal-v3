@@ -45,6 +45,18 @@ export const Review = forwardRef(({ step, eventStatus, ...props }: Props, ref) =
   const router = useRouter();
   const [hasErrors, setHasErrors] = useState(false);
   const [hideErrorBox, setHideErrorBox] = useState(false);
+  const fees: any = divisions.map(i => i.playerFee?.fee);
+  console.log('fees: ', fees);
+  const minFee: number = Math.min(...fees);
+  const maxFee: number = Math.max(...fees);
+  console.log('minFee: ', minFee);
+  console.log('minFee: ', maxFee);
+  let feeRange: string;
+  if (maxFee <= 0) {
+    feeRange = '';
+  } else {
+    feeRange = fees.length ? `${minFee} - ${maxFee}` : '';
+  }
 
   const {
     handleSubmit,
@@ -122,9 +134,11 @@ export const Review = forwardRef(({ step, eventStatus, ...props }: Props, ref) =
           </div>
           <div className="fee">
             <FeeIcon />
-            {divisions[0]?.playerFee?.isFree ?
-              <span>Free - $0</span> :
-              <span>Fee - ${divisions[0]?.playerFee?.fee}</span>
+            {(divisions[0]?.playerFee?.isFree && (feeRange === ''))
+              ?
+              <span>Free - $0</span>
+              :
+              <span>Fee - ${(fees.length > 1) ? feeRange : divisions[0]?.playerFee?.fee}</span>
             }
           </div>
           {divisions.length &&

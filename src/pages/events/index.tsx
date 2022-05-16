@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import styles from './Events.module.scss';
 
+import Card from '@/components/events/Card';
 import ContentWrap from '@/components/layout/ContentWrap';
 import Layout from '@/components/layout/Layout';
 
@@ -11,6 +12,18 @@ export default function Events() {
   const [creatingEvent, setCreatingEvent] = useState<boolean>(false);
 
   const eventCategories = ['All', 'Draft', 'Published', 'Active', 'Past'];
+
+  const events: any = [
+    { id: 1, name: 'Event 1', status: 'live', series: { name: 'Series 1' } },
+    { id: 2, name: 'Event 2', status: 'closed', series: { name: 'Series 2' } },
+    { id: 3, name: 'Event 3', status: 'open', series: { name: 'Series 3' } },
+    { id: 4, name: 'Event 4', status: 'live', series: { name: 'Series 4' } },
+    { id: 5, name: 'Event 5', status: 'open', series: { name: 'Series 5' } },
+    { id: 6, name: 'Event 6', status: 'closed', series: { name: 'Series 6' } },
+    { id: 7, name: 'Event 7', status: 'closed', series: { name: 'Series 7' } },
+    { id: 7, name: 'Event 8', status: 'open', series: { name: 'Series 8' } },
+    { id: 7, name: 'Event 9', status: 'open', series: { name: 'Series 9' } }
+  ];
 
   const createNewEventHandler = () => {
     setCreatingEvent(true);
@@ -51,13 +64,8 @@ export default function Events() {
         </ContentWrap>
       )}
 
-      <ContentWrap>
-        <br />
-        <br />
-        <h3>Another white box contained content here...</h3>
-        <br />
-        <br />
-        <br />
+      <ContentWrap className="grid xl:grid-cols-4 sm:grid-cols-1 gap-4">
+        {events.map((event: any) => <Card key={event.id} event={event} />)}
       </ContentWrap>
 
     </Layout>

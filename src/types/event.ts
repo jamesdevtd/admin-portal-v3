@@ -46,6 +46,7 @@ export type OrderedField = {
   id: number;
   type: 'text' | 'image' | 'video';
   html?: string;
+  // TODO: define text, image, & video type data inteface
   data: any;
 };
 

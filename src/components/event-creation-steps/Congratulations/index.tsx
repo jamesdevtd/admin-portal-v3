@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React from 'react';
 
 import styles from './Congratulations.module.scss';
@@ -7,7 +6,7 @@ import CopySVG from '~/icons/copy.svg';
 import Flash from '~/icons/flash.svg';
 import RefereeT from '~/icons/referee_tshirt.svg';
 import Shield from '~/icons/shield.svg';
-import HighFive from '~/images/high-five.png';
+import HighFive from '~/svg/high-five.svg';
 
 
 export const Congratulations = () => {
@@ -16,7 +15,7 @@ export const Congratulations = () => {
     <div className={styles.congratulations}>
       <div className='grid place-items-center'>
         <div className='pt-10'>
-          <Image src={HighFive} />
+          <HighFive className="text-7xl my-10" />
         </div>
         <h2>Congrats!</h2>
         <h3>Your Event Has Been Published!</h3>

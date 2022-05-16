@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="6px" height="8px" viewBox="0 0 6 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>map pin</title>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.498546512">
+        <g id="Affiliate-Event-Title-Style-1-EVENT-LIVE" transform="translate(-22.000000, -160.000000)" fill="#022F59" fill-rule="nonzero">
+            <g id="Shape" transform="translate(22.000000, 160.000000)">
+                <path d="M3,0 C4.6362,0 6,1.45472 6,3.2 C6,4.8 3.954525,6.76376 3,8 C2.045475,6.76376 0,4.8 0,3.2 C0,1.45472 1.3638,0 3,0 Z M3,1.6728 C2.249985,1.6728 1.56825,2.3272 1.56825,3.2 C1.56825,4.000016 2.18175,4.7272 3,4.7272 C3.750015,4.7272 4.43175,4.0728 4.43175,3.2 C4.43175,2.399984 3.81825,1.6728 3,1.6728 Z"></path>
+            </g>
+        </g>
+    </g>
+</svg>

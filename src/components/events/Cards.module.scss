@@ -1,0 +1,9 @@
+@import "../../styles/base/colors.scss";
+
+.card {
+  :global {
+    .bg-gradient {
+      background-image: linear-gradient(to bottom right, rgb(255, 255, 255), rgb(245, 245, 245));
+    }
+  }
+}
