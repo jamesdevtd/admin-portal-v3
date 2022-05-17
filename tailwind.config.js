@@ -9,6 +9,7 @@ module.exports = {
         'blue-dark': '#022F59',
         orange: '#FFCB30',
         offWhite: '#EBEDF7',
+        darkest: '#1D1D1D',
         'gray-brand': '#5E656F',
         'gray-light': '#9ca5b4',
         'red-warning': '#FC6767'
@@ -24,6 +25,7 @@ module.exports = {
         sm: '13px',
         base: '14px',
         md: '15px',
+        lg: '17px',
       },
       dropShadow: {
         'default': '0 2px 2px rgba(0, 0, 0, 0.5)'
