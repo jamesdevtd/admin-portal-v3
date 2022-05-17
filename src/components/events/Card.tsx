@@ -48,22 +48,33 @@ const Card = ({ event }: Props) => {
         </div>
         <div className="headings">
           <h3> {event?.series?.name}</h3>
-          <p className="text-gray-600 text-base text-center">
-            {event?.series?.name} | <span className={`font-bold ${event?.status === 'closed' ? 'text-red-500' : event?.status === 'open' ? 'text-green-500' : 'text-blue-500'}`}>Event {event?.status}</span>
+          <p className='series'>
+            {event?.series?.name} | <span className={`status ${event?.status === 'closed' ? 'text-red-500' : event?.status === 'open' ? 'text-green-500' : 'text-blue-brand'}`}>Event {event?.status}</span>
           </p>
-          <p className="text-gray-700 text-base text-center font-bold">
-            <span className='text-sky-300'>8</span> Teams
+          <p className="teams">
+            <span className='count'>8</span> Teams
           </p>
+          <hr />
         </div>
-        <div className='border-b w-20 m-auto'></div>
-        <div className="flex py-3 place-items-center flex-col font-bold text-cyan-800">
-          <div className='flex items-center w-2/3'><CalenderIcon /> <span className='pl-3'>Sat,Sep 14,2022 at 4:00 PM EST</span></div>
-          <div className='flex items-center w-2/3'><MapIcon /> <span className='pl-3'>Randall&apos;s Island Manhattan, NY</span></div>
-          <div className='flex items-center w-2/3'><FeeIcon /> <span className='pl-3'>Free - $25</span></div>
+
+        <div className="meta">
+          <div>
+            <CalenderIcon />
+            <span>Sat,Sep 14,2022 at 4:00 PM EST</span>
+          </div>
+          <div>
+            <MapIcon />
+            <span>Randall&apos;s Island Manhattan, NY</span>
+          </div>
+          <div>
+            <FeeIcon />
+            <span>Free - $25</span>
+          </div>
+          <hr />
         </div>
-        <div className='border-b w-20 m-auto'></div>
-        <div className='px-6 py-4'>
-          <p className='text-center text-xs text-gray-400'>Men&apos;s Soc. Men&apos;s Comp. Coed Sec. Coed Comp. U6 Boys.U7 Girls. U10 Boys. U12 Girls</p>
+
+        <div className='divisions'>
+          <p>Men&apos;s Soc. Men&apos;s Comp. Coed Sec. Coed Comp. U6 Boys.U7 Girls. U10 Boys. U12 Girls</p>
         </div>
       </div>
     </div >

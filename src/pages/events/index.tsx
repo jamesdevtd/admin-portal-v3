@@ -33,7 +33,7 @@ export default function Events() {
   return (
     <Layout>
       {!creatingEvent && (
-        <ContentWrap>
+        <ContentWrap className='max-w-7xl'>
           <div className={styles.Events}>
             <header className='content-header'>
               <CalendarIcon />
@@ -64,7 +64,7 @@ export default function Events() {
         </ContentWrap>
       )}
 
-      <ContentWrap className="grid xl:grid-cols-4 sm:grid-cols-1 gap-4">
+      <ContentWrap className="grid xl:grid-cols-4 sm:grid-cols-1 gap-4 justify-start max-w-7xl">
         {events.map((event: any) => <Card key={event.id} event={event} />)}
       </ContentWrap>
 
