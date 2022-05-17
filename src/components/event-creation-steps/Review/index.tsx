@@ -2,6 +2,7 @@ import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import { CircleFlag } from 'react-circle-flags';
 import { useForm } from 'react-hook-form';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -25,7 +26,6 @@ import CloseIcon from '~/icons/close.svg';
 import ErrorIcon from '~/icons/error.svg';
 import DescriptionIcon from '~/icons/grey/description.svg';
 import EventImgSrc from '~/images/mock/event-photo.png';
-import FlagSrc from '~/images/mock/flag-us.png'
 import LogoSrc from '~/images/mock/league-logo.png'
 
 type Props = {
@@ -154,7 +154,7 @@ export const Review = forwardRef(({ step, eventStatus, ...props }: Props, ref) =
             </div>
           }
           <div className="event-country">
-            <Image src={FlagSrc} />
+            <CircleFlag countryCode="us" height="35" />
           </div>
 
         </div>

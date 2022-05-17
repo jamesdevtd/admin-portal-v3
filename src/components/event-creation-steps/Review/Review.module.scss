@@ -47,11 +47,9 @@
     @apply flex flex-col gap-1 relative font-semibold text-base text-blue-dark;
     flex: 1;
     .event-country {
-      @apply absolute;
+      @apply absolute w-6 h-6 drop-shadow-default  border-2 border-white rounded-full;
       right: 10px;
       top: 10px;
-      width: 25px;
-      height: 25px;
     }
     > div,
     > h3,
