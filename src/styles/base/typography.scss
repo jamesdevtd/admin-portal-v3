@@ -74,3 +74,11 @@ input:focus {
     @apply text-lg;
   }
 }
+
+.capsule {
+  @apply text-xs uppercase p-0 px-2 rounded-lg z-10 font-semibold font-title;
+  @apply text-black;
+  background-color: #66ebb0;
+  left: 10px;
+  top: 10px;
+}

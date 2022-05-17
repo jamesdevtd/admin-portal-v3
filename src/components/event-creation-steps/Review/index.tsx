@@ -109,7 +109,7 @@ export const Review = forwardRef(({ step, eventStatus, ...props }: Props, ref) =
       <div className={styles.eventCard}>
 
         <div className="image">
-          <span className="tag">open</span>
+          <span className="tag capsule">open</span>
           <Image src={eventPublic?.croppedImages[0]?.src || EventImgSrc} alt="event image" layout='fill'
             objectFit='contain' />
         </div>

@@ -7931,6 +7931,11 @@ rc@^1.2.8:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-circle-flags@^0.0.17:
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/react-circle-flags/-/react-circle-flags-0.0.17.tgz#e0e4d3ff74f35715c15cc159d43407c28188cf35"
+  integrity sha512-RsgnkmTuSQNlB5jn7XcFzbp3W+WI75/sxT5CtjPa+67AiM8qjgMvxC45UWvDkjxH+qpoIAwEvA6VXpBbfnyH3g==
+
 react-cropper@^2.1.8:
   version "2.1.8"
   resolved "https://registry.npmjs.org/react-cropper/-/react-cropper-2.1.8.tgz"
