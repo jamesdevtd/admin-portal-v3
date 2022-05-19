@@ -1,0 +1,97 @@
+.box {
+  display: inline-block;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.img-preview {
+  overflow: hidden;
+}
+
+.CropperModal :global {
+  // @apply grid place-items-center w-full h-full top-0 left-0 fixed;
+  background: rgba(235, 237, 247, 0.9);
+  padding: 10px;
+  box-shadow: 0px 0px 20px rgba(29, 29, 29, 0.17);
+  border-radius: 10px;
+
+  .cropper-stage {
+    @apply grid place-items-center;
+
+    &.re-crop {
+      .cropper-drag-box {
+        opacity: 0;
+        z-index: 2;
+      }
+    }
+
+    .cropper-view-box,
+    .cropper-face {
+      border-radius: 50%;
+    }
+
+    .btn {
+      margin: 10px 10px;
+    }
+
+    .btn.cancel {
+      background: linear-gradient(180deg, rgba(203, 209, 219, 1) 0%, rgba(156, 165, 180, 1) 100%);
+    }
+  }
+
+  .cropper-drag-box {
+    background-color: #9ca5b4;
+  }
+
+  .cropper-buttons {
+    @apply z-20 relative w-full flex flex-row gap-5 justify-end pt-7 pb-5 h-auto;
+    top: 0;
+    z-index: 2;
+
+    .save {
+      @apply m-auto flex flex-col items-center justify-center text-center gap-2;
+
+      svg {
+        width: 20px;
+        height: auto;
+      }
+
+      h3 {
+        @apply text-lg text-blue-dark font-title font-semibold;
+      }
+    }
+
+    .close {
+      @apply mr-0 relative;
+      right: -50px;
+      bottom: -14px;
+
+      svg {
+        width: 22px;
+        height: auto;
+      }
+    }
+  }
+
+  .cropper-output {
+    @apply border-2 border-black p-5;
+
+    img {
+      @apply block w-full;
+    }
+  }
+
+  .cropper-drag-box {
+    background-color: #000;
+  }
+
+  .cropper-modal {
+    opacity: 0.8;
+  }
+}
+
+.CropperModal {
+  &.inactive {
+    @apply hidden;
+  }
+}

@@ -65,7 +65,7 @@ const mockMenuItems = [
       {
         icon: 'calculator',
         label: 'Budget Calculator',
-        url: '/overview',
+        url: '/budget-calculator',
       },
     ],
   },

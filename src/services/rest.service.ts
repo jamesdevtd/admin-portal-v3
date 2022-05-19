@@ -2,6 +2,8 @@ import axios, { Method } from 'axios';
 import Router from 'next/router';
 import { getSession } from 'next-auth/react';
 
+import { sleeper } from '@/utils/objectUtils';
+
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 /**
@@ -26,6 +28,8 @@ const request = (
   return new Promise((resolve, reject) => {
     axios
       .request(request)
+      // TODO: remove sleeper after all loader simulation is developed
+      .then(sleeper(4000))
       .then((res) => resolve(res))
       .catch((err) => reject(err));
   });
@@ -76,9 +80,9 @@ export const DELETE = (path: string) => {
   return request('DELETE', path);
 };
 
-axios.interceptors.request.use(async request => {
+axios.interceptors.request.use(async (request) => {
   const headers: any = {};
-  const session: any = await getSession()
+  const session: any = await getSession();
 
   if (session) {
     headers['Authorization'] = `Bearer ${session.user.accessToken}`;
@@ -98,12 +102,11 @@ axios.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
       Router.push('/');
-    }
-    else if (error.response.status === 500) {
+    } else if (error.response?.status === 500) {
       return Promise.reject(error);
     }
-    return Promise.reject(error.response.data);
+    return Promise.reject(error.response?.data);
   }
 );

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group</title>
+    <defs>
+        <ellipse id="path-1" cx="31.725" cy="31.5775574" rx="31.725" ry="31.5775574"></ellipse>
+    </defs>
+    <g id="Approved-Screens" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.497547238">
+        <g id="Affiliate-Step-2-|-Affiliate-League-Logo-Select" transform="translate(-735.000000, -243.000000)">
+            <g id="Team-Photo" transform="translate(679.000000, 211.000000)">
+                <g id="Photo-box" transform="translate(34.200000, 0.000000)">
+                    <g id="Group" transform="translate(22.275000, 32.249420)">
+                        <mask id="mask-2" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <use id="Mask" fill="#022F59" opacity="0.249341388" xlink:href="#path-1"></use>
+                        <polygon id="Fill-5" fill="#FAFAFB" fill-rule="nonzero" mask="url(#mask-2)" points="81.3136453 -0.510429371 43.864314 -0.510429371 33.2909473 10.7630488 20.077584 -13.3734789 32.80921 18.157539 45.9289019 4.1877574 69.4709396 4.1877574 41.64297 32.3425188 66.6283076 87.2650093 48.1846551 33.0080049"></polygon>
+                        <polygon id="Fill-7" fill="#FAFAFB" fill-rule="nonzero" mask="url(#mask-2)" points="16.6755806 31.9575205 -7.21880807 -24.9314005 10.1549472 31.9575205 -13.0919492 62.1758624"></polygon>
+                        <polygon id="Fill-9" fill="#FAFAFB" fill-rule="nonzero" mask="url(#mask-2)" points="24.5038322 47.7989355 9.30457324 63.9507769 22.993922 54.6018843 37.6546016 80.7812971"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -4,7 +4,7 @@ $sidebarWidth: 180px;
 $sidebarCollapsedWidth: 65px;
 
 .dashboardLayout :global {
-  @apply relative flex h-auto flex-row bg-offWhite min-h-screen;
+  @apply relative flex h-auto flex-row bg-off-white min-h-screen;
   .wall-bg {
     @apply fixed top-0 h-screen w-full bg-white;
     height: 900px;

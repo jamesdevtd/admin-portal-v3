@@ -47,7 +47,7 @@ const Card = ({ event }: Props) => {
           </div>
         </div>
         <div className="headings">
-          <h3> {event?.series?.name}</h3>
+          <h3> {event?.name}</h3>
           <p className='series'>
             {event?.series?.name} | <span className={`status ${event?.status === 'closed' ? 'text-red-500' : event?.status === 'open' ? 'text-green-500' : 'text-blue-brand'}`}>Event {event?.status}</span>
           </p>

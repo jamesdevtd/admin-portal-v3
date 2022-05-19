@@ -1,0 +1,29 @@
+.round :global {
+  border-radius: 0;
+
+  .has-thumb {
+    border-radius: 50%;
+    max-width: 250px;
+    margin: 0 auto;
+
+    img {
+      border-radius: 50%;
+      height: 250px;
+    }
+  }
+
+  .dropzone-box:not(.has-thumb) {
+    max-width: 320px;
+    margin: 0 auto;
+    border: 2px rgb(156, 165, 180) dashed;
+    box-shadow: none;
+
+    .instructions p {
+      @apply flex items-center;
+
+      h3 {
+        margin-right: 2px;
+      }
+    }
+  }
+}

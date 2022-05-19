@@ -77,8 +77,22 @@ input:focus {
 
 .capsule {
   @apply text-xs uppercase p-0 px-2 rounded-lg z-10 font-semibold font-title;
-  @apply text-black;
-  background-color: #66ebb0;
+  @apply text-black bg-green-light;
   left: 10px;
   top: 10px;
+  &.gray {
+    @apply bg-gray-200;
+  }
+  &.orange {
+    @apply bg-orange;
+  }
+  &.peach {
+    @apply bg-peach;
+  }
+  &.blue {
+    @apply bg-blue-brand;
+  }
+  &.small {
+    @apply text-xxs font-normal text-blue-dark;
+  }
 }

@@ -1,25 +1,54 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+import GooglePlacesAutocomplete, { geocodeByPlaceId } from 'react-google-places-autocomplete';
 import { FormProvider, useForm } from 'react-hook-form';
-import { FiMinusCircle } from 'react-icons/fi';
+import { FiMinusCircle, FiPlusCircle } from 'react-icons/fi';
 
 import styles from './styles.module.scss';
+import groupStyles from '@/components/forms/styles/FormGroup.module.scss';
 
 import Button from '@/components/buttons/Button';
-import DropzoneInput from '@/components/forms/fields/DropzoneInput';
+import ImageDropCrop from '@/components/forms/fields/ImageDropCropInline';
 import Input from '@/components/forms/fields/Input';
 import LoginLayout from '@/components/layout/LoginLayout';
 import NextImage from '@/components/NextImage';
 
+import { useAppSelector } from '@/app/hooks';
+import { getCroppedImage, getCropperModal, getIsCropped } from '@/features/onboardingSteps/onboardingStepsSlice';
 import { GET, PATCH, POST } from '@/services/rest.service';
+import { continents } from '@/static/geolocation';
 
 import StepsButtons from './stepsButtons/StepsButtons';
 
 import TagxLogo from '~/svg/tagx.svg';
 
+interface Continents {
+  code: string;
+  name: string;
+}
+
 export default function AffiliateSetupPage() {
+  const imgObject = useAppSelector(getCroppedImage);
+  const isCroppedSelector = useAppSelector(getIsCropped);
+  const cropperModal = useAppSelector(getCropperModal);
+  const [isCropped, setIsCropped] = useState<boolean>(false);
+  const [mailingAddress, setMailingAddress] = useState<any>('');
+  const [venueAddress, setVenueAddress] = useState<any>('');
+  const [isCropperModalOpen, setIsCropperModalOpen] = useState<boolean>(false);
+  const [allContinents, setAllContinents] = useState<Continents[]>([]);
+  useEffect(() => {
+    setAllContinents(continents);
+  }, [])
+
+
+  useEffect(() => {
+    setIsCropped(isCroppedSelector);
+  }, [isCroppedSelector]);
+  useEffect(() => {
+    setIsCropperModalOpen(cropperModal.isOpen);
+  }, [cropperModal]);
+
   const router = useRouter();
   // useEffect(() => {
   //   getSession().then(session => {
@@ -36,12 +65,12 @@ export default function AffiliateSetupPage() {
   });
   //#endregion  //*======== Form ===========
   const [message, setMessage] = useState<string>('');
-  const { handleSubmit, reset, setError } = methods;
+  const { handleSubmit, reset, setError, getValues, setValue } = methods;
   const [league, setLeague] = useState<any>({});
 
   const [step, setStep] = useState<number>(0);
   useEffect(() => {
-    async function name() {
+    async function setLeagueIfExist() {
       const response: any = await GET('/league', {});
       if (response.length >= 1) {
         const tempLeague = response[0];
@@ -49,55 +78,84 @@ export default function AffiliateSetupPage() {
         setLeague(tempLeague);
         reset(tempLeague);
         if (tempLeague.image !== '') {
+          setStep(2);
+        }
+        else if (tempLeague.name !== '') {
           setStep(1);
         }
       }
     };
-    name();
+    setLeagueIfExist();
   }, [reset]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const imageProcess = async (payload: any) => {
-    return new Promise((resolve) => {
-      let imageContentType: RegExpMatchArray | null = null;
-      const file = payload?.image ? payload?.image[0] : null;
-      if (file) {
-        const reader: any = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = async () => {
-          const imageData: string = reader.result.toString();
-          imageContentType = imageData.match(/[^:]\w+\/[\w-+\d.]+(?=;|,)/);
-          payload.imageContentType = imageContentType?.[0];
-          payload.image = imageData.replace(/^data:image\/[a-z]+;base64,/, "");
-        };
-      }
-      return resolve(payload);
+  const filterAddress = (address: any, search: string[]) => {
+    const all = {} as any;
+    search?.map((s: string) => {
+      const data = address?.address_components?.filter((r: any) => r.types.indexOf(s) !== -1);
+      all[s] = { long_name: data?.[0].long_name, short_name: data?.[0].short_name };
     });
+    return all;
   }
+  const getMailAddress = async (Address: any) => {
+    return geocodeByPlaceId(Address.value.place_id)
+      .then((results: any) => {
+        const address = results?.[0];
+        const filteredAddress = filterAddress(address, ['country', 'administrative_area_level_1', 'administrative_area_level_2']);
+        const getContinent: Continents[] = allContinents?.filter((c: Continents) => c.code === filteredAddress?.country?.short_name);
+        return {
+          city: filteredAddress?.administrative_area_level_2?.long_name,
+          state: filteredAddress?.administrative_area_level_1?.long_name,
+          country: filteredAddress?.country?.long_name,
+          continent: getContinent?.[0]?.name,
+          // id: mailingAddress?.value?.place_id,
+          line1: mailingAddress?.value?.structured_formatting?.main_text || null,
+          line2: mailingAddress?.value?.structured_formatting?.secondary_text || null,
+          latitude: address?.geometry?.location?.lat() || null,
+          longitude: address?.geometry?.location?.lng() || null,
+        }
+      })
+      .catch(error => console.error(error));
+  }
+
+  useEffect(() => {
+    async function getAdd(Address: any, isMail = false as boolean) {
+      if (isMail) {
+        const add: any = await getMailAddress(Address);
+        setValue("mailingLocation", add);
+      }
+      else {
+        const add: any = await getMailAddress(Address);
+        setValue("venueLocation", add);
+      }
+    }
+    if (mailingAddress?.value) {
+      getAdd(mailingAddress, true);
+    }
+    if (venueAddress?.value) {
+      getAdd(venueAddress);
+    }
+  }, [mailingAddress, venueAddress]);
+
+
 
   //#region  //*=========== Form Submit ===========
   const onSubmit = async (_data: unknown) => {
     if (step < 3) {
       if (league.id) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let payload: any = _data;
+        const payload = {} as any;
         payload.id = league.id;
         if (step === 1) {
-          imageProcess(payload)
-            .then((res: any) => {
-              payload = res;
-              // // eslint-disable-next-line no-console
-              // console.log('here', res.imageContentType);
-            });
+          const imageContentType: RegExpMatchArray | null = imgObject.match(/[^:]\w+\/[\w-+\d.]+(?=;|,)/);
+          payload.imageContentType = imageContentType?.[0];
+          payload.image = imgObject.replace(/^data:image\/[a-z]+;base64,/, "");
         }
-
-        // setTimeout(() => {
-        const req: any = {
-          id: payload.id,
-          image: payload.image,
-          imageContentType: payload.imageContentType,
-        };
-        PATCH(`/league/${league.id}`, req)
+        else if (step === 2) {
+          const { mailingLocation, venueLocation } = getValues();
+          console.log('step', mailingLocation);
+          payload.mailingLocation = mailingLocation;
+          payload.venueLocation = venueLocation;
+        }
+        PATCH(`/league/${league.id}`, payload)
           .then((res: any) => {
             setLeague(res);
             setStep(step + 1);
@@ -105,7 +163,6 @@ export default function AffiliateSetupPage() {
           .catch((err) => {
             setMessage('Something went wrong, please try again later.');
           });
-        // }, 1000);
       }
       else {
         POST('/league', _data)
@@ -196,27 +253,48 @@ export default function AffiliateSetupPage() {
 
   const LeagueLogo = () => (
     <section className='my-8 flex flex-col space-y-8'>
-      <div className='w-full text-center text-gray-600'>
-        <p>
-          Awesome! Now it’s about branding. <br />
-          Upload a logo that can be used for your League. <br />
-          No worries if you don&apos;t have one yet, you can always add your
-          logo later.
-        </p>
+      {!isCropped &&
+        <div className='w-full text-center text-gray-600'>
+          <p className="logo-text">
+            Awesome! Now it’s about branding. <br />
+            Upload a logo that can be used for your League. <br />
+            No worries if you don&apos;t have one yet, you can always add your
+            logo later.
+          </p>
+        </div>
+      }
+
+      {isCropped &&
+        <div className='w-full text-center text-dark-blue text-lg'>
+          <h1>Looking Good!</h1>
+        </div>
+      }
+      <div className={`${groupStyles.formGroup}`}>
+        <div className="main-event-img">
+          <ImageDropCrop getValues={getValues} />
+        </div>
+        {!isCropperModalOpen && !isCropped &&
+          <div className='w-full text-center'>
+            <div className='text-gray-600'>
+              <FiPlusCircle className='fill-green-400 text-xl inline text-white' />
+              HI-RESOLUTION
+            </div>
+            <div className='text-gray-600'>
+              <FiMinusCircle className='fill-red-400 text-xl inline text-white' />
+              NO OFFENSIVE IMAGERY OR ICONS
+            </div>
+          </div>
+        }
+        {!isCropperModalOpen &&
+          <div className='space-x-2 self-center'>
+            {/* <Button variant='outline' type='submit'>
+            SKIP
+          </Button> */}
+            <Button type='submit'>NEXT</Button>
+          </div>
+        }
       </div>
-      <DropzoneInput
-        id='image'
-        label=''
-        // validation={{ required: 'Photo must be filled' }}
-        accept='image/png, image/jpg, image/jpeg'
-        helperText='You can upload a file with .png, .jpg, or a .jpeg extension.'
-      />
-      <div className='space-x-2 self-center'>
-        <Button variant='outline' type='submit'>
-          SKIP
-        </Button>
-        <Button type='submit'>NEXT</Button>
-      </div>
+
     </section>
   );
 
@@ -233,21 +311,11 @@ export default function AffiliateSetupPage() {
         <GooglePlacesAutocomplete
           key='mailingAddress'
           minLengthAutocomplete={3}
-          apiKey='AIzaSyA8vejxIx686PpYxiXBqGpovVCZRurJBLQ'
-        // selectProps={{
-        //   inputValue: this.state.address,
-        //   onInputChange: (newInputValue, meta) => {
-        //     this.setAddress(newInputValue);
-        //   },
-        //   // className: 'form-control',
-        //   onChange: res => {
-        //     geocodeByPlaceId(res.value.place_id)
-        //       .then(results => {
-        //         this.props.change_location({ lat: results[0].geometry.location.lat(), long: results[0].geometry.location.lng(), address: results[0].formatted_address });
-        //       })
-        //       .catch(error => console.error(error));
-        //   },
-        // }}
+          apiKey={process.env.NEXT_PUBLIC_GOOGLEAPIKEY}
+          selectProps={{
+            value: mailingAddress,
+            onChange: setMailingAddress
+          }}
         />
         <label
           htmlFor='mailingAddress'
@@ -275,7 +343,11 @@ export default function AffiliateSetupPage() {
         <GooglePlacesAutocomplete
           key='mailingAddress'
           minLengthAutocomplete={3}
-          apiKey='AIzaSyA8vejxIx686PpYxiXBqGpovVCZRurJBLQ'
+          apiKey={process.env.NEXT_PUBLIC_GOOGLEAPIKEY}
+          selectProps={{
+            value: venueAddress,
+            onChange: setVenueAddress
+          }}
         />
         <label
           htmlFor='playingFacilityAddress'
@@ -324,7 +396,7 @@ export default function AffiliateSetupPage() {
   return (
     <LoginLayout pageTitle='TagX Affiliate Setup'>
       <div className={styles.affiliateSetup}>
-        <div className='form-wrap setup m-auto flex w-full flex-col gap-5 overflow-x-hidden'>
+        <div className='form-wrap setup m-auto flex w-full flex-col gap-5'>
           <TagxLogo className='logo m-auto h-10 w-36' />
           <StepsButtons currentStep={step} handleStepChange={setStep} />
 

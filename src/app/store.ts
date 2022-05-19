@@ -6,6 +6,8 @@ import clonedEventsReducer from '@/features/eventCreation/clonedEventsSlice';
 import divisionsReducer from '@/features/eventCreation/divisionsSlice';
 import eventCreationReducer from '@/features/eventCreation/eventCreationSlice';
 import eventPublicPageReducer from '@/features/eventCreation/eventPublicPageSlice';
+import eventsFiltersSlice from '@/features/eventsListing/eventsFiltersSlice';
+import eventsListReducer from '@/features/eventsListing/eventsList';
 import onboardingStepReducer from '@/features/onboardingSteps/onboardingStepsSlice';
 
 export const store = configureStore({
@@ -14,9 +16,11 @@ export const store = configureStore({
     onboardingStep: onboardingStepReducer,
     eventCreation: eventCreationReducer,
     basicInfo: basicInfoReducer,
+    eventsList: eventsListReducer,
     divisions: divisionsReducer,
     eventPublicPage: eventPublicPageReducer,
     clonedEvents: clonedEventsReducer,
+    eventsFilters: eventsFiltersSlice,
   },
 });
 

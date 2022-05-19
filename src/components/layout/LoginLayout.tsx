@@ -29,7 +29,7 @@ const LoginLayout = (props: Props) => {
           )}
         </div>
       </div>
-      <div className='col-form flex py-16 px-8 md:px-16'>
+      <div className='col-form flex py-16 px-8 md:px-16 overflow-x-hidden'>
         <div className='m-auto flex w-full flex-col gap-5'>
           {props.children}
         </div>

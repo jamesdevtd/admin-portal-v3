@@ -33,3 +33,9 @@ export function removeNullElements(object: any) {
   });
   return object;
 }
+
+export function sleeper(ms: number | undefined) {
+  return function (x: unknown) {
+    return new Promise((resolve) => setTimeout(() => resolve(x), ms));
+  };
+}

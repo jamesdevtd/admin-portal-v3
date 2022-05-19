@@ -74,6 +74,7 @@ export default NextAuth({
           ...session.user,
           ...decodedToken,
         }
+        session.user.userId = decodedToken?.userId;
         session.user.name = decodedToken?.firstName + ' ' + decodedToken?.lastName;
         session.user.email = decodedToken?.username;
         session.user.accessToken = token.accessToken;

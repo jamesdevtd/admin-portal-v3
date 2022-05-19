@@ -5,7 +5,6 @@ import "cropperjs/dist/cropper.css";
 import styles from "./CropModal.module.scss";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { setIsEditedById } from "@/features/eventCreation/eventCreationSlice";
 import { getCropperModal, updateCroppedImage, updateCropperModal } from '@/features/eventCreation/eventPublicPageSlice';
 
 import CloseIcon from '~/icons/blue/close-modal.svg';
@@ -48,7 +47,6 @@ export const CropperModal = () => {
       const blob = await base64Response.blob();
       const imgUrl = URL.createObjectURL(blob);
       saveImage(imgUrl);
-      dispatch(setIsEditedById(3));
     }
   };
 
@@ -90,32 +88,26 @@ export const CropperModal = () => {
           </button>
         </div>
         <Cropper
-          // style={{ height: 400, width: "100%" }}
           zoomTo={0}
-          initialAspectRatio={2.66}
-          preview=".img-preview"
+          initialAspectRatio={1}
           src={image}
           viewMode={2}
           dragMode='move'
           movable={true}
           cropBoxMovable={true}
           cropBoxResizable={false}
-          minCropBoxHeight={80}
-          minCropBoxWidth={10}
-          background={true}
+          background={false}
           responsive={true}
           autoCropArea={1}
+          guides={false}
           checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
           onInitialized={(instance) => {
             setCropper(instance);
-            // console.log('onInitialized...');
           }}
-          guides={false}
           crop={onCrop}
           ref={cropperRef}
           style={{ 'borderRadius': '50%' }}
         />
-
       </div>
 
     </div>

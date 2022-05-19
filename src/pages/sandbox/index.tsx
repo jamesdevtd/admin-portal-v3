@@ -3,6 +3,7 @@ import * as React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import Button from '@/components/buttons/Button';
+import EventsList from '@/components/events/EventsList';
 import DatePicker from '@/components/forms/fields/DatePicker';
 import DropzoneInput from '@/components/forms/fields/DropzoneInput';
 import Input from '@/components/forms/fields/Input';
@@ -11,6 +12,7 @@ import TextArea from '@/components/forms/fields/TextArea';
 import ContentWrap from '@/components/layout/ContentWrap';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
+
 export default function RHFSandbox() {
   //#region  //*=========== Form ===========
   const methods = useForm({
@@ -34,6 +36,23 @@ export default function RHFSandbox() {
 
   return (
     <Layout>
+
+      <ContentWrap>
+        <EventsList />
+      </ContentWrap>
+      <ContentWrap>
+        <div className="ml-5 mb-1 overflow-visible rounded-lg bg-blue-gradient pb-1">
+          <nav className='flex flex-row gap-3 text-white font-semibold p-3'>
+            <div>Type</div>
+            <div>Name</div>
+            <div>Name</div>
+            <div>League</div>
+          </nav>
+          <div className="rounded-md shadow-[0px_0px_10px_2px_rgba(0,0,0,0.16)] -left-4  bg-white w-full h-20 relative"
+            style={{ width: 'calc(100% + 12px)' }}
+          ></div>
+        </div>
+      </ContentWrap>
 
       <ContentWrap>
 
@@ -110,6 +129,8 @@ export default function RHFSandbox() {
           </div>
         </section>
       </ContentWrap>
+
+
 
 
     </Layout>

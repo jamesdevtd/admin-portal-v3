@@ -9,7 +9,7 @@ import BellIcon from '~/icons/bell.svg';
 export default function Header() {
   const [userFullName, setUserFullName] = useState('');
   const [userInitials, setUserInitials] = useState('G');
-  
+
   function logoutHandler() {
     signOut();
   }
@@ -17,7 +17,7 @@ export default function Header() {
   const getInitials = (fullName: string) => {
     const allNames = fullName.trim().split(' ');
     const initials = allNames.reduce((acc, curr, index) => {
-      if(index === 0 || index === allNames.length - 1){
+      if (index === 0 || index === allNames.length - 1) {
         acc = `${acc}${curr.charAt(0).toUpperCase()}`;
       }
       return acc;
@@ -27,19 +27,19 @@ export default function Header() {
 
   useEffect(() => {
     getSession().then(session => {
-      if(!session) {
-        setUserFullName('Guest');  
+      if (!session) {
+        setUserFullName('Guest');
       } else {
         setUserFullName(`${session?.user?.name}`);
       }
-    });  
+    });
   }, []);
 
   useEffect(() => {
     setUserInitials(getInitials(userFullName));
   }, [userFullName])
-  
-  
+
+
   return (
     <header className={`${styles.header}`}>
       <div className='wrap'>

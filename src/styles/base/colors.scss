@@ -3,6 +3,11 @@
   background: linear-gradient(180deg, rgba(47, 190, 255, 1) 0%, rgba(35, 149, 255, 1) 100%);
 }
 
+.bg-blue-y-gradient {
+  background: rgb(47, 190, 255);
+  background: linear-gradient(45deg, rgba(47, 190, 255, 1) 0%, rgba(35, 149, 255, 1) 100%);
+}
+
 .bg-grey-gradient {
   background: rgb(125, 125, 125);
   background: linear-gradient(180deg, rgba(125, 125, 125, 0.5) 0%, rgba(87, 86, 86) 100%);
@@ -17,3 +22,27 @@
   background: #26a1ff;
   background: linear-gradient(to bottom, #26a1ff 0%, #2f3a5c 100%);
 }
+
+.text-dark-blue {
+  color: rgb(2, 47, 89);
+}
+
+// .text-red-500 {
+//   color: rgb(255, 122, 89);
+// }
+
+// .text-green-500 {
+//   color: rgb(102, 235, 176);
+// }
+
+// .text-blue-500 {
+//   color: rgb(38, 161, 255);
+// }
+
+// .text-blue-900 {
+//   color: rgb(2, 47, 89);
+// }
+
+// .text-gray-600 {
+//   color: rgb(156, 165, 180);
+// }

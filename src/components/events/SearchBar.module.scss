@@ -1,0 +1,18 @@
+.formGroup {
+  @apply mb-6;
+
+  :global {
+
+    select,
+    option {
+      @apply p-0 pt-1 text-blue-brand font-bold;
+      @apply border-0 border-b-2 border-gray-400 text-md ml-1;
+      border-bottom-width: 1px;
+
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+    }
+  }
+}
