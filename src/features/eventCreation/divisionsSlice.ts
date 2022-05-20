@@ -7,7 +7,6 @@ import type { RootState } from '../../app/store';
 
 import { DivisionProps } from '@/types/division';
 
-// declaring the types for our state
 export type DivisionsState = {
   items: DivisionProps[];
 };

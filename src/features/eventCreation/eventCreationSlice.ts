@@ -6,7 +6,6 @@ import type { RootState } from '../../app/store';
 
 import { EventCreationStepProps } from '@/types/event';
 
-// declaring the types for our state
 export type EventCreation = {
   currentStep: number;
   steps: EventCreationStepProps[];

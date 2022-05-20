@@ -2,7 +2,7 @@
 
 .Card :global {
   @apply max-w-sm rounded-2xl overflow-hidden shadow-lg relative h-full text-blue-dark m-auto;
-
+  // transition: all 0.1s linear;
   * {
     @apply font-title;
   }
@@ -13,7 +13,7 @@
       @apply absolute bg-gradient-to-r from-black w-1/2 top-0 left-0 h-full opacity-30;
     }
 
-    >img {
+    > img {
       @apply w-full;
     }
 
@@ -80,7 +80,8 @@
   .top {
     @apply flex flex-row justify-between items-center;
 
-    .tag {}
+    .tag {
+    }
 
     .flag {
       img {
@@ -95,11 +96,11 @@
 
   .headings {
     h3 {
-      @apply font-bold text-darkest text-2xl mb-0 text-center capitalize tracking-wide;
+      @apply font-bold text-darkest text-2xl mb-0 text-center capitalize tracking-wide leading-tight;
     }
 
     p {
-      @apply text-gray-400 text-lg text-center font-semibold;
+      @apply text-gray-400 text-lg text-center font-semibold leading-tight;
     }
 
     .series {
@@ -107,7 +108,7 @@
     }
 
     .teams {
-      @apply text-blue-dark text-center pb-2;
+      @apply text-blue-dark text-center pb-1;
 
       .count {
         @apply text-blue-brand;
@@ -116,10 +117,10 @@
   }
 
   .meta {
-    @apply flex py-3 place-items-center flex-col m-auto gap-0;
+    @apply flex py-2 place-items-center flex-col m-auto gap-0;
     max-width: 220px;
 
-    >div {
+    > div {
       @apply flex items-center w-full items-baseline;
 
       span {
@@ -143,12 +144,19 @@
 
 .Card {
   &:hover {
-    @apply drop-shadow-2xl;
-
+    @apply drop-shadow-2xl z-10 relative;
+    // transform: scale(103%);
+    transform: scale(103%);
+    backface-visibility: hidden;
+    // height: calc(100% + 10px);
+    // top: -5px;
+    // position: relative;
+    // width: calc(100% + 10px);
+    // left: -5px;
     :global .card-content {
-      @apply drop-shadow-lg;
-      margin-top: -135px;
-      padding-top: 15px;
+      // @apply drop-shadow-lg;
+      // margin-top: -135px;
+      // padding-top: 15px;
     }
   }
 }

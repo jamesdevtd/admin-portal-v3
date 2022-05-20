@@ -4,7 +4,6 @@ import type { RootState } from '../../app/store';
 
 import { ClonedEventProps } from '@/types/event';
 
-// declaring the types for our state
 export type ClonedEvents = {
   items: ClonedEventProps[];
 };
