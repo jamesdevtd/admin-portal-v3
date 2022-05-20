@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
@@ -11,47 +12,40 @@ import Layout from '@/components/layout/Layout';
 
 import { useAppSelector } from '@/app/hooks';
 import { getFilters } from '@/features/eventsListing/eventsFiltersSlice';
+import { mockEventsForCards } from '@/static/events';
 
 import CalendarIcon from '~/icons/blue/calendar.svg';
 
 export default function Events() {
-  const Filters = useAppSelector(getFilters);
+  const filters = useAppSelector(getFilters);
 
   const [creatingEvent, setCreatingEvent] = useState<boolean>(false);
-  const [FilteredEvents, setFilteredEvents] = useState([]);
-  const [UserId, setUserId] = useState<number>(0);
+  const [filteredEvents, setFilteredEvents] = useState([]);
+  const [userId, setUserId] = useState<number>(0);
 
-  const eventCategories = ['All', 'Draft', 'Published', 'Active', 'Past'];
-
-  const events: any = [
-    { id: 1, userId: 1, name: 'NY Sevens', type: 'open', division: 'mens', teams: 18, status: 'live', series: { id: 1, name: 'Series 1' } },
-    { id: 2, userId: 2, name: 'NY Sevens', type: 'draft', division: 'womens', teams: 18, status: 'closed', series: { id: 2, name: 'Series 2' } },
-    { id: 3, userId: 3, name: 'Ladies Spring Open', type: 'draft', division: 'mens', teams: 18, status: 'open', series: { id: 3, name: 'Series 3' } },
-    { id: 4, userId: 4, name: 'NY Sevens', type: 'open', division: 'mens', teams: 18, status: 'live', series: { id: 4, name: 'Series 4' } },
-    { id: 5, userId: 5, name: 'NY Sevens', type: 'open', division: 'womens', teams: 18, status: 'open', series: { id: 5, name: 'Series 5' } },
-    { id: 6, userId: 6, name: 'NY Sevens', type: 'draft', division: 'mens', teams: 18, status: 'closed', series: { id: 6, name: 'Series 6' } },
-    { id: 7, userId: 7, name: 'NY Sevens', type: 'open', division: 'mens', teams: 18, status: 'closed', series: { id: 7, name: 'Series 7' } },
-    { id: 8, userId: 8, name: 'NY Sevens', type: 'draft', division: 'womens', teams: 18, status: 'open', series: { id: 8, name: 'Series 8' } },
-    { id: 9, userId: 9, name: 'NY Sevens', type: 'open', division: 'mens', teams: 18, status: 'open', series: { id: 9, name: 'Series 9' } }
-  ];
+  const eventCategories = ['all', 'draft', 'published', 'active', 'past'];
+  const router = useRouter();
+  // TODO: replace mockEventsForCards with values from store fetched from API
+  const events = mockEventsForCards;
 
   const createNewEventHandler = () => {
-    setCreatingEvent(true);
+    // TODO: replace 1 with next available event id to be set as draft mode from API or just create a new url for event creation i,e, event-creation
+    router.push('/events/1');
   };
   useEffect(() => {
-    const FEvents = events.filter((f: any) => {
+    const filtered = events.filter((f: any) => {
       if (
-        (Filters.search === "" || f.name.indexOf(Filters.search) > -1) &&
-        (Filters.type === 'All' || f.type.toLowerCase() === Filters.type.toLowerCase()) &&
-        (Filters.series === 'All' || f.series.name.toLowerCase() === Filters.series.toLowerCase()) &&
-        (Filters.division === 'All' || f.division === Filters.division.toLowerCase()) &&
-        (Filters.status === 'All' || f.status === Filters.status.toLowerCase()) &&
-        (Filters.own === false || (UserId !== 0 && f.userId === UserId))
+        (filters.search === "" || f.name.indexOf(filters.search) > -1) &&
+        (filters.type === 'all' || f.type.toLowerCase() === filters.type.toLowerCase()) &&
+        (filters.series === 'all' || f.series.name.toLowerCase() === filters.series.toLowerCase()) &&
+        (filters.division === 'all' || f.division === filters.division.toLowerCase()) &&
+        (filters.status === 'all' || f.status === filters.status.toLowerCase()) &&
+        (filters.own === false || (userId !== 0 && f.userId === userId))
       )
         return f;
     });
-    setFilteredEvents(FEvents);
-  }, [Filters])
+    setFilteredEvents(filtered);
+  }, [filters])
 
 
   useEffect(() => {
@@ -84,7 +78,7 @@ export default function Events() {
                   className='card w-48 rounded-md bg-gradient-to-b from-blue-400 to-sky-400 p-2 text-white'
                 >
                   <div className='card-body space-y-2'>
-                    <p className='card-header'>{eventCategory} Events</p>
+                    <p className='card-header capitalize'>{eventCategory} Events</p>
                     <div className='flex-end flex flex-row justify-between'>
                       <p className='text-3xl'>
                         {Math.floor(Math.random() * 100)}
@@ -101,10 +95,11 @@ export default function Events() {
 
       <ContentWrap className='max-w-7xl'>
         <SearchBar />
-        {Filters.view.toLowerCase() === "card" ?
+        {filters.view.toLowerCase() === "card" ?
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-start max-w-7xl">
-            {FilteredEvents.map((event: any) => <Card key={event.id} event={event} />)}
-          </div> : <Grid events={FilteredEvents} />
+            {filteredEvents.map((event: any) => <Card key={event.id} event={event} />)}
+          </div> :
+          <Grid events={filteredEvents} />
         }
       </ContentWrap>
 

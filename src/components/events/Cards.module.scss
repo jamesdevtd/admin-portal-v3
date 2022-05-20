@@ -8,13 +8,14 @@
   }
 
   .card-bg {
+    height: 210px;
     &:before {
       content: "";
       @apply absolute bg-gradient-to-r from-black w-1/2 top-0 left-0 h-full opacity-30;
     }
 
     > img {
-      @apply w-full;
+      @apply w-full object-cover;
     }
 
     .card-menu-button {
@@ -68,12 +69,12 @@
 
   .logo {
     @apply absolute inset-0 m-auto;
-    top: -60px;
+    top: -45px;
 
     img {
       @apply rounded-full rounded-full drop-shadow-default m-auto;
-      width: 85px;
-      height: 85px;
+      width: 75px;
+      height: 75px;
     }
   }
 
@@ -96,11 +97,11 @@
 
   .headings {
     h3 {
-      @apply font-bold text-darkest text-2xl mb-0 text-center capitalize tracking-wide leading-tight;
+      @apply font-bold text-darkest text-xl mb-0 text-center capitalize tracking-wide leading-tight;
     }
 
     p {
-      @apply text-gray-400 text-lg text-center font-semibold leading-tight;
+      @apply text-gray-400 text-md text-center font-semibold leading-tight;
     }
 
     .series {
@@ -137,7 +138,7 @@
     @apply px-6;
 
     p {
-      @apply text-center text-xs text-gray-400;
+      @apply text-center text-xxs text-gray-400 leading-tight;
     }
   }
 }

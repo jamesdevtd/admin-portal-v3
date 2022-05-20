@@ -15,6 +15,17 @@ const SearchBar = () => {
   //#region  //*=========== Form ===========
   const methods = useForm({
     mode: 'onTouched',
+    defaultValues: {
+      view: 'card',
+      own: false,
+      search: '',
+      country: 'US',
+      type: 'all',
+      series: 'all',
+      division: 'all',
+      status: 'all',
+      date: '',
+    }
   });
   const { register, getValues, handleSubmit } = methods;
   const onSubmit = (data: any) => {
@@ -50,7 +61,7 @@ const SearchBar = () => {
               </li>
               <li className="relative w-full">
                 <input className="sr-only peer" type="radio" value="grid" id="grid" {...register('view')} onChange={onChange} />
-                <label className="block text-center text-gray-600 py-1 rounded-r-lg cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:bg-blue-brand peer-checked:rounded-l-lg peer-checked:text-white" htmlFor="grid">Grid</label>
+                <label className="block text-center text-gray-600 py-1 rounded-r-lg cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:bg-blue-brand peer-checked:rounded-l-lg peer-checked:text-white" htmlFor="grid">List</label>
               </li>
             </ul>
           </div>
@@ -68,7 +79,7 @@ const SearchBar = () => {
             </label>
           </div>
         </div>
-        <div className='grid xl:grid-cols-6 sm:grid-cols-1 gap-4 mb-3 items-center'>
+        <div className='dropdown-filters flex flex-row gap-4 mb-3 items-center'>
           <div className='text-blue-dark font-bold text-md flex items-center pl-1'>
             Country
             <select
@@ -91,12 +102,13 @@ const SearchBar = () => {
               {...register('type')}
               className='w-full'
               onChange={onChange}
-              defaultValue="Open"
+              defaultValue="all"
             >
               <option value='' hidden></option>
-              <option value='Open'>Open</option>
-              <option value='Draft'>Draft</option>
-              <option value='Closed'>Closed</option>
+              <option value='all'>All</option>
+              <option value='open'>Open</option>
+              <option value='draft'>Draft</option>
+              <option value='closed'>Closed</option>
             </select>
           </div>
           <div className='text-blue-dark font-bold text-md flex items-center pl-1'>
@@ -107,7 +119,7 @@ const SearchBar = () => {
               onChange={onChange}
               defaultValue="1"
             >
-              <option value='All'>All</option>
+              <option value='all'>All</option>
               <option value='Series 1'>Series 1</option>
               <option value='Series 2'>Series 2</option>
               <option value='Series 3'>Series 3</option>
@@ -125,11 +137,11 @@ const SearchBar = () => {
               {...register('division')}
               className='w-full'
               onChange={onChange}
-              defaultValue="Mens"
+              defaultValue="mens"
             >
-              <option value='All'>All</option>
-              <option value='Mens'>Mens</option>
-              <option value='Womens'>Womens</option>
+              <option value='all'>All</option>
+              <option value='mens'>Mens</option>
+              <option value='womens'>Womens</option>
             </select>
           </div>
           <div className='text-blue-dark font-bold text-md flex items-center pl-1'>
@@ -140,10 +152,10 @@ const SearchBar = () => {
               onChange={onChange}
               defaultValue="All"
             >
-              <option value='All'>All</option>
-              <option value='Live'>Live</option>
-              <option value='Closed'>Closed</option>
-              <option value='Open'>Open</option>
+              <option value='all'>All</option>
+              <option value='live'>Live</option>
+              <option value='closed'>Closed</option>
+              <option value='open'>Open</option>
             </select>
           </div>
           <div className='text-blue-dark font-bold text-md flex items-center pl-1'>
@@ -152,12 +164,12 @@ const SearchBar = () => {
               {...register('date')}
               className='w-28'
               onChange={onChange}
-              defaultValue="All"
+              defaultValue="all"
             >
               <option value='' hidden></option>
-              <option value='All'>All</option>
-              <option value='Draft'>Draft</option>
-              <option value='Closed'>Closed</option>
+              <option value='all'>All</option>
+              <option value='draft'>Draft</option>
+              <option value='closed'>Closed</option>
             </select>
           </div>
         </div>

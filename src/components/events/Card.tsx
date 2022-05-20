@@ -10,8 +10,8 @@ import FeeIcon from '~/svg/fee-icon.svg';
 import MapIcon from '~/svg/map-pin.svg';
 
 // TODO: add loading placeholder whilst actual images are being loaded from cloud
-const eventPhoto = '/images/mock/event-thumb.jpg';
-const eventLogo = '/images/mock/logo-thumb.png';
+const eventPhotoPlaceholder = '/images/mock/event-thumb.jpg';
+const eventLogoPlaceholder = '/images/mock/logo-thumb.png';
 
 type Props = {
   // TODO: replace 'any' with actual event interface i.e. EventProps in /types/event.ts
@@ -25,7 +25,7 @@ const Card = ({ event }: Props) => {
   return (
     <div className={styles.Card}>
       <div className="card-bg">
-        <img src={eventPhoto} alt="Event Photo" />
+        <img src={event.photo ? event.photo : eventPhotoPlaceholder} alt="Event Photo" />
         <button onClick={() => setshowMenu(!showMenu)} className={`card-menu-button ${showMenu && 'active'}`}>
           <MenuIcon />
         </button>
@@ -38,7 +38,7 @@ const Card = ({ event }: Props) => {
 
       <div className='card-content'>
         <div className='logo'>
-          <img alt="logo" src={eventLogo}></img>
+          <img alt="logo" src={event.logo ? event.logo : eventLogoPlaceholder}></img>
         </div>
         <div className="top">
           <span className="tag capsule">open</span>
