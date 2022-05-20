@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import styles from './Events.module.scss';
 
 import Card from '@/components/events/Card';
+import Grid from '@/components/events/Grid';
 import SearchBar from '@/components/events/SearchBar';
 import ContentWrap from '@/components/layout/ContentWrap';
 import Layout from '@/components/layout/Layout';
@@ -23,15 +24,15 @@ export default function Events() {
   const eventCategories = ['All', 'Draft', 'Published', 'Active', 'Past'];
 
   const events: any = [
-    { id: 1, userId: 1, name: 'NY Sevens', type: 'open', division: 'mens', status: 'live', series: { name: 'Series 1' } },
-    { id: 2, userId: 2, name: 'NY Sevens', type: 'draft', division: 'womens', status: 'closed', series: { name: 'Series 2' } },
-    { id: 3, userId: 3, name: 'Ladies Spring Open', type: 'draft', division: 'mens', status: 'open', series: { name: 'Series 3' } },
-    { id: 4, userId: 4, name: 'NY Sevens', type: 'open', division: 'mens', status: 'live', series: { name: 'Series 4' } },
-    { id: 5, userId: 5, name: 'NY Sevens', type: 'open', division: 'womens', status: 'open', series: { name: 'Series 5' } },
-    { id: 6, userId: 6, name: 'NY Sevens', type: 'draft', division: 'mens', status: 'closed', series: { name: 'Series 6' } },
-    { id: 7, userId: 7, name: 'NY Sevens', type: 'open', division: 'mens', status: 'closed', series: { name: 'Series 7' } },
-    { id: 8, userId: 8, name: 'NY Sevens', type: 'draft', division: 'womens', status: 'open', series: { name: 'Series 8' } },
-    { id: 9, userId: 9, name: 'NY Sevens', type: 'open', division: 'mens', status: 'open', series: { name: 'Series 9' } }
+    { id: 1, userId: 1, name: 'NY Sevens', type: 'open', division: 'mens', teams: 18, status: 'live', series: { id: 1, name: 'Series 1' } },
+    { id: 2, userId: 2, name: 'NY Sevens', type: 'draft', division: 'womens', teams: 18, status: 'closed', series: { id: 2, name: 'Series 2' } },
+    { id: 3, userId: 3, name: 'Ladies Spring Open', type: 'draft', division: 'mens', teams: 18, status: 'open', series: { id: 3, name: 'Series 3' } },
+    { id: 4, userId: 4, name: 'NY Sevens', type: 'open', division: 'mens', teams: 18, status: 'live', series: { id: 4, name: 'Series 4' } },
+    { id: 5, userId: 5, name: 'NY Sevens', type: 'open', division: 'womens', teams: 18, status: 'open', series: { id: 5, name: 'Series 5' } },
+    { id: 6, userId: 6, name: 'NY Sevens', type: 'draft', division: 'mens', teams: 18, status: 'closed', series: { id: 6, name: 'Series 6' } },
+    { id: 7, userId: 7, name: 'NY Sevens', type: 'open', division: 'mens', teams: 18, status: 'closed', series: { id: 7, name: 'Series 7' } },
+    { id: 8, userId: 8, name: 'NY Sevens', type: 'draft', division: 'womens', teams: 18, status: 'open', series: { id: 8, name: 'Series 8' } },
+    { id: 9, userId: 9, name: 'NY Sevens', type: 'open', division: 'mens', teams: 18, status: 'open', series: { id: 9, name: 'Series 9' } }
   ];
 
   const createNewEventHandler = () => {
@@ -80,7 +81,7 @@ export default function Events() {
               {eventCategories.map((eventCategory) => (
                 <div
                   key={eventCategory}
-                  className='card w-32 rounded-md bg-gradient-to-b from-blue-400 to-sky-400 p-2 text-white'
+                  className='card w-48 rounded-md bg-gradient-to-b from-blue-400 to-sky-400 p-2 text-white'
                 >
                   <div className='card-body space-y-2'>
                     <p className='card-header'>{eventCategory} Events</p>
@@ -98,11 +99,13 @@ export default function Events() {
         </ContentWrap>
       )}
 
-      <ContentWrap>
+      <ContentWrap className='max-w-7xl'>
         <SearchBar />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-start max-w-7xl">
-          {FilteredEvents.map((event: any) => <Card key={event.id} event={event} />)}
-        </div>
+        {Filters.view.toLowerCase() === "card" ?
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-start max-w-7xl">
+            {FilteredEvents.map((event: any) => <Card key={event.id} event={event} />)}
+          </div> : <Grid events={FilteredEvents} />
+        }
       </ContentWrap>
 
     </Layout>

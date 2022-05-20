@@ -8,6 +8,7 @@ export interface EventCreationStepProps {
 }
 
 export interface EventProps {
+  // TO DO: we might need more data like owner info, event type, event division etc.
   id: number;
   status: string;
   additionalEvents: SeriesProps[];
