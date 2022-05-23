@@ -82,8 +82,11 @@ $sidebarWidth: 150px;
   .field {
     @apply bg-gray-50 rounded-lg w-full px-4 items-center text-xs flex flex-row gap-2 justify-between;
     label {
-      @apply text-blue-dark text-xs;
+      @apply text-blue-dark text-xs flex-1 block;
       line-height: 1.2;
+      .currency {
+        @apply float-right;
+      }
     }
     input {
       @apply border-none h-auto text-sm text-blue-brand text-right rounded-xl my-1;
