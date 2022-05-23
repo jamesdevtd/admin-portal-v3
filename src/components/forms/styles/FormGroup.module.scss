@@ -322,3 +322,73 @@
     }
   }
 }
+
+.datePickerField :global {
+  @apply relative;
+  .toggle-datepicker {
+    @apply border-0 border-b-2 border-gray-300 text-md ml-1 block;
+    min-width: auto !important;
+    padding: 0 20px 0 15px !important;
+    & ~ div {
+      @apply absolute z-20 top-0;
+      left: 110%;
+    }
+  }
+  .react-datepicker-wrapper {
+    @apply relative;
+    input {
+      @apply w-full;
+    }
+  }
+  .react-datepicker {
+    @apply border-none rounded-xl #{!important};
+    @apply rounded-xl overflow-hidden pb-2;
+    @apply shadow-[0_0_7px_0_rgb(0,0,0,0.15)];
+    &__triangle {
+      display: none;
+    }
+    &__header {
+      @apply bg-white border-none pt-5 px-3;
+    }
+    &__navigation {
+      @apply items-center top-4;
+      &--previous {
+        @apply left-3;
+      }
+      &--next {
+        @apply right-3;
+      }
+    }
+    &__current-month {
+      @apply mb-5;
+    }
+    &__day-names {
+      @apply opacity-50;
+    }
+    &__navigation-icon {
+      @apply border-none rounded-md w-6 h-6 bg-white;
+      @apply shadow-[0_0_4px_0_rgb(0,0,0,0.3)];
+      &:before {
+        @apply inset-0 border-gray-700;
+        margin: auto 5px;
+        border-width: 2px 2px 0 0;
+        width: 8px;
+        height: 8px;
+      }
+      &--previous {
+        &:before {
+          margin: auto 10px;
+        }
+      }
+    }
+    &__time-container {
+      @apply w-24;
+    }
+    &__header--time {
+      @apply pt-2 mb-2 border-none shadow-sm shadow-gray-300;
+    }
+    &-popper {
+      @apply pt-0;
+    }
+  }
+}
