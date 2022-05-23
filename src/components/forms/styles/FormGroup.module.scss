@@ -326,7 +326,8 @@
 .datePickerField :global {
   @apply relative;
   .toggle-datepicker {
-    @apply border-0 border-b-2 border-gray-300 text-md ml-1 block;
+    @apply border-0 text-md ml-1 block;
+    width: auto;
     min-width: auto !important;
     padding: 0 20px 0 15px !important;
     & ~ div {

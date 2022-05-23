@@ -28,7 +28,7 @@ const SearchBar = () => {
       view: 'card',
       own: false,
       search: '',
-      country: 'US',
+      country: 'all',
       type: 'all',
       series: 'all',
       division: 'all',
@@ -104,11 +104,12 @@ const SearchBar = () => {
             Country
             <select
               {...register('country')}
-              className='w-full'
+              className='w-40'
               onChange={onChange}
-              defaultValue="US"
+              defaultValue="all"
             >
               <option value='' hidden></option>
+              <option value='all'>All</option>
               <option value='US'>United States</option>
               <option value='AU'>Australia</option>
               <option value='IN'>India</option>
