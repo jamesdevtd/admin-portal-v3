@@ -51,36 +51,38 @@ const SearchBar = () => {
   return (
     <FormProvider {...methods}>{/*  ${styles.formGroup} */}
       <form className={`${SearchBarStyles.formGroup}`} onSubmit={handleSubmit(onSubmit)}>
-        <div className='grid xl:grid-cols-5 sm:grid-cols-1 gap-4 mb-3 items-center'>
-          <div className='text-blue-brand flex items-center pl-1'>
+
+        <div className='top-filters'>
+          <div className='view-type'>
             View
-            <ul className="flex items-center ml-5 bg-gray-200 rounded-lg w-28">
-              <li className="relative w-full">
+            <ul>
+              <li>
                 <input className="sr-only peer" type="radio" value="card" id="card" {...register('view')} onChange={onChange} defaultChecked />
-                <label className="block text-center text-gray-600 py-1 rounded-l-lg cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:bg-blue-brand peer-checked:rounded-r-lg peer-checked:text-white" htmlFor="card">Card</label>
+                <label htmlFor="card">Card</label>
               </li>
-              <li className="relative w-full">
+              <li>
                 <input className="sr-only peer" type="radio" value="grid" id="grid" {...register('view')} onChange={onChange} />
-                <label className="block text-center text-gray-600 py-1 rounded-r-lg cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:bg-blue-brand peer-checked:rounded-l-lg peer-checked:text-white" htmlFor="grid">List</label>
+                <label htmlFor="grid">List</label>
               </li>
             </ul>
           </div>
-          <div className='text-blue-brand flex items-center col-span-1 lg:col-span-3'>
+          <div className='toggle-display'>
             Display My Events Only
-            <input type="checkbox" {...register('own')} className='ml-1 border-blue-brand checked:bg-blue-brand p-2 border-2 rounded-md' onChange={onChange} />
+            <input type="checkbox" {...register('own')} onChange={onChange} />
           </div>
-          <div>
-            <label className="relative block rounded-md">
+          <div className='search-bar'>
+            <label>
               <span className="sr-only">Search</span>
-              <input className="placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-1 pl-3 pr-9 shadow-sm focus:outline-none focus:border-blue-brand focus:ring-blue-brand focus:ring-1 sm:text-sm" placeholder="Search for an Event by Name" type="text" {...register('search')} onChange={onChange} />
-              <button className="absolute inset-y-0 right-0 flex items-center px-3 m-0.5 rounded-md bg-blue-brand hover:bg-blue-start" type='button'>
-                <SearchIcon className="h-4 w-5 fill-slate-300" />
+              <input placeholder="Search for an Event by Name" type="text" {...register('search')} onChange={onChange} />
+              <button type='button'>
+                <SearchIcon />
               </button>
             </label>
           </div>
         </div>
-        <div className='dropdown-filters flex flex-row gap-4 mb-3 items-center'>
-          <div className='text-blue-dark font-bold text-md flex items-center pl-1'>
+
+        <div className='dropdown-filters'>
+          <div className="col">
             Country
             <select
               {...register('country')}
@@ -96,7 +98,7 @@ const SearchBar = () => {
               <option value='PH'>Philippines</option>
             </select>
           </div>
-          <div className='text-blue-dark font-bold text-md flex items-center pl-1'>
+          <div className="col">
             Type
             <select
               {...register('type')}
@@ -111,7 +113,7 @@ const SearchBar = () => {
               <option value='closed'>Closed</option>
             </select>
           </div>
-          <div className='text-blue-dark font-bold text-md flex items-center pl-1'>
+          <div className="col">
             Series
             <select
               {...register('series')}
@@ -131,7 +133,7 @@ const SearchBar = () => {
               <option value='Series 9'>Series 9</option>
             </select>
           </div>
-          <div className='text-blue-dark font-bold text-md flex items-center pl-1'>
+          <div className="col">
             Division
             <select
               {...register('division')}
@@ -144,7 +146,7 @@ const SearchBar = () => {
               <option value='womens'>Womens</option>
             </select>
           </div>
-          <div className='text-blue-dark font-bold text-md flex items-center pl-1'>
+          <div className="col">
             Status
             <select
               {...register('status')}
@@ -158,7 +160,7 @@ const SearchBar = () => {
               <option value='open'>Open</option>
             </select>
           </div>
-          <div className='text-blue-dark font-bold text-md flex items-center pl-1'>
+          <div className="col">
             Date Range
             <select
               {...register('date')}

@@ -47,25 +47,9 @@ module.exports = {
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
   },
-
-  // TODO: add redirects only as needed for events testing
-  // async redirects() {
-  //   return [
-  //     {
-  //       source: '/events',
-  //       destination: '/events/1',
-  //       permanent: true,
-  //     },
-  //   ]
-  // }
-
-  // TODO: add next-http-proxy-middleware
-  // async rewrites() {
-  //   return [
-  //     {
-  //       source: '/:path*',
-  //       destination: 'http://localhost:8080/:path*',
-  //     },
-  //   ]
-  // }
+  experimental: {
+    images: {
+      layoutRaw: true
+    }
+  }
 };

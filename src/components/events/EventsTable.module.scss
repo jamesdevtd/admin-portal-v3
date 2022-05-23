@@ -1,0 +1,19 @@
+.EventsTable :global {
+  @apply w-full overflow-hidden relative h-full text-blue-dark m-auto;
+
+  .card-bg {
+    @apply min-h-screen;
+    box-shadow: inset -10px 20px 0px 0px #26a1ff, inset -10px -10px 0px 0px #26a1ff;
+    padding: 0 20px;
+
+    table {
+      thead th {
+        @apply text-left px-3;
+      }
+
+      tbody td {
+        @apply h-12 px-3;
+      }
+    }
+  }
+}

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import styles from './Events.module.scss';
 
 import Card from '@/components/events/Card';
-import Grid from '@/components/events/Grid';
+import EventsTable from '@/components/events/EventsTable';
 import SearchBar from '@/components/events/SearchBar';
 import ContentWrap from '@/components/layout/ContentWrap';
 import Layout from '@/components/layout/Layout';
@@ -15,6 +15,8 @@ import { getFilters } from '@/features/eventsListing/eventsFiltersSlice';
 import { mockEventsForCards } from '@/static/events';
 
 import CalendarIcon from '~/icons/blue/calendar.svg';
+import CalendarWhiteIcon from '~/icons/calendar.svg';
+import PlusIcon from '~/icons/plus-box.svg';
 
 export default function Events() {
   const filters = useAppSelector(getFilters);
@@ -67,18 +69,19 @@ export default function Events() {
             <header className='content-header'>
               <CalendarIcon />
               <h2>Events</h2>
-              <button className='btn ml-auto' onClick={createNewEventHandler}>
+              <button className='btn create' onClick={createNewEventHandler}>
+                <PlusIcon />
                 Create New Event
               </button>
             </header>
-            <div className='flex flex-row space-x-8'>
+            <div className='summary-cards'>
               {eventCategories.map((eventCategory) => (
                 <div
                   key={eventCategory}
-                  className='card w-48 rounded-md bg-gradient-to-b from-blue-400 to-sky-400 p-2 text-white'
+                  className='card'
                 >
                   <div className='card-body space-y-2'>
-                    <p className='card-header capitalize'>{eventCategory} Events</p>
+                    <p className='card-header'><CalendarWhiteIcon /> {eventCategory} Events</p>
                     <div className='flex-end flex flex-row justify-between'>
                       <p className='text-3xl'>
                         {Math.floor(Math.random() * 100)}
@@ -95,11 +98,11 @@ export default function Events() {
 
       <ContentWrap className='max-w-7xl'>
         <SearchBar />
-        {filters.view.toLowerCase() === "card" ?
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-start max-w-7xl">
+        {filters.view === "card" ?
+          <div className={styles.cardsView}>
             {filteredEvents.map((event: any) => <Card key={event.id} event={event} />)}
           </div> :
-          <Grid events={filteredEvents} />
+          <EventsTable events={filteredEvents} />
         }
       </ContentWrap>
 

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { CircleFlag } from 'react-circle-flags';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
 
-import styles from './Grid.module.scss';
+import styles from './EventsTable.module.scss';
 
 
 // TODO: add loading placeholder whilst actual images are being loaded from cloud
@@ -14,12 +14,12 @@ type Props = {
   events: any[]
 };
 
-const Grid = ({ events }: Props) => {
+const EventsTable = ({ events }: Props) => {
   const [showMenu, setshowMenu] = useState<boolean>(false);
 
 
   return (
-    <div className={styles.Grid}>
+    <div className={styles.EventsTable}>
       <div className="card-bg drop-shadow-xl m-3 rounded-lg shadow-blue-dark">
         <table className="table-auto w-full">
           <thead className='text-white'>
@@ -62,4 +62,4 @@ const Grid = ({ events }: Props) => {
   );
 };
 
-export default Grid;
+export default EventsTable;

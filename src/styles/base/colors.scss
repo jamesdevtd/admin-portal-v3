@@ -1,3 +1,5 @@
+// TODO: converts all the classes below as tailwind classes in tailwind.config.js
+
 .bg-blue-gradient {
   background: rgb(47, 190, 255);
   background: linear-gradient(180deg, rgba(47, 190, 255, 1) 0%, rgba(35, 149, 255, 1) 100%);
@@ -21,6 +23,11 @@
 .wall-blue-gradient {
   background: #26a1ff;
   background: linear-gradient(to bottom, #26a1ff 0%, #2f3a5c 100%);
+}
+
+.wall-blue-gradient-2 {
+  background: #2fbeff;
+  background: linear-gradient(to bottom, #2fbeff 0%, #2395ff 100%);
 }
 
 .text-dark-blue {

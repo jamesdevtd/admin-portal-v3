@@ -38,6 +38,8 @@ module.exports = {
       backgroundImage: {
         'gradient-blue':
           'linear-gradient(180deg, rgba(47, 190, 255, 1) 0%, rgba(35, 149, 255, 1) 100%), url(/svg/gradient-square.svg)',
+        'gradient-blue-2':
+          ' linear-gradient(180deg, #2395ff 0%, #2fbeff 100%), url(/svg/gradient-square.svg)',
         'gradient-grey':
           'linear-gradient(0deg, rgba(237, 237, 237, 1) 0%, rgba(255, 255, 255, 1) 100%), url(/svg/gradient-square.svg)',
       },
