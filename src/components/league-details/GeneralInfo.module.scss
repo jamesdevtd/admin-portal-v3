@@ -1,0 +1,64 @@
+.formGroup :global {
+  @apply w-full max-w-full;
+
+  h3 {
+    @apply text-sm text-gray-light font-semibold;
+  }
+
+  .location-group {
+    .fields-group {
+      @apply w-full;
+    }
+  }
+
+  .fields-group {
+    @apply pb-1;
+  }
+
+  .fields-group .col,
+  .location-group .fields-group .col {
+    @apply w-2/3;
+  }
+
+  .logo-group {
+    .col:first-child {
+      @apply w-1/5;
+
+      .logo {
+        @apply w-14 h-14 max-h-14;
+      }
+    }
+
+    .col {
+      @apply w-4/5;
+    }
+  }
+
+  .affiliate-group .togglelable .form-check,
+  .form-check {
+    @apply text-blue-dark flex items-center col-span-1 my-1 font-bold text-base;
+
+    input {
+      @apply mr-1 border-gray-light p-2 border-2 rounded-md;
+
+      &:checked {
+        @apply bg-blue-brand;
+      }
+    }
+  }
+
+  .equipment-group {
+    .col label {
+      @apply mb-0;
+    }
+
+    span {
+      @apply ml-6;
+    }
+  }
+
+}
+
+.formGroup::after {
+  border: none;
+}

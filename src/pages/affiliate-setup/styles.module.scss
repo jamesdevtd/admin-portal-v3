@@ -51,4 +51,87 @@ $text-dark_blue:#0B2034;
     color: $text-dark_blue;
     font-size: 14px;
   }
+
+  .error {
+    @apply text-red-warning;
+  }
+
+  .location-group {
+    @apply mt-0 flex flex-row;
+
+    .map-col {
+      @apply flex-none order-first;
+      width: 250px;
+
+      img {
+        @apply mt-2 h-full object-contain object-top;
+        height: 250px;
+      }
+    }
+
+    .fields-group {
+      @apply border-none pb-0 relative w-full;
+
+      .icon.map {
+        @apply absolute right-3 top-3 bg-contain bg-center bg-no-repeat opacity-50;
+        width: 13px;
+        height: 13px;
+        background-image: url(/icons/blue/map-pin.svg);
+      }
+    }
+
+    .autocomplete-field {
+      [class$="-control"] {
+        @apply border-0 border-b-2 border-gray-400 rounded-none mb-1 shadow-none pr-7;
+        border-bottom-width: 1px;
+        height: 30px;
+
+        div:first-child {
+          @apply p-0 w-full;
+        }
+
+        >div>div:last-child {
+          @apply w-full;
+        }
+
+        [class$="-placeholder"] {
+          @apply text-md;
+        }
+
+        [class$="-indicatorSeparator"],
+        [class$="-indicatorContainer"] {
+          @apply hidden;
+        }
+
+        input {
+          @apply p-0 py-1 text-blue-dark placeholder-blue-dark w-full text-md #{!important};
+
+          &:focus {
+            outline: none;
+            box-shadow: none;
+          }
+        }
+
+        input+div {
+          opacity: 0;
+        }
+      }
+
+      [class$="-menu"] {
+        @apply mt-0;
+      }
+    }
+
+    textarea {
+      @apply text-md;
+    }
+
+    @media (max-width: 991px) {
+      @apply flex-col;
+
+      .map-col {
+        @apply -order-none;
+      }
+    }
+  }
 }

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import GooglePlacesAutocomplete, { geocodeByPlaceId } from 'react-google-places-autocomplete';
@@ -76,8 +75,13 @@ export default function AffiliateSetupPage() {
         const tempLeague = response[0];
         tempLeague.image = [tempLeague.image];
         setLeague(tempLeague);
+        setMailingAddress({ label: `${tempLeague?.mailingLocation?.line1 ?? ''} ${tempLeague?.mailingLocation?.line2 ?? ''} ${tempLeague?.mailingLocation?.state ?? ''} ${tempLeague?.mailingLocation?.country ?? ''}` });
+        setVenueAddress({ label: `${tempLeague?.venueLocation?.line1 ?? ''} ${tempLeague?.venueLocation?.line2 ?? ''} ${tempLeague?.venueLocation?.state ?? ''} ${tempLeague?.venueLocation?.country ?? ''}` });
         reset(tempLeague);
-        if (tempLeague.image !== '') {
+        if (tempLeague.venueName !== '') {
+          setStep(3);
+        }
+        else if (tempLeague.image !== '') {
           setStep(2);
         }
         else if (tempLeague.name !== '') {
@@ -138,6 +142,8 @@ export default function AffiliateSetupPage() {
 
 
 
+
+
   //#region  //*=========== Form Submit ===========
   const onSubmit = async (_data: unknown) => {
     if (step < 3) {
@@ -150,10 +156,10 @@ export default function AffiliateSetupPage() {
           payload.image = imgObject.replace(/^data:image\/[a-z]+;base64,/, "");
         }
         else if (step === 2) {
-          const { mailingLocation, venueLocation } = getValues();
-          console.log('step', mailingLocation);
+          const { mailingLocation, venueLocation, venueName } = getValues();
           payload.mailingLocation = mailingLocation;
           payload.venueLocation = venueLocation;
+          payload.venueName = venueName;
         }
         PATCH(`/league/${league.id}`, payload)
           .then((res: any) => {
@@ -179,23 +185,13 @@ export default function AffiliateSetupPage() {
       console.log(_data);
     }
     if (step === 3) {
-      const STRIPE_KEY =
-        'sk_test_51Gkb7wKjMQt5gygn6rh0ly9yvQuckS9CjXxITZ7syp9Z9JTeo3QytjOh3MRfocKFhRJHNrskjX1o5jDmgFndpUpm00ArGvnnx1';
       const APP_BASE_URL = 'http://localhost:3000';
-      const config = {
-        headers: {
-          Authorization: `Bearer ${STRIPE_KEY}`,
-        },
-      };
-      axios
-        .post(
-          `https://api.stripe.com/v1/account_links?type=account_onboarding&account=acct_1Ki0iAQSmYc5Xn5l&refresh_url=${APP_BASE_URL}/affiliate-setup&return_url=${APP_BASE_URL}/affiliate-setup-success`,
-          {},
-          config
-        )
-        .then((res) => router.push(res.data.url))
+      GET(`/league/${league.id}/payout?returnUrl=${APP_BASE_URL}/affiliate-setup-success&refreshUrl=${APP_BASE_URL}`, {})
+        // TO-DO need to type cast response
+        .then((res: any) => router.push(res.onboardingUrl))
         // eslint-disable-next-line no-console
         .catch((err) => console.log(err));
+
     }
     return;
   };
@@ -307,54 +303,69 @@ export default function AffiliateSetupPage() {
         </p>
       </div>
 
-      <div>
-        <GooglePlacesAutocomplete
-          key='mailingAddress'
-          minLengthAutocomplete={3}
-          apiKey={process.env.NEXT_PUBLIC_GOOGLEAPIKEY}
-          selectProps={{
-            value: mailingAddress,
-            onChange: setMailingAddress
-          }}
-        />
-        <label
-          htmlFor='mailingAddress'
-          className='block py-2 text-xs font-normal text-sky-600'
-        >
-          <span>Affiliate Mailing Address</span>
-        </label>
+      <div className='relative location-group'>
+        <div className="fields-group">
+          <GooglePlacesAutocomplete
+            key='mailingAddress'
+            minLengthAutocomplete={3}
+            apiKey={process.env.NEXT_PUBLIC_GOOGLEAPIKEY}
+            selectProps={{
+              className: 'autocomplete-field',
+              defaultInputValue: mailingAddress?.label,
+              onChange: setMailingAddress
+            }}
+          />
+          <label
+            htmlFor='mailingAddress'
+            className='block py-2 text-xs font-normal text-sky-600'
+          >
+            <span>Affiliate Mailing Address</span>
+            <span className='absolute right-0 text-gray-brand'>This can be changed at a later date.</span>
+          </label>
+          <span className='icon map'></span>
+        </div>
       </div>
 
-      <div>
-        <input
+      <div className='relative'>
+        <Input
           className='focus:ring-primary-500 focus:border-primary-500 block w-full rounded-md border-gray-300 shadow-sm'
+          label=""
+          id="venueName"
           type='text'
           placeholder='Saxon Woods Park'
-        />
+          validation={{
+            required: 'Venue Name is required.'
+          }} />
         <label
           htmlFor='playingFacilityName'
           className='block py-2 text-xs font-normal text-sky-600'
         >
           <span>Name of Playing Facility</span>
+          <span className='absolute right-0 text-gray-brand'>This can be changed at a later date.</span>
         </label>
       </div>
 
-      <div>
-        <GooglePlacesAutocomplete
-          key='mailingAddress'
-          minLengthAutocomplete={3}
-          apiKey={process.env.NEXT_PUBLIC_GOOGLEAPIKEY}
-          selectProps={{
-            value: venueAddress,
-            onChange: setVenueAddress
-          }}
-        />
-        <label
-          htmlFor='playingFacilityAddress'
-          className='block py-2 text-xs font-normal text-sky-600'
-        >
-          <span>Location of Playing Facility</span>
-        </label>
+      <div className='relative location-group'>
+        <div className="fields-group">
+          <GooglePlacesAutocomplete
+            key='venueAddress'
+            minLengthAutocomplete={3}
+            apiKey={process.env.NEXT_PUBLIC_GOOGLEAPIKEY}
+            selectProps={{
+              className: 'autocomplete-field',
+              defaultInputValue: venueAddress?.label,
+              onChange: setVenueAddress
+            }}
+          />
+          <label
+            htmlFor='playingFacilityAddress'
+            className='block py-2 text-xs font-normal text-sky-600'
+          >
+            <span>Location of Playing Facility</span>
+            <span className='absolute right-0 text-gray-brand'>This can be changed at a later date.</span>
+          </label>
+          <span className='icon map'></span>
+        </div>
       </div>
 
       <div className='space-x-2 self-center'>

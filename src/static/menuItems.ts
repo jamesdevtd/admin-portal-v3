@@ -18,6 +18,11 @@ const mockMenuItems = [
         url: '/events',
       },
       {
+        icon: 'baseball',
+        label: 'Leagues',
+        url: '/league-details',
+      },
+      {
         icon: 'reports',
         label: 'Reports',
         url: '/reports',

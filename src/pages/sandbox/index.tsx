@@ -41,17 +41,7 @@ export default function RHFSandbox() {
         <EventsList />
       </ContentWrap>
       <ContentWrap>
-        <div className="ml-5 mb-1 overflow-visible rounded-lg bg-blue-gradient pb-1">
-          <nav className='flex flex-row gap-3 text-white font-semibold p-3'>
-            <div>Type</div>
-            <div>Name</div>
-            <div>Name</div>
-            <div>League</div>
-          </nav>
-          <div className="rounded-md shadow-[0px_0px_10px_2px_rgba(0,0,0,0.16)] -left-4  bg-white w-full h-20 relative"
-            style={{ width: 'calc(100% + 12px)' }}
-          ></div>
-        </div>
+
       </ContentWrap>
 
       <ContentWrap>

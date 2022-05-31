@@ -1,0 +1,84 @@
+.affiliate {
+  :global {
+    @apply flex flex-col gap-3 overflow-auto bg-white py-4 px-5;
+    border-radius: 12px;
+    border-width: 1px;
+
+    h3 {
+      @apply block w-full text-md font-semibold text-blue-dark leading-tight flex flex-row cursor-pointer capitalize;
+
+      svg {
+        @apply ml-auto;
+        @apply block;
+      }
+    }
+
+    .buttons {
+      .wrap {
+        @apply gap-5 ml-auto;
+      }
+    }
+
+    .togglelable {
+      position: unset;
+
+      .deny-button {
+        @apply shadow-none border-2 mr-3 #{!important};
+        background: white !important;
+        color: rgb(153 27 27);
+        border-color: rgb(153 27 27);
+      }
+
+      .location-group {
+        @apply w-full;
+        gap: 0;
+        padding-bottom: 0;
+      }
+
+      .form-check {
+        @apply text-blue-brand flex items-center col-span-1 my-1 font-bold text-base #{!important};
+
+        input {
+          @apply mr-1 border-blue-brand p-2 border-2 rounded-md;
+
+          &:checked {
+            @apply bg-blue-brand;
+          }
+        }
+      }
+
+    }
+  }
+
+  &.expanded {
+    h3 {
+      @apply capitalize;
+    }
+
+    h3+div {
+      @apply flex;
+    }
+  }
+
+  &.collapsed :global {
+    h3 {
+      @apply uppercase;
+
+      svg {
+        @apply rotate-90;
+      }
+    }
+
+    h3+div {
+      @apply hidden;
+    }
+
+    .buttons {
+      @apply hidden;
+    }
+
+    .togglelable {
+      @apply hidden;
+    }
+  }
+}

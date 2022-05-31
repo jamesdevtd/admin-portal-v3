@@ -17,13 +17,14 @@ export default function EventsList() {
   function eventList() {
     return (
       <ul className='list-decimal mx-3 animate-in fade-in-0 delay-150 duration-1000'>
-        {events.map(i => {
-          return (
-            <li key={i?.id}>
-              <span>{i.name}</span>
-            </li>
-          )
-        })}
+        {events &&
+          events.map(i => {
+            return (
+              <li key={i?.id}>
+                <span>{i.name}</span>
+              </li>
+            )
+          })}
       </ul>
     )
   }

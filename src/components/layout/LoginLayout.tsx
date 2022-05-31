@@ -1,9 +1,9 @@
-// import Image from 'next/image';
+import Image from 'next/image';
 import React from 'react';
 
 import styles from './LoginLayout.module.scss';
 
-// import bgUrl from '~/images/backgrounds/admin-bg-2x.png';
+import bgUrl from '~/images/backgrounds/admin-bg-2x.png';
 import TagxLogo from '~/svg/tagx.svg';
 
 type Props = {
@@ -17,16 +17,12 @@ const LoginLayout = (props: Props) => {
       className={`${styles.layoutLogin} grid min-h-screen grid-cols-1 content-start md:grid-cols-2`}
     >
       <div className='col-branding relative h-60 md:h-screen'>
-        <img
-          src='images/backgrounds/admin-bg-2x.png'
-          alt='affiliate signup background'
-          className='absolute block h-full w-full object-cover'
-        />
-        {/* <Image
+        <Image
           src={bgUrl}
           alt='admin login background'
-        // layout='raw'
-        /> */}
+          className='absolute block h-full w-full object-cover'
+          layout='raw'
+        />
         <TagxLogo className='logo absolute top-5 left-5 h-9 w-11' />
         <div cy-marker='page-title' className='text relative m-16 max-w-xs'>
           {props.pageTitle && (

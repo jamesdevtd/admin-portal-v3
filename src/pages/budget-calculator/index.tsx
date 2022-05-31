@@ -17,7 +17,9 @@ export default function BudgetCalculator() {
   const [totalProfitYear, setTotalProfitYear] = useState(43831.41);
   const [costPerPlayer, setCostPerPlayer] = useState(55);
   return (
+
     <Layout>
+
       <ContentWrap className={styles.BudgetCalculator}>
 
         <header className="content-header">
