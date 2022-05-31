@@ -21,7 +21,7 @@ const LoginLayout = (props: Props) => {
           src={bgUrl}
           alt='admin login background'
           className='absolute block h-full w-full object-cover'
-          layout='raw'
+        // layout='raw'
         />
         <TagxLogo className='logo absolute top-5 left-5 h-9 w-11' />
         <div cy-marker='page-title' className='text relative m-16 max-w-xs'>
