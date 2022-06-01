@@ -35,7 +35,7 @@ export default function Events() {
     router.push('/events/1');
   };
   useEffect(() => {
-    const filtered = events.filter((f: any) => {
+    const filtered: any = events.filter((f: any) => {
       if (
         (filters.search === "" || f.name.indexOf(filters.search) > -1) &&
         (filters.type === 'all' || f.type.toLowerCase() === filters.type.toLowerCase()) &&

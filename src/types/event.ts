@@ -79,6 +79,7 @@ export interface EventListingProps {
   dateStart?: string;
   entryFees?: string;
   location?: string;
+  divisions?: string;
   teams: number;
   status: string;
   series: { id: number; name: string };

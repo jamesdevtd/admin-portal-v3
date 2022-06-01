@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
+import { CircleFlag } from 'react-circle-flags';
+
 import styles from './StyledTable.module.scss';
 
 import { mockEventsForCards } from '@/static/events';
 import { eventColumns } from '@/static/events';
+
 import { EventListingProps } from '@/types/event';
-import { CircleFlag } from 'react-circle-flags';
+
 import EditIcon from '~/icons/edit.svg';
 
 export default function StyledTable() {
@@ -43,13 +46,13 @@ export default function StyledTable() {
         <span className='capsule'>{item.status}</span>
       </td>
       <td>
-        <span>{item.location}</span>
+        <span>{item?.location}</span>
       </td>
       <td>
-        <span>{item.divisions}</span>
+        <span>{item?.divisions}</span>
       </td>
       <td>
-        <span>{item.teams}</span>
+        <span>{item?.teams}</span>
       </td>
       <td className='edit'>
         <button
