@@ -1,4 +1,5 @@
 import ContactDetailsProps from './contactDetails';
+import userDetailsProps from './userDetails';
 
 export interface AffiliateProps {
   id: number;
@@ -7,6 +8,9 @@ export interface AffiliateProps {
   primaryPlayingFacilityName: string;
   primaryPlayingFacilityAddressString: string;
   primaryPlayingFacilityAddress: number[]; // lat long array
+  maillingName: string;
+  maillingAddressString: string;
+  maillingAddress: number[]; // lat long array
   seriesPermission: SeriesPermission[];
   equipmentStatus: string;
 
@@ -18,7 +22,7 @@ export interface AffiliateProps {
   status: string; // approve/deny
 
   contactDetails: ContactDetailsProps[];
-  userAccounts: ContactDetailsProps[];
+  userAccounts: userDetailsProps[];
 }
 export interface SeriesPermission {
   permissionId: number;

@@ -1,44 +1,88 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import styles from './StyledTable.module.scss';
 
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { mockEventsForCards } from '@/static/events';
+import { eventColumns } from '@/static/events';
+import { EventListingProps } from '@/types/event';
+import { CircleFlag } from 'react-circle-flags';
+import EditIcon from '~/icons/edit.svg';
 
-
-export default function EventsList() {
-  const dispatch = useAppDispatch();
-  const { events, loading } = useAppSelector(getEventsListState);
+export default function StyledTable() {
+  const [events, setEvents] = useState<EventListingProps[]>([]);
+  const [columns, setColumns] = useState<any[]>([]);
 
   useEffect(() => {
-    // 
+    setEvents(mockEventsForCards);
+    setColumns(eventColumns);
   }, []);
 
-  function tableRows() {
-    return (
-      <div className='list-decimal mx-3 animate-in fade-in-0 delay-150 duration-1000'>
-        {events &&
-          events.map(i => {
-            return (
-              <div key={i?.id}>
-                <span>{i.name}</span>
-              </div>
-            )
-          })}
-      </div>
-    )
-  }
+  const tableRows = events.map((item, index) =>
+    <tr key={index}>
+      <td>
+        <span className='capsule'>{item.type}</span>
+      </td>
+      <td className='name'>
+        <span>{item.name}</span>
+      </td>
+      <td className='league'>
+        <span>{item.league}</span>
+      </td>
+      <td className='country'>
+        <CircleFlag countryCode={item.country || 'us'} />
+      </td>
+      <td>
+        <span>{item.series.id}</span>
+      </td>
+      <td>
+        <span>{item.dateStart}</span>
+      </td>
+      <td>
+        <span>{item.entryFees}</span>
+      </td>
+      <td className={`status ${item.status}`}>
+        <span className='capsule'>{item.status}</span>
+      </td>
+      <td>
+        <span>{item.location}</span>
+      </td>
+      <td>
+        <span>{item.divisions}</span>
+      </td>
+      <td>
+        <span>{item.teams}</span>
+      </td>
+      <td className='edit'>
+        <button
+          onClick={() => console.log(`edit event with ID ${item.id}`)}>
+          <EditIcon />
+        </button>
+      </td>
+    </tr>
+  )
+
 
   return (
-    <div className='StyleTable'>
-      <div className="ml-5 mb-1 overflow-visible rounded-lg bg-blue-gradient pb-1">
-        <div className='flex flex-row gap-3 text-white font-semibold p-3'>
-          <div className='w-14' >Type</div>
-          <div className='w-14' >Name</div>
-          <div>Name</div>
-          <div>League</div>
-        </div>
-        <div className="rounded-md shadow-[0px_0px_10px_2px_rgba(0,0,0,0.16)] -left-4  bg-white w-full h-20 relative"
-          style={{ width: 'calc(100% + 12px)' }}
-        ></div>
-      </div>
+    <div className={styles.StyledTable}>
+
+      <div className="behind"></div>
+      <div className="front"></div>
+
+      <table>
+        <thead>
+          <tr>
+            {columns.map((item, index) => {
+              return (
+                <th key={index} className={item.replace(/\s+/g, '-').toLowerCase()}>
+                  <span>{item}</span>
+                </th>
+              )
+            })}
+          </tr>
+        </thead>
+        <tbody>
+          {tableRows}
+        </tbody>
+      </table>
     </div>
 
   )

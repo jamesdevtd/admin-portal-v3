@@ -12,6 +12,7 @@ import TextArea from '@/components/forms/fields/TextArea';
 import ContentWrap from '@/components/layout/ContentWrap';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
+import StyledTable from '@/components/tables/StyledTable';
 
 export default function RHFSandbox() {
   //#region  //*=========== Form ===========
@@ -40,7 +41,10 @@ export default function RHFSandbox() {
       <ContentWrap>
         <EventsList />
       </ContentWrap>
+
       <ContentWrap>
+
+        <StyledTable />
 
       </ContentWrap>
 

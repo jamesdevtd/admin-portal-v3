@@ -42,7 +42,6 @@ export default function Events() {
         (filters.series === 'all' || f.series.name.toLowerCase() === filters.series.toLowerCase()) &&
         (filters.division === 'all' || f.division === filters.division.toLowerCase()) &&
         (filters.status === 'all' || f.status === filters.status.toLowerCase()) &&
-        (filters.country === 'all' || f.country === filters.country.toUpperCase()) &&
         (filters.own === false || (userId !== 0 && f.userId === userId))
       )
         return f;

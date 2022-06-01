@@ -1,6 +1,28 @@
 $border-color_1: #6b7280;
 
 .layoutLogin :global {
+  @apply grid min-h-screen grid-cols-1 content-start md:grid-cols-2;
+  .col-branding {
+    @apply overflow-hidden h-60 md:h-screen;
+    > img {
+      @apply block h-full w-full object-cover;
+    }
+    .logo {
+      @apply absolute top-5 left-5 h-9 w-11;
+    }
+    .text {
+      @apply relative m-16 max-w-xs;
+      h2 {
+        @apply font-title text-3xl font-bold text-white;
+      }
+    }
+  }
+  .col-form {
+    @apply flex overflow-x-hidden py-16 px-8 md:px-16;
+    > div {
+      @apply m-auto flex w-full flex-col gap-5;
+    }
+  }
   .form-wrap {
     max-width: 321px;
     &.setup {
@@ -129,9 +151,6 @@ $border-color_1: #6b7280;
     }
   }
   @media (max-width: 700px) {
-    .col-branding {
-      height: auto;
-    }
     .form-wrap.setup {
       margin-top: 0;
     }

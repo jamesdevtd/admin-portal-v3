@@ -171,19 +171,19 @@ $sidebarWidth: 150px;
         @apply mb-10 pl-5;
       }
 
-      .affiliate-group {
-        @apply border-0 shadow-none w-2/3 px-0 pr-5 ml-8;
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
-        border-radius: 0px;
+      // .affiliate-group {
+      //   @apply border-0 shadow-none w-2/3 px-0 pr-5 ml-8;
+      //   border-top: 1px solid rgba(0, 0, 0, 0.1);
+      //   border-radius: 0px;
 
-        h3 {
-          @apply text-blue-brand text-lg;
-        }
+      //   h3 {
+      //     @apply text-blue-brand text-lg;
+      //   }
 
-        .togglelable {
-          @apply px-0;
-        }
-      }
+      //   .togglelable {
+      //     @apply px-0;
+      //   }
+      // }
     }
   }
 }

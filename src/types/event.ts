@@ -64,3 +64,22 @@ export type ClonedEventProps = {
   facilityAddressString: string; // String address
   facilityName: string;
 };
+
+export interface EventListingProps {
+  // TO DO: we might need more data like owner info, event type, event division etc.
+  id: number;
+  userId: number;
+  name: string;
+  photo?: string;
+  logo?: string;
+  type: string;
+  division: string;
+  league?: string;
+  country?: string;
+  dateStart?: string;
+  entryFees?: string;
+  location?: string;
+  teams: number;
+  status: string;
+  series: { id: number; name: string };
+}

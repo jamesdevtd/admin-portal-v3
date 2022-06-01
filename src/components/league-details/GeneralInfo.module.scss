@@ -13,6 +13,14 @@
 
   .fields-group {
     @apply pb-1;
+
+    &.full-width {
+      @apply pb-2;
+    }
+  }
+
+  .full-width {
+    @apply w-full #{!important};
   }
 
   .fields-group .col,
@@ -61,4 +69,8 @@
 
 .formGroup::after {
   border: none;
+}
+
+.main-form {
+  @apply pb-0 mb-0 #{!important};
 }

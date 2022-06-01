@@ -4,16 +4,16 @@ import { HiOutlinePencilAlt, HiPlus } from 'react-icons/hi';
 import styles from '../events/EventsTable.module.scss';
 import tabStyles from './AffiliateDetails.module.scss';
 
-import ContactDetails from '@/types/contactDetails';
+import UserDetails from '@/types/userDetails';
 
 import ChevronIcon from '~/icons/chevron-down.svg';
 
 type Props = {
   // TODO: replace 'any' with actual event interface i.e. EventProps in /types/event.ts
-  contacts: ContactDetails[];
+  users: UserDetails[];
 };
 
-const ContactDetails = ({ contacts }: Props) => {
+const UserAccounts = ({ users }: Props) => {
   const [expand, setExpand] = useState(false);
 
   return (
@@ -28,16 +28,9 @@ const ContactDetails = ({ contacts }: Props) => {
           setExpand(!expand);
         }}
       >
-        Contact Details
+        User Accounts
         <ChevronIcon />
       </h3>
-      <div className='my-1 w-full text-sm'>
-        <input
-          type='checkbox'
-          className='mr-1 rounded-md border-2 border-blue-brand p-1 checked:bg-blue-brand'
-        />
-        Same as Affiliate
-      </div>
       <div className='togglelable box-bg'>
         <div className={styles.Grid}>
           <div className='card-bg mx-6 mb-3 rounded-lg'>
@@ -46,18 +39,16 @@ const ContactDetails = ({ contacts }: Props) => {
                 <tr>
                   <th className='w-auto'>Name</th>
                   <th className='w-auto'>Email</th>
-                  <th className='w-auto'>Phone</th>
-                  <th className='w-auto'>Added</th>
+                  <th className='w-auto'>Role</th>
                   <th className='w-auto'>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {contacts.map((contact: ContactDetails) => (
-                  <tr key={contact?.id}>
-                    <td className='capitalize'>{`${contact?.firstName} ${contact?.lastName}`}</td>
-                    <td>{contact?.email}</td>
-                    <td>{contact?.phone}</td>
-                    <td>03/21/21</td>
+                {users.map((user: UserDetails) => (
+                  <tr key={user?.id}>
+                    <td className='capitalize'>{`${user?.firstName} ${user?.lastName}`}</td>
+                    <td>{user?.email}</td>
+                    <td>{user?.role}</td>
                     <td>
                       <button>
                         <HiOutlinePencilAlt className='text-xl text-gray-light' />
@@ -77,4 +68,4 @@ const ContactDetails = ({ contacts }: Props) => {
   );
 };
 
-export default ContactDetails;
+export default UserAccounts;

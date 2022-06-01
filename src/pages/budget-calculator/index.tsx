@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import styles from './BudgetCalculator.module.scss'
 
@@ -13,13 +13,8 @@ import CalculatorIcon from '~/icons/blue/calculator.svg';
 import TotalArrow from '~/svg/total-arrow.svg';
 
 export default function BudgetCalculator() {
-  const [totalProfitSeries, setTotalProfitSeries] = useState(7305.23);
-  const [totalProfitYear, setTotalProfitYear] = useState(43831.41);
-  const [costPerPlayer, setCostPerPlayer] = useState(55);
   return (
-
     <Layout>
-
       <ContentWrap className={styles.BudgetCalculator}>
 
         <header className="content-header">

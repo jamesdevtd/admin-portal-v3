@@ -48,6 +48,10 @@
       }
 
     }
+
+    .box-bg {
+      @apply drop-shadow-sm relative;
+    }
   }
 
   &.expanded {
@@ -55,7 +59,7 @@
       @apply capitalize;
     }
 
-    h3+div {
+    h3 {
       @apply flex;
     }
   }
@@ -79,6 +83,21 @@
 
     .togglelable {
       @apply hidden;
+    }
+  }
+
+  &.tab-container {
+    @apply border-0 shadow-none w-2/3 px-0 pr-5 ml-8;
+    // max-width: 800px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0px;
+
+    .togglelable {
+      @apply bg-blue-700 px-0 block #{!important};
+    }
+
+    h3 {
+      @apply text-blue-brand text-lg;
     }
   }
 }

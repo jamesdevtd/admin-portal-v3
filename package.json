@@ -54,7 +54,6 @@
     "react-individual-character-input-boxes": "^1.1.0",
     "react-input-slider": "^6.0.1",
     "react-leaflet": "^4.0.0",
-    "react-number-format": "^4.9.3",
     "react-places-autocomplete": "^7.3.0",
     "react-redux": "^7.2.8",
     "react-simple-wysiwyg": "^2.0.2",

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// import { starterDivisions } from '@/static/division';
+import { starterDivisions } from '@/static/division';
 import { getSumByKey } from '@/utils/arrayUtils';
 
 import type { RootState } from '../../app/store';
@@ -9,10 +9,12 @@ import { DivisionProps } from '@/types/division';
 
 export type DivisionsState = {
   items: DivisionProps[];
+  static: DivisionProps[];
 };
 
 const initialState: DivisionsState = {
   items: [],
+  static: starterDivisions
 };
 
 export const divisionsSlice = createSlice({
@@ -97,6 +99,7 @@ export const {
 
 export const getDivisions = (state: RootState) => state.divisions.items;
 
+export const getStaticProps = (state: RootState) => state.divisions.static;
 export const getNumberOfDivisions = (state: RootState) =>
   state.divisions.items.length;
 
