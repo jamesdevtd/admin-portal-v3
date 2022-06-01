@@ -21,9 +21,9 @@ type Props = {
 const Card = ({ event }: Props) => {
   const [showMenu, setshowMenu] = useState<boolean>(false);
 
-
   return (
     <div className={styles.Card}>
+
       <div className="card-bg">
         <img src={event.photo ? event.photo : eventPhotoPlaceholder} alt="Event Photo" />
         <button onClick={() => setshowMenu(!showMenu)} className={`card-menu-button ${showMenu && 'active'}`}>

@@ -11,6 +11,7 @@ import { EventListingProps } from '@/types/event';
 import EditIcon from '~/icons/edit.svg';
 
 export default function StyledTable() {
+  // TODO: make this Table component more dynamic in a way that it acceps columns and rows as props. 
   const [events, setEvents] = useState<EventListingProps[]>([]);
   const [columns, setColumns] = useState<any[]>([]);
 
