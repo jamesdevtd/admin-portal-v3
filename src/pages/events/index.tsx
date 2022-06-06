@@ -37,11 +37,12 @@ export default function Events() {
     router.push('/events/1');
   };
   useEffect(() => {
+    // TODO: add interface for filtered events
     const filtered: any = events.filter((f: any) => {
       if (
         (filters.search === "" || f.name.indexOf(filters.search) > -1) &&
         (filters.type === 'all' || f.type.toLowerCase() === filters.type.toLowerCase()) &&
-        (filters.series === 'all' || f.series.name.toLowerCase() === filters.series.toLowerCase()) &&
+        (filters.series === 'all' || f.series === filters.series.toString()) &&
         (filters.division === 'all' || f.division === filters.division.toLowerCase()) &&
         (filters.status === 'all' || f.status === filters.status.toLowerCase()) &&
         (filters.country === 'all' || f.country === filters.country.toUpperCase()) &&

@@ -113,15 +113,15 @@ const SearchBar = () => {
               <option value='US'>United States</option>
               <option value='AU'>Australia</option>
               <option value='IN'>India</option>
-              <option value='UK'>United Kingdom</option>
+              <option value='GB'>United Kingdom</option>
               <option value='CA'>Canada</option>
               <option value='IS'>Iceland</option>
             </select>
           </div>
           <div className="col">
-            Type
+            Status
             <select
-              {...register('type')}
+              {...register('status')}
               className='w-full'
               onChange={onChange}
               defaultValue="all"
@@ -142,15 +142,18 @@ const SearchBar = () => {
               defaultValue="1"
             >
               <option value='all'>All</option>
-              <option value='1'>Series 1</option>
-              <option value='2'>Series 2</option>
-              <option value='3'>Series 3</option>
-              <option value='4'>Series 4</option>
-              <option value='5'>Series 5</option>
-              <option value='6'>Series 6</option>
-              <option value='7'>Series 7</option>
-              <option value='8'>Series 8</option>
-              <option value='9'>Series 9</option>
+              <option value='1'>Series 1 - January</option>
+              <option value='2'>Series 2 - February</option>
+              <option value='3'>Series 3 - March</option>
+              <option value='4'>Series 4 - April</option>
+              <option value='5'>Series 5 - May</option>
+              <option value='6'>Series 6 - June</option>
+              <option value='7'>Series 7 - July</option>
+              <option value='8'>Series 8 - August</option>
+              <option value='9'>Series 9 - September</option>
+              <option value='10'>Series 10 - October</option>
+              <option value='11'>Series 11 - November</option>
+              <option value='12'>Series 12 - December</option>
             </select>
           </div>
           <div className="col">

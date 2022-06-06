@@ -50,7 +50,7 @@ const Card = ({ event }: Props) => {
         </div>
         <div className="top">
           <span className="tag capsule">{event.type}</span>
-          <div className="flag">
+          <div className={`flag code-${event.country}`}>
             <CircleFlag countryCode={event.country.toLowerCase()} height="35" />
           </div>
         </div>

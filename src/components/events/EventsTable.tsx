@@ -49,12 +49,12 @@ const EventsTable = ({ events }: Props) => {
               <td><span className="tag capsule">{event.type}</span></td>
               <td className="name">{event?.name}</td>
               <td className="league">{event.league}</td>
-              <td><CircleFlag countryCode="us" className="h-4" /></td>
+              <td><CircleFlag countryCode={event.country.toLowerCase()} className="h-4" /></td>
               <td>{seriesNames[event.series - 1].name}</td>
               <td>{moment(event.dateStart).format('d/m/yyyy')}</td>
               <td>{event.entryFees}</td>
               <td><span className={`rounded-full px-3 w-full block text-center text-white capitalize ${event?.status === 'closed' ? 'bg-red-warning' : event?.status === 'open' ? 'bg-blue-brand' : 'bg-orange'}`}>{event?.status}</span></td>
-              <td>{event.location}</td>
+              <td><span>{event.location}, {event.city}</span></td>
               <td>{truncateString(event?.divisions as string, 30)}</td>
               <td className='w-12'>{event?.teams}</td>
               <td className='w-12'><button><HiOutlinePencilAlt className="text-xl text-gray-light" /></button></td>
