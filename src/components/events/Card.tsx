@@ -43,7 +43,7 @@ const Card = ({ event }: Props) => {
         <div className="top">
           <span className="tag capsule">open</span>
           <div className="flag">
-            <CircleFlag countryCode="us" height="35" />
+            <CircleFlag countryCode={event?.country ? event?.country.toLowerCase() : 'us'} height="35" />
           </div>
         </div>
         <div className="headings">

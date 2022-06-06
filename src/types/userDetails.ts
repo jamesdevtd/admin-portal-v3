@@ -5,4 +5,6 @@ export default interface UserDetails {
   role: string;
   email: string;
   phone: string;
+  createdDate?: string;
+  createdBy?: string;
 }

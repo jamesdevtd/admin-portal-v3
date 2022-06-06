@@ -75,7 +75,7 @@ export default function Events() {
 
         <div className={`${styles.footerNav} ${isFormEdited ? '' : 'hidden'}`}>
           <div className='wrap'>
-            <ButtonLink variant='grey' href='/events'>
+            <ButtonLink variant='grey' href='/league'>
               Cancel
             </ButtonLink>
             <SubmitButton

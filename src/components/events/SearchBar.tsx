@@ -1,7 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import DatePicker from 'react-datepicker';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import 'react-datepicker/dist/react-datepicker.css';
 import SearchBarStyles from '@/components/events/SearchBar.module.scss';
+import styles from '@/components/forms/styles/FormGroup.module.scss';
 
 import { useAppDispatch } from '@/app/hooks';
 import { updateFilters } from '@/features/eventsListing/eventsFiltersSlice';
@@ -12,6 +15,12 @@ import SearchIcon from '~/svg/search-icon.svg';
 const SearchBar = () => {
   const dispatch = useAppDispatch();
 
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+
+
   //#region  //*=========== Form ===========
   const methods = useForm({
     mode: 'onTouched',
@@ -19,15 +28,24 @@ const SearchBar = () => {
       view: 'card',
       own: false,
       search: '',
-      country: 'US',
+      country: 'all',
       type: 'all',
       series: 'all',
       division: 'all',
       status: 'all',
       date: '',
+      eventRange: []
     }
   });
-  const { register, getValues, handleSubmit } = methods;
+  const { register, getValues, handleSubmit, control, setValue } = methods;
+
+  const onDateChange = (dates: any) => {
+    const [start, end] = dates;
+    setValue('eventRange', dates);
+    setStartDate(start);
+    setEndDate(end);
+  };
+
   const onSubmit = (data: any) => {
     // eslint-disable-next-line no-console
     console.log(data);
@@ -86,16 +104,18 @@ const SearchBar = () => {
             Country
             <select
               {...register('country')}
-              className='w-full'
+              className='w-40'
               onChange={onChange}
-              defaultValue="US"
+              defaultValue="all"
             >
               <option value='' hidden></option>
+              <option value='all'>All</option>
               <option value='US'>United States</option>
               <option value='AU'>Australia</option>
               <option value='IN'>India</option>
               <option value='UK'>United Kingdom</option>
-              <option value='PH'>Philippines</option>
+              <option value='CA'>Canada</option>
+              <option value='IS'>Iceland</option>
             </select>
           </div>
           <div className="col">
@@ -137,7 +157,7 @@ const SearchBar = () => {
             Division
             <select
               {...register('division')}
-              className='w-full'
+              className='w-5'
               onChange={onChange}
               defaultValue="mens"
             >
@@ -160,19 +180,24 @@ const SearchBar = () => {
               <option value='open'>Open</option>
             </select>
           </div>
-          <div className="col">
+          <div className={`col ${styles.datePickerField}`}>
             Date Range
             <select
-              {...register('date')}
-              className='w-28'
-              onChange={onChange}
-              defaultValue="all"
+              className='w-28 toggle-datepicker' onClick={() => setShowDatePicker(!showDatePicker)}
             >
-              <option value='' hidden></option>
-              <option value='all'>All</option>
-              <option value='draft'>Draft</option>
-              <option value='closed'>Closed</option>
             </select>
+            {showDatePicker &&
+              <DatePicker
+                selected={startDate}
+                onChange={onDateChange}
+                startDate={startDate}
+                endDate={endDate}
+                // excludeDates={[addDays(new Date(), 1), addDays(new Date(), 5)]}
+                selectsRange
+                // selectsDisabledDaysInRange
+                inline
+              />
+            }
           </div>
         </div>
       </form>

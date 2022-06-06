@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { HiOutlinePencilAlt, HiPlus } from 'react-icons/hi';
 
-import styles from '../events/EventsTable.module.scss';
 import tabStyles from './AffiliateDetails.module.scss';
+import leagueDetailStyles from './LegueDetails.module.scss';
+
+import StyledTable from '../layout/StyledTableWrap';
 
 import ContactDetails from '@/types/contactDetails';
 
@@ -18,9 +20,8 @@ const ContactDetails = ({ contacts }: Props) => {
 
   return (
     <div
-      className={`${tabStyles['tab-container']} ${tabStyles.affiliate} ${
-        expand ? tabStyles['expanded'] : tabStyles['collapsed']
-      }`}
+      className={`${tabStyles['tab-container']} ${tabStyles.affiliate} ${expand ? tabStyles['expanded'] : tabStyles['collapsed']
+        }`}
     >
       <h3
         onClick={(e) => {
@@ -39,36 +40,34 @@ const ContactDetails = ({ contacts }: Props) => {
         Same as Affiliate
       </div>
       <div className='togglelable box-bg'>
-        <div className={styles.Grid}>
-          <div className='card-bg mx-6 mb-3 rounded-lg'>
-            <table className='w-full table-auto'>
-              <thead className='text-white'>
-                <tr>
-                  <th className='w-auto'>Name</th>
-                  <th className='w-auto'>Email</th>
-                  <th className='w-auto'>Phone</th>
-                  <th className='w-auto'>Added</th>
-                  <th className='w-auto'>Actions</th>
+        <StyledTable className={leagueDetailStyles.GridContainer}>
+          <table className='w-full table-auto'>
+            <thead className='text-white'>
+              <tr>
+                <th className='w-auto'>Name</th>
+                <th className='w-auto'>Email</th>
+                <th className='w-auto'>Phone</th>
+                <th className='w-auto'>Added</th>
+                <th className='w-auto'>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {contacts.map((contact: ContactDetails) => (
+                <tr key={contact?.id}>
+                  <td className='capitalize'>{`${contact?.firstName} ${contact?.lastName}`}</td>
+                  <td>{contact?.email}</td>
+                  <td>{contact?.phone}</td>
+                  <td>03/21/21</td>
+                  <td>
+                    <button>
+                      <HiOutlinePencilAlt className='text-xl text-gray-light' />
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {contacts.map((contact: ContactDetails) => (
-                  <tr key={contact?.id}>
-                    <td className='capitalize'>{`${contact?.firstName} ${contact?.lastName}`}</td>
-                    <td>{contact?.email}</td>
-                    <td>{contact?.phone}</td>
-                    <td>03/21/21</td>
-                    <td>
-                      <button>
-                        <HiOutlinePencilAlt className='text-xl text-gray-light' />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+              ))}
+            </tbody>
+          </table>
+        </StyledTable>
         <button className='my-2 flex w-full items-center pl-9 text-sm text-blue-brand hover:text-blue-start'>
           Add Contact <HiPlus />
         </button>

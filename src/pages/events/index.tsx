@@ -23,7 +23,8 @@ export default function Events() {
 
   const [creatingEvent, setCreatingEvent] = useState<boolean>(false);
   const [filteredEvents, setFilteredEvents] = useState([]);
-  const [userId, setUserId] = useState<number>(0);
+  // TODO: set user ID to actual session ID, once actual events for affiliate users are available
+  const [userId, setUserId] = useState<number>(1);
 
   const eventCategories = ['all', 'draft', 'published', 'active', 'past'];
   const router = useRouter();
@@ -42,6 +43,7 @@ export default function Events() {
         (filters.series === 'all' || f.series.name.toLowerCase() === filters.series.toLowerCase()) &&
         (filters.division === 'all' || f.division === filters.division.toLowerCase()) &&
         (filters.status === 'all' || f.status === filters.status.toLowerCase()) &&
+        (filters.country === 'all' || f.country === filters.country.toUpperCase()) &&
         (filters.own === false || (userId !== 0 && f.userId === userId))
       )
         return f;
@@ -53,7 +55,8 @@ export default function Events() {
   useEffect(() => {
     getSession().then(session => {
       if (!session) {
-        setUserId(0);
+        // TODO: uncomment below set user ID to 0, once actual events for affiliate users are available
+        // setUserId(0);
       } else {
         setUserId(session?.user?.userId);
       }

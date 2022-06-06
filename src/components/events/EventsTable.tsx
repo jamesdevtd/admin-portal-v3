@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { CircleFlag } from 'react-circle-flags';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
 
-import StyleTableWrap from '../layout/StyleTableWrap';
+import StyledTableWrap from '../layout/StyledTableWrap';
 
 
 // TODO: add loading placeholder whilst actual images are being loaded from cloud
@@ -19,7 +19,7 @@ const EventsTable = ({ events }: Props) => {
 
 
   return (
-    <StyleTableWrap>
+    <StyledTableWrap>
       <table className="table-auto w-full">
         <thead className='text-white'>
           <tr>
@@ -56,7 +56,7 @@ const EventsTable = ({ events }: Props) => {
           ))}
         </tbody>
       </table>
-    </StyleTableWrap>
+    </StyledTableWrap>
 
   );
 };

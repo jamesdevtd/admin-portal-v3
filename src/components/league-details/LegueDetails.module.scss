@@ -1,0 +1,30 @@
+.GridContainer {
+  &:global {
+    float: right !important;
+    min-width: 97% !important;
+    max-width: 97% !important;
+
+    &.stripped {
+      padding-right: 7px;
+      padding-bottom: 15px;
+
+      table {
+        @apply border-collapse;
+      }
+    }
+
+    &.header-1_5 {
+      .front {
+        top: 50px;
+        height: calc(100% - 56px);
+      }
+    }
+
+    &.header-2 {
+      .front {
+        top: 80px;
+        height: calc(100% - 86px);
+      }
+    }
+  }
+}

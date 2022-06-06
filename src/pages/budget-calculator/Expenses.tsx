@@ -14,23 +14,23 @@ export default function Expenses() {
         <input type="number" defaultValue={8} readOnly />
       </div>
       <div className="field">
-        <label>Lights/Ground Hire (per Night)</label>
-        <input type="text" defaultValue="$50.00" />
+        <label>Lights/Ground Hire (per Night) <span className='currency'>$</span></label>
+        <input type="text" defaultValue="50.00" />
       </div>
       <div className="field">
-        <label>Referee Pay (per Night)</label>
-        <input type="text" defaultValue="$18.00" />
+        <label>Referee Pay (per Night) <span className='currency'>$</span></label>
+        <input type="text" defaultValue="18.00" />
       </div>
       <div className="field">
-        <label>TXI Platform Fee (4 Teams per Division)</label>
+        <label>TXI Platform Fee (4 Teams per Pool)</label>
         <input type="text" defaultValue="1, 188.92" readOnly />
       </div>
       <div className="field">
-        <label>TXI Platform Fee (6 Teams per Division)</label>
+        <label>TXI Platform Fee (6 Teams per Pool)</label>
         <input type="text" defaultValue="1, 188.92" readOnly />
       </div>
       <div className="field">
-        <label>TXI Platform Fee (8 Teams per Division)</label>
+        <label>TXI Platform Fee (8 Teams per Pool)</label>
         <input type="text" defaultValue="1, 188.92" readOnly />
       </div>
       <div className="field">
@@ -42,12 +42,12 @@ export default function Expenses() {
         <input type="text" defaultValue="-" readOnly />
       </div>
       <div className="field">
-        <label>Referees Pay (per Series)</label>
-        <input type="text" defaultValue="$550.00" readOnly />
+        <label>Lights/Ground Hire (per Series) <span className='currency'>$</span></label>
+        <input type="number" defaultValue="8" readOnly />
       </div>
       <div className="field">
-        <label>Lights/Ground Hire (per Series)</label>
-        <input type="number" defaultValue="8" readOnly />
+        <label>Referees Pay (per Series) <span className='currency'>$</span></label>
+        <input type="text" defaultValue="550.00" readOnly />
       </div>
       <div className="field">
         <label>TXI Platform Fee (per Series)</label>
@@ -74,12 +74,12 @@ export default function Expenses() {
         <input type="text" defaultValue="-" />
       </div>
       <div className="field total">
-        <label>Total Expenses per Series</label>
-        <input type="text" defaultValue="$5,894.77" readOnly />
+        <label>Total Expenses per Series <span className='currency'>$</span></label>
+        <input type="text" defaultValue="5,894.77" readOnly />
       </div>
       <div className="field total">
-        <label>Total Income per Year</label>
-        <input type="text" defaultValue="$35,368.59" readOnly />
+        <label>Total Income per Year <span className='currency'>$</span></label>
+        <input type="text" defaultValue="35,368.59" readOnly />
       </div>
     </div>
   )

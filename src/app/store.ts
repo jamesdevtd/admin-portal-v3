@@ -9,6 +9,8 @@ import eventCreationReducer from '@/features/eventCreation/eventCreationSlice';
 import eventPublicPageReducer from '@/features/eventCreation/eventPublicPageSlice';
 import eventsFiltersSlice from '@/features/eventsListing/eventsFiltersSlice';
 import eventsListReducer from '@/features/eventsListing/eventsList';
+import leaguesFiltersSlice from '@/features/leaguesListing/leaguesFiltersSlice';
+import leaguesListReducer from '@/features/leaguesListing/leaguesList';
 import onboardingStepReducer from '@/features/onboardingSteps/onboardingStepsSlice';
 
 export const store = configureStore({
@@ -22,7 +24,11 @@ export const store = configureStore({
     eventPublicPage: eventPublicPageReducer,
     clonedEvents: clonedEventsReducer,
     eventsFilters: eventsFiltersSlice,
-    affiliateDetails: affiliateDetailsSlice
+    affiliateDetails: affiliateDetailsSlice,
+
+
+    leaguesList: leaguesListReducer,
+    leaguesFilters: leaguesFiltersSlice,
   },
 });
 

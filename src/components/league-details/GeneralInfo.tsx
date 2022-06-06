@@ -93,7 +93,6 @@ export const GeneralInfo = forwardRef(({ ...props }, ref) => {
 
   // TODO assidng default dates on component mount if present is redux store
   // console.log('formDefaultValues: ', formDefaultValues);
-
   const methods = useForm({
     resolver: yupResolver(schema),
     mode: 'onSubmit',
@@ -157,9 +156,8 @@ export const GeneralInfo = forwardRef(({ ...props }, ref) => {
           {...ref}
           {...props}
           onSubmit={handleSubmit(onSubmit)}
-          className={`main-form ${GeneralInfoStyles['main-form']} ${
-            hasErrors ? 'has-errors' : ''
-          }`}
+          className={`main-form ${GeneralInfoStyles['main-form']} ${hasErrors ? 'has-errors' : ''
+            }`}
         >
           <div className={`${styles.formGroup} ${GeneralInfoStyles.formGroup}`}>
             <div className='label'>

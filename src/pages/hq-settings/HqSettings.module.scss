@@ -1,0 +1,61 @@
+@import "@/styles/base/animations.scss";
+
+.HqSettings :global {
+  .content-header {
+    @apply flex flex-row items-center gap-3 pb-5;
+
+    svg {
+      @apply h-5 w-5 text-blue-brand;
+    }
+
+    h2 {
+      @apply text-xl font-bold text-blue-dark;
+    }
+  }
+
+  .content-main {
+    @apply flex flex-row gap-0;
+  }
+
+  .inner-content {
+    @apply static overflow-auto bg-white;
+    width: 100%;
+    margin-bottom: 20px;
+    // max-height: calc(100vh - 200px);
+    // overflow-y: scroll;
+
+    .main-form {
+      @apply relative mb-5 flex flex-col gap-8 py-4 pb-20;
+
+      >h3 {
+        @apply mb-1 text-lg font-semibold text-blue-dark;
+      }
+
+      >p {
+        @apply mb-10 pl-5;
+      }
+
+      .col.full-width {
+        @apply w-full #{!important};
+      }
+
+      .datepicker {
+        @apply inline-block;
+      }
+    }
+  }
+
+}
+
+.footerNav :global {
+  @apply fixed bottom-0 left-0 w-full bg-white py-5 px-8;
+  box-shadow: 0px -1px 5px 1px rgba(0, 0, 0, 0.1);
+
+  & :local {
+    animation: slide-in-bottom 0.4s ease-in-out forwards;
+  }
+
+  .wrap {
+    @apply flex w-full flex-row justify-end gap-6;
+  }
+}

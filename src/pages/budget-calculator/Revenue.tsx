@@ -2,7 +2,12 @@ import React from 'react'
 
 import styles from './BudgetCalculator.module.scss'
 
-export default function Revenue() {
+type Props = {
+  profitSeries?: number,
+  profitYear?: number,
+  profitTeam?: number,
+}
+export default function Revenue({ profitSeries, profitYear, profitTeam }: Props) {
   return (
     <div className={`${styles.fields} ${styles['revenue']}`}>
       <div className="field blue">
@@ -20,7 +25,7 @@ export default function Revenue() {
         </div>
       </div>
       <div className="field blue">
-        <label>Total Profit (per Tean)</label>
+        <label>Total Profit (per Team)</label>
         <div className="amount">
           <span className="currency">$</span>
           <span className="value">304.38</span>
