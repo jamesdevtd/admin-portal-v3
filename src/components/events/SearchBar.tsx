@@ -142,15 +142,15 @@ const SearchBar = () => {
               defaultValue="1"
             >
               <option value='all'>All</option>
-              <option value='Series 1'>Series 1</option>
-              <option value='Series 2'>Series 2</option>
-              <option value='Series 3'>Series 3</option>
-              <option value='Series 4'>Series 4</option>
-              <option value='Series 5'>Series 5</option>
-              <option value='Series 6'>Series 6</option>
-              <option value='Series 7'>Series 7</option>
-              <option value='Series 8'>Series 8</option>
-              <option value='Series 9'>Series 9</option>
+              <option value='1'>Series 1</option>
+              <option value='2'>Series 2</option>
+              <option value='3'>Series 3</option>
+              <option value='4'>Series 4</option>
+              <option value='5'>Series 5</option>
+              <option value='6'>Series 6</option>
+              <option value='7'>Series 7</option>
+              <option value='8'>Series 8</option>
+              <option value='9'>Series 9</option>
             </select>
           </div>
           <div className="col">

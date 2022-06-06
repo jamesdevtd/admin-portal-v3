@@ -1,8 +1,13 @@
 
+import moment from 'moment';
 import { useState } from 'react';
 import { CircleFlag } from 'react-circle-flags';
 
 import styles from './Cards.module.scss';
+
+import seriesNames from '@/static/seriesNames';
+
+import { EventListingProps } from '@/types/event';
 
 import CalenderIcon from '~/svg/calender.svg';
 import MenuIcon from '~/svg/event-menu-icon.svg';
@@ -15,20 +20,23 @@ const eventLogoPlaceholder = '/images/mock/logo-thumb.png';
 
 type Props = {
   // TODO: replace 'any' with actual event interface i.e. EventProps in /types/event.ts
-  event: any
+  event: EventListingProps
 };
 
 const Card = ({ event }: Props) => {
   const [showMenu, setshowMenu] = useState<boolean>(false);
+  const timeZone = moment().format('z');
 
   return (
     <div className={styles.Card}>
 
       <div className="card-bg">
         <img src={event.photo ? event.photo : eventPhotoPlaceholder} alt="Event Photo" />
+
         <button onClick={() => setshowMenu(!showMenu)} className={`card-menu-button ${showMenu && 'active'}`}>
           <MenuIcon />
         </button>
+
         <div className={`${showMenu ? 'card-menu' : 'hidden'}`}>
           <a href="#" >Edit Event</a>
           <a href="#" >View Public Event Page</a>
@@ -41,18 +49,22 @@ const Card = ({ event }: Props) => {
           <img alt="logo" src={event.logo ? event.logo : eventLogoPlaceholder}></img>
         </div>
         <div className="top">
-          <span className="tag capsule">open</span>
+          <span className="tag capsule">{event.type}</span>
           <div className="flag">
-            <CircleFlag countryCode={event?.country ? event?.country.toLowerCase() : 'us'} height="35" />
+            <CircleFlag countryCode={event.country.toLowerCase()} height="35" />
           </div>
         </div>
         <div className="headings">
           <h3> {event?.name}</h3>
           <p className='series'>
-            {event?.series?.name} | <span className={`status ${event?.status === 'closed' ? 'text-red-500' : event?.status === 'open' ? 'text-green-500' : 'text-blue-brand'}`}>Event {event?.status}</span>
+            {seriesNames[event.series - 1].name} | &nbsp;
+            <span className={`status ${event?.status === 'closed' ?
+              'text-red-500' : event?.status === 'open' ?
+                'text-green-500' : 'text-blue-brand'
+              }`}>Event {event?.status}</span>
           </p>
           <p className="teams">
-            <span className='count'>8</span> Teams
+            <span className='count'>{event.teams}</span> Teams
           </p>
           <hr />
         </div>
@@ -60,22 +72,26 @@ const Card = ({ event }: Props) => {
         <div className="meta">
           <div>
             <CalenderIcon />
-            <span>Sat,Sep 14,2022 at 4:00 PM EST</span>
+            <span className='uppercase'>
+              {moment(event.startDate).format('ddd')} &nbsp;
+              {moment(event.startDate).format('ll')} at &nbsp;
+              {event.startTime} {moment(event.startDate).format('z')} </span>
           </div>
           <div>
             <MapIcon />
-            <span>Randall&apos;s Island Manhattan, NY</span>
+            <span>{event.location}, {event.city}</span>
           </div>
           <div>
             <FeeIcon />
-            <span>Free - $25</span>
+            <span>{event.entryFees}</span>
           </div>
           <hr />
         </div>
 
         <div className='divisions'>
-          <p>Men&apos;s Soc. Men&apos;s Comp. Coed Sec. Coed Comp. U6 Boys.U7 Girls. U10 Boys. U12 Girls</p>
+          <p>{event.divisions}</p>
         </div>
+
       </div>
     </div >
   );

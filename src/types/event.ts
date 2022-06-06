@@ -71,16 +71,17 @@ export interface EventListingProps {
   userId: number;
   name: string;
   photo?: string;
-  logo?: string;
   type: string;
-  division: string;
+  logo?: string;
   league?: string;
-  country?: string;
-  dateStart?: string;
+  country: string;
+  startDate?: string;
+  startTime?: string;
   entryFees?: string;
-  location?: string;
+  location: string;
+  city?: string;
   divisions?: string;
   teams: number;
   status: string;
-  series: { id: number; name: string };
+  series: number;
 }

@@ -12,7 +12,8 @@ import Layout from '@/components/layout/Layout';
 
 import { useAppSelector } from '@/app/hooks';
 import { getFilters } from '@/features/eventsListing/eventsFiltersSlice';
-import { mockEventsForCards } from '@/static/events';
+// import { mockEventsForCards } from '@/static/events';
+import mockEventsList from '@/static/events-list.json';
 
 import CalendarIcon from '~/icons/blue/calendar.svg';
 import CalendarWhiteIcon from '~/icons/calendar.svg';
@@ -29,7 +30,7 @@ export default function Events() {
   const eventCategories = ['all', 'draft', 'published', 'active', 'past'];
   const router = useRouter();
   // TODO: replace mockEventsForCards with values from store fetched from API
-  const events = mockEventsForCards;
+  const events = mockEventsList;
 
   const createNewEventHandler = () => {
     // TODO: replace 1 with next available event id to be set as draft mode from API or just create a new url for event creation i,e, event-creation

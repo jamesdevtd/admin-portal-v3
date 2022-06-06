@@ -3,8 +3,9 @@ import { CircleFlag } from 'react-circle-flags';
 
 import styles from './StyledTable.module.scss';
 
-import { mockEventsForCards } from '@/static/events';
 import { eventColumns } from '@/static/events';
+import mockEventsList from '@/static/events-list.json';
+import { truncateString } from '@/utils/stringUtils';
 
 import { EventListingProps } from '@/types/event';
 
@@ -16,14 +17,14 @@ export default function StyledTable() {
   const [columns, setColumns] = useState<any[]>([]);
 
   useEffect(() => {
-    setEvents(mockEventsForCards);
+    setEvents(mockEventsList);
     setColumns(eventColumns);
   }, []);
 
   const tableRows = events.map((item, index) =>
     <tr key={index}>
       <td>
-        <span className='capsule'>{item.type}</span>
+        <span className='capsule'>{item.status}</span>
       </td>
       <td className='name'>
         <span>{item.name}</span>
@@ -35,10 +36,10 @@ export default function StyledTable() {
         <CircleFlag countryCode={item.country || 'us'} />
       </td>
       <td>
-        <span>{item.series.id}</span>
+        <span>{item.series}</span>
       </td>
       <td>
-        <span>{item.dateStart}</span>
+        <span>{item.startDate}</span>
       </td>
       <td>
         <span>{item.entryFees}</span>
@@ -47,10 +48,10 @@ export default function StyledTable() {
         <span className='capsule'>{item.status}</span>
       </td>
       <td>
-        <span>{item?.location}</span>
+        <span>{item?.location}, {item?.city}</span>
       </td>
       <td>
-        <span>{item?.divisions}</span>
+        <span>{truncateString(item?.divisions as string, 30)}</span>
       </td>
       <td>
         <span>{item?.teams}</span>

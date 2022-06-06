@@ -80,7 +80,6 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
   const tomorrow = moment().add(1, 'day').toDate();
 
   const [monthId, setMonthId] = useState<number>(basicInfo.seriesMonth || 12);
-  console.log('monthId: ', monthId);
 
   const [yearSelected, setYearSelected] = useState<number>(basicInfo.eventYear || moment().year());
   const [seriesSelected, setSeriesSelected] = useState<number>(basicInfo.seriesMonth || 0);
@@ -203,6 +202,8 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
 
   const handleYearChange = (year: number) => {
     console.log('init handleYearChange');
+
+
 
     clearEventsDatesFields();
     const currentDate = moment().date();

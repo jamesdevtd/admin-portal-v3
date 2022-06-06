@@ -5,7 +5,6 @@ import styles from './SeriesCheckboxes.module.scss';
 import { useIsFirstRender } from '@/utils/customHooks';
 
 import SeriesProps from '@/types/series'
-
 interface Props {
   heading: string;
   items: SeriesProps[];

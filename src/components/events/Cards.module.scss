@@ -61,7 +61,7 @@
     margin-top: -130px;
     padding-top: 10px;
     transition: all 0.3s ease-in;
-
+    height: 250px;
     :local {
       @extend .bg-white-gradient;
     }
@@ -122,7 +122,7 @@
     max-width: 220px;
 
     > div {
-      @apply flex items-center w-full items-baseline;
+      @apply flex items-center w-full items-baseline leading-none pb-1;
 
       span {
         @apply pl-2 text-md text-blue-dark font-semibold;

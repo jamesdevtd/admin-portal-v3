@@ -13,6 +13,10 @@
 
       tbody td {
         @apply h-12 px-3;
+        &.name,
+        &.league {
+          @apply uppercase text-blue-brand font-bold text-center;
+        }
       }
     }
   }

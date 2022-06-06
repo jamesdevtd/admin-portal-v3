@@ -115,13 +115,14 @@ export const GeneralInfo = forwardRef(({ ...props }, ref) => {
   }, [formState.errors, formState.isDirty]);
 
   const onSubmit = (data: unknown) => {
-    //TODO: send Redux state affiliateDetails to API through redux middleware
+    // TODO: send Redux state affiliateDetails to API through redux middleware
     // console.log('POST: sending data...');
     // eslint-disable-next-line no-console
     console.log('POST: sending data...', data);
   };
 
   const submitForm = () => {
+
     let formValues = getValues();
     // console.log('submitForm:getValues()', formValues);
     const convertedDates = objectDatesToString(formValues);
@@ -129,10 +130,12 @@ export const GeneralInfo = forwardRef(({ ...props }, ref) => {
     const cleanedData = { ...formValues, ...removeNullElements(formValues) };
     // console.log('submitForm:parsedValues :', cleanedData);
     dispatch(updateAffiliateDetails(cleanedData));
+
     handleSubmit(onSubmit, () => {
       // eslint-disable-next-line no-console
-      console.log('Submit Failed - has Form Errors', formState.errors);
+      // console.log('Submit Failed - has Form Errors', formState.errors);
     })();
+
   };
 
   useImperativeHandle(ref, () => ({ submitForm }));
