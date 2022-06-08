@@ -1,4 +1,6 @@
 import ContactDetailsProps from './contactDetails';
+import { DivisionProps } from './division';
+import { SubscriptionFee } from './subscriptionFee';
 import userDetailsProps from './userDetails';
 
 export interface AffiliateProps {
@@ -23,6 +25,8 @@ export interface AffiliateProps {
 
   contactDetails: ContactDetailsProps[];
   userAccounts: userDetailsProps[];
+  subscriptionFee: SubscriptionFee[];
+  divisionDetails: DivisionProps[];
 }
 export interface SeriesPermission {
   permissionId: number;

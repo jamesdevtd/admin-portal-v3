@@ -33,7 +33,8 @@ module.exports = {
         'default': '0 2px 2px rgba(0, 0, 0, 0.5)'
       },
       boxShadow: {
-        'center': '0px 0px 15px 0px rgba(0,0,0,0.15)'
+        'center': '0px 0px 15px 0px rgba(0,0,0,0.15)',
+        'medium': '0px 0px 10px 2px rgba(0,0,0,0.16)'
       },
       backgroundImage: {
         'gradient-blue':

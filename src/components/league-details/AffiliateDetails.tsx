@@ -43,9 +43,8 @@ const AffiliateDetails = () => {
 
   return (
     <div
-      className={`${formStyles['tab-container']} ${formStyles.affiliate} ${
-        expand ? formStyles['expanded'] : formStyles['collapsed']
-      }`}
+      className={`${formStyles['tab-container']} ${formStyles.affiliate} ${expand ? formStyles['expanded'] : formStyles['collapsed']
+        }`}
     >
       <h3
         onClick={(e) => {
@@ -192,9 +191,10 @@ const AffiliateDetails = () => {
         <div className='flex flex-col items-end'>
           <div className='col'></div>
           <div className='col'>
-            <button className='deny-button btn cancel'>DENY LEAGUE</button>
+            {/* TODO: need to show below options only if the affiliate is npt approved */}
+            <button className='deny-button btn cancel' type='button'>DENY LEAGUE</button>
             <button
-              className='btn bg-blue-brand text-white'
+              className='btn bg-blue-brand text-white' type='button'
               disabled={!watchEquipmentStatus}
             >
               APPROVE LEAGUE

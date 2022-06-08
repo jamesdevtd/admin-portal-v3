@@ -1,0 +1,25 @@
+// @import "@/styles/base/typography.scss";
+
+.InlineField :global {
+  @apply px-1 #{!important};
+
+  input,
+  select,
+  option {
+    @apply w-full px-2 py-1 text-blue-dark placeholder-blue-dark border-0 border-b-2 border-gray-400 text-md rounded-md;
+    border-width: 1px;
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+
+  select {
+    @apply pr-7;
+  }
+
+  .error {
+    @apply text-red-warning;
+  }
+}

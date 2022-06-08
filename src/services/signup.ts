@@ -8,5 +8,5 @@ export interface userSignupInterface {
 }
 
 export const handleSignUp = async (data: userSignupInterface) => {
-  return await POST('/affiliate/signup', data);
+  return await POST('/register', data);
 };

@@ -1,22 +1,35 @@
+import moment from 'moment';
 import { useState } from 'react';
 import { HiOutlinePencilAlt, HiPlus } from 'react-icons/hi';
+import { RiVisaLine } from 'react-icons/ri';
 
 import tabStyles from './AffiliateDetails.module.scss';
 import leagueDetailStyles from './LegueDetails.module.scss';
 
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { getEditAffiliateFeeId, getEditAffiliateFeePoolId, getEditSubscriptionFeeId, setEditAffiliateFeeId, setEditSubscriptionFeeId } from '@/features/affiliateDetails/affiliateDetailsSlice';
+
+import AffiliateForm from './AffiliateForm';
+import SubscriptionForm from './SubscriptionForm';
 import StyledTable from '../layout/StyledTableWrap';
 
 import { DivisionProps } from '@/types/division';
+import { SubscriptionFee } from '@/types/subscriptionFee';
 
 import ChevronIcon from '~/icons/chevron-down.svg';
 
 type Props = {
   // TODO: replace 'any' with actual event interface i.e. EventProps in /types/event.ts
   divisions: DivisionProps[];
+  fees: SubscriptionFee[] | null;
 };
 
-const FeesDetails = ({ divisions }: Props) => {
+const FeesDetails = ({ divisions, fees }: Props) => {
+  const dispatch = useAppDispatch();
   const [expand, setExpand] = useState(false);
+  const editSubscriptionFeeId = useAppSelector(getEditSubscriptionFeeId);
+  const editAffiliateFeeId = useAppSelector(getEditAffiliateFeeId);
+  const editAffiliateFeePoolId = useAppSelector(getEditAffiliateFeePoolId);
 
   return (
     <div
@@ -36,61 +49,56 @@ const FeesDetails = ({ divisions }: Props) => {
         <div className='my-2 w-full pl-6 text-md text-gray-brand'>
           Subscription Fee
         </div>
-        <div className='box-bg'>
+        <div className='box-bg z-10'>
           <StyledTable className={`${leagueDetailStyles.GridContainer} header-1_5`}>
             <table className='w-full table-auto'>
               <thead className='text-white'>
                 <tr>
-                  <th className='w-auto'>Fee Amount</th>
-                  <th className='w-auto'>Country</th>
-                  <th className='w-auto'>State</th>
-                  <th className='w-auto'>Valid From</th>
-                  <th className='w-auto'>Valid To</th>
-                  <th className='w-auto'>Created by</th>
-                  <th className='w-auto'>Created Date</th>
-                  <th className='w-auto'>Changed by</th>
-                  <th className='w-auto'>Date Changed</th>
-                  <th className='w-auto'>Actions</th>
+                  <th className='w-auto text-left'>Fee Amount</th>
+                  <th className='w-auto text-left'>Country</th>
+                  <th className='w-auto text-left'>State</th>
+                  <th className='w-auto text-left'>Valid From</th>
+                  <th className='w-auto text-left'>Valid To</th>
+                  <th className='w-auto text-left'>Created by</th>
+                  <th className='w-auto text-left'>Created Date</th>
+                  <th className='w-auto text-left'>Changed by</th>
+                  <th className='w-auto text-left'>Date Changed</th>
+                  <th className='w-auto text-left'>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>$60</td>
-                  <td>United States</td>
-                  <td>NY</td>
-                  <td>02/01/22</td>
-                  <td>-</td>
-                  <td>Sarah Taylor</td>
-                  <td>02/01/22</td>
-                  <td>Sarah Taylor</td>
-                  <td>02/01/22</td>
-                  <td>
-                    <button>
-                      <HiOutlinePencilAlt className='text-xl text-gray-light' />
-                    </button>
-                  </td>
+                {fees?.map((fee: SubscriptionFee) => (
+                  <tr key={fee?.id}>
+                    {editSubscriptionFeeId === fee.id ? (
+                      <SubscriptionForm fee={fee} isAdd={false} />
+                    ) : (
+                      <>
+                        <td className='flex items-center'><RiVisaLine className='capsule gray mr-2' /> ${fee.feeAmount}</td>
+                        <td>{fee.country}</td>
+                        <td>{fee.state}</td>
+                        <td>{moment(fee.validFrom).format("MM/DD/YYYY")}</td>
+                        <td>{fee.validTo ? moment(fee.validTo).format("MM/DD/YYYY") : '-'}</td>
+                        <td>{`${fee.createdBy.firstName} ${fee.createdBy.lastName}`}</td>
+                        <td>{moment(fee.createdDate).format("MM/DD/YYYY")}</td>
+                        <td>{`${fee.changedBy.firstName} ${fee.changedBy.lastName}`}</td>
+                        <td>{moment(fee.changedDate).format("MM/DD/YYYY")}</td>
+                        <td>
+                          <button type="button" onClick={() => dispatch(setEditSubscriptionFeeId({ id: fee.id }))}>
+                            <HiOutlinePencilAlt className='text-xl text-gray-light' />
+                          </button>
+                        </td>
+                      </>
+                    )}
+                  </tr>
+                ))}
+                <tr className={`${editSubscriptionFeeId === 0 ? '' : 'hidden'}`}>
+                  <SubscriptionForm fee={{} as SubscriptionFee} isAdd={true} />
                 </tr>
-                {/* {fee.map((event: any) => (
-                    <tr key={event?.id}>
-                      <td><span className="tag capsule">open</span></td>
-                      <td className="uppercase font-bold"><a className="text-blue-brand hover:text-blue-600" href="#">{event?.name}</a></td>
-                      <td className="uppercase font-bold"><a className="text-blue-brand hover:text-blue-600" href="#">{event?.series?.name}</a></td>
-                      <td><CircleFlag countryCode="us" className="h-4" /></td>
-                      <td>{event?.series?.id}</td>
-                      <td>09/14/2021</td>
-                      <td>FREE - $25</td>
-                      <td><span className={`rounded-full px-3 w-20 block text-center text-white capitalize ${event?.status === 'closed' ? 'bg-red-warning' : event?.status === 'open' ? 'bg-blue-brand' : 'bg-orange'}`}>{event?.status}</span></td>
-                      <td>Edwin Flack Avenue, Sydney Olympic Park, 2127</td>
-                      <td>Men’s, Mixed, Women’s, Youth</td>
-                      <td>{event?.teams}</td>
-                      <td><button><HiOutlinePencilAlt className="text-xl text-gray-light" /></button></td>
-                    </tr>
-                  ))} */}
               </tbody>
             </table>
           </StyledTable>
         </div>
-        <button className='my-2 flex w-full items-center pl-9 text-sm text-blue-brand hover:text-blue-start'>
+        <button className='my-2 flex items-center pl-9 text-sm text-blue-brand hover:text-blue-start' onClick={() => dispatch(setEditSubscriptionFeeId({ id: 0 }))}>
           Add custom League Subscription Fee <HiPlus />
         </button>
       </div>
@@ -136,36 +144,40 @@ const FeesDetails = ({ divisions }: Props) => {
                 {divisions.map((division: DivisionProps) => {
                   return division.pools.map((pool, id) => (
                     <tr className='even:bg-gray-50' key={pool?.id}>
-                      <td>{id === 0 ? division.divisionType : ''}</td>
-                      <td>{pool.name}</td>
-                      <td className='text-blue-brand'>
-                        <div className='block rounded-full bg-gray-200 px-1 text-center uppercase text-blue-dark'>
-                          USD
-                        </div>
-                      </td>
-                      <td className='text-blue-brand'>
-                        ${division.playerFee?.fee}
-                      </td>
-                      <td className='text-blue-brand'>
-                        ${division.playerFee?.fee}
-                      </td>
-                      <td className='text-blue-brand'>
-                        ${division.playerFee?.fee}
-                      </td>
-                      <td className='text-blue-brand'>
-                        ${division.playerFee?.fee}
-                      </td>
-                      <td className='text-blue-brand'>
-                        ${division.playerFee?.fee}
-                      </td>
-                      <td className='text-blue-brand'>
-                        ${division.playerFee?.fee}
-                      </td>
-                      <td>
-                        <button>
-                          <HiOutlinePencilAlt className='text-xl text-gray-light' />
-                        </button>
-                      </td>
+                      {editAffiliateFeeId === division.id && editAffiliateFeePoolId === pool.id ? (
+                        <AffiliateForm division={division} isAdd={false} />
+                      ) : (<>
+                        <td className='!font-semibold'>{id === 0 ? division.divisionType : ''}</td>
+                        <td className='!font-semibold'>{pool.name}</td>
+                        <td className='!text-blue-brand !font-semibold'>
+                          <div className='block rounded-full bg-gray-200 px-1 text-center uppercase text-blue-dark'>
+                            USD
+                          </div>
+                        </td>
+                        <td className='!text-blue-brand !font-semibold'>
+                          ${division.playerFee?.fee}
+                        </td>
+                        <td className='!text-blue-brand !font-semibold'>
+                          ${division.playerFee?.fee}
+                        </td>
+                        <td className='!text-blue-brand !font-semibold'>
+                          ${division.playerFee?.fee}
+                        </td>
+                        <td className='!text-blue-brand !font-semibold'>
+                          ${division.playerFee?.fee}
+                        </td>
+                        <td className='!text-blue-brand !font-semibold'>
+                          ${division.playerFee?.fee}
+                        </td>
+                        <td className='!text-blue-brand !font-semibold'>
+                          ${division.playerFee?.fee}
+                        </td>
+                        <td>
+                          <button type="button" onClick={() => dispatch(setEditAffiliateFeeId({ id: division.id, poolId: pool.id }))}>
+                            <HiOutlinePencilAlt className='text-xl text-gray-light' />
+                          </button>
+                        </td>
+                      </>)}
                     </tr>
                   ));
                 })}

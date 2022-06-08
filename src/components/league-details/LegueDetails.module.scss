@@ -27,4 +27,8 @@
       }
     }
   }
+
+  table tbody tr td:first-child svg {
+    @apply w-8 #{!important};
+  }
 }

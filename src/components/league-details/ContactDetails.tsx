@@ -4,6 +4,10 @@ import { HiOutlinePencilAlt, HiPlus } from 'react-icons/hi';
 import tabStyles from './AffiliateDetails.module.scss';
 import leagueDetailStyles from './LegueDetails.module.scss';
 
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { getEditContactId, setEditContactId } from '@/features/affiliateDetails/affiliateDetailsSlice';
+
+import ContactDetailForm from './ContactDetailForm';
 import StyledTable from '../layout/StyledTableWrap';
 
 import ContactDetails from '@/types/contactDetails';
@@ -16,7 +20,10 @@ type Props = {
 };
 
 const ContactDetails = ({ contacts }: Props) => {
+  const dispatch = useAppDispatch();
+  const editContactId = useAppSelector(getEditContactId);
   const [expand, setExpand] = useState(false);
+
 
   return (
     <div
@@ -44,35 +51,44 @@ const ContactDetails = ({ contacts }: Props) => {
           <table className='w-full table-auto'>
             <thead className='text-white'>
               <tr>
-                <th className='w-auto'>Name</th>
-                <th className='w-auto'>Email</th>
-                <th className='w-auto'>Phone</th>
-                <th className='w-auto'>Added</th>
-                <th className='w-auto'>Actions</th>
+                <th className='w-auto text-left'>Name</th>
+                <th className='w-auto text-left'>Email</th>
+                <th className='w-auto text-left'>Phone</th>
+                <th className='w-auto text-left'>Added</th>
+                <th className='w-auto text-left'>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {contacts.map((contact: ContactDetails) => (
-                <tr key={contact?.id}>
-                  <td className='capitalize'>{`${contact?.firstName} ${contact?.lastName}`}</td>
-                  <td>{contact?.email}</td>
-                  <td>{contact?.phone}</td>
-                  <td>03/21/21</td>
-                  <td>
-                    <button>
-                      <HiOutlinePencilAlt className='text-xl text-gray-light' />
-                    </button>
-                  </td>
+              {contacts.map((contact: ContactDetails, index) => (
+                <tr key={index}>
+                  {editContactId === contact.id ? (
+                    <ContactDetailForm contact={contact} isAdd={false} />
+                  ) : (
+                    <>
+                      <td className='capitalize'>{`${contact?.firstName} ${contact?.lastName}`}</td>
+                      <td>{contact?.email}</td>
+                      <td>{contact?.phone}</td>
+                      <td>03/21/21</td>
+                      <td>
+                        <button type="button" onClick={() => dispatch(setEditContactId({ id: contact.id }))}>
+                          <HiOutlinePencilAlt className='text-xl text-gray-light' />
+                        </button>
+                      </td>
+                    </>
+                  )}
                 </tr>
               ))}
+              <tr className={`${editContactId === 0 ? '' : 'hidden'}`}>
+                <ContactDetailForm contact={{} as ContactDetails} isAdd={true} />
+              </tr>
             </tbody>
           </table>
         </StyledTable>
-        <button className='my-2 flex w-full items-center pl-9 text-sm text-blue-brand hover:text-blue-start'>
+        <button className='my-2 flex w-full items-center pl-9 text-sm text-blue-brand hover:text-blue-start' type='button' onClick={() => dispatch(setEditContactId({ id: 0 }))}>
           Add Contact <HiPlus />
         </button>
       </div>
-    </div>
+    </div >
   );
 };
 

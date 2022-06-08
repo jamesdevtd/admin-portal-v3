@@ -1,95 +1,118 @@
 .StyledTable :global {
   @apply relative pb-2 ml-4 max-w-7xl;
   min-width: 935px;
+
   .behind {
     @apply rounded-xl bg-gradient-blue-2 pb-1;
     @apply absolute h-full w-full;
   }
+
   .front {
-    @apply rounded-xl shadow-[0px_0px_10px_2px_rgba(0,0,0,0.16)] -left-4 bg-white w-full h-auto relative;
+    @apply rounded-xl shadow-medium -left-4 bg-white w-full h-auto relative;
+    /* boxShadow-medium */
     @apply absolute h-full w-full;
     width: calc(100% + 9px);
     height: calc(100% - 36px);
     top: 30px;
   }
+
   table {
     @apply border-separate relative z-10 table-fixed;
+
     th,
     td {
       @apply py-2 px-2 leading-none;
     }
+
     th {
       @apply text-white font-normal font-title text-sm;
       &.start-date,
       &.entry-fees {
         min-width: 65px;
       }
+
       &.location {
         @apply font-normal;
         width: 150px;
       }
+
       &.divisions {
         @apply font-normal;
         width: 100px;
       }
+
       &.edit {
         @apply invisible;
       }
     }
+
     td {
       @apply text-blue-dark font-semibold py-4;
+
       .capsule {
         @apply h-5 leading-5 block w-full text-center;
       }
+
       &.name {
         @apply text-center text-blue-brand uppercase;
       }
+
       &.league {
         @apply text-blue-brand;
       }
+
       &.status {
         .capsule {
           @apply capitalize text-xs text-white font-normal;
         }
+
         &.closed {
           .capsule {
             @apply bg-red-warning;
           }
         }
+
         &.draft {
           .capsule {
             @apply bg-orange;
           }
         }
+
         &.open {
           .capsule {
             @apply bg-blue-brand;
           }
         }
       }
+
       &.country {
         img {
           @apply h-5 m-auto;
         }
       }
+
       &.edit {
         button {
           @apply opacity-40 block;
+
           svg {
             @apply w-4 h-4;
           }
+
           &:hover {
             @apply opacity-70;
           }
         }
       }
     }
+
     tbody {
       tr:first-child {
         td {
           @apply pt-5;
         }
       }
+
       tr:last-child {
         td {
           @apply pb-5;

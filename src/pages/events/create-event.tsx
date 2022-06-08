@@ -1,4 +1,3 @@
-import { GetServerSideProps } from 'next';
 import { useEffect, useRef } from 'react';
 
 import styles from "./Events.module.scss";
@@ -22,30 +21,17 @@ import {
 
 import CalendarIcon from '~/icons/blue/calendar.svg';
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  try {
-    const id = params?.id
-    // TODO: get current event Data on server before loading and store to redux using use next-redux-wrapper 
-    // const eventData = ....
-    // By returning { props: eventData }, the Events component
-    // will receive `eventData` as a prop at build time
-    return { props: { id } }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    return { props: { errors: err.message } }
-  }
-}
 
 type Props = {
   id: number
 }
 
-export default function Event({ id }: Props) {
+export default function Events({ id }: Props) {
 
   const currentStep = useAppSelector(getCurrentStep);
   const isFormEdited = useAppSelector(getStepById(currentStep))?.isEdited;
 
-  const eventStatus = { id: id, status: 'draft' };
+  const eventStatus = { id: 0, status: 'draft' };
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const eventFormRef = useRef<any>();
 

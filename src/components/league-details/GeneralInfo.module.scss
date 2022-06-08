@@ -30,15 +30,23 @@
 
   .logo-group {
     .col:first-child {
-      @apply w-1/5;
+      @apply w-2/5;
 
       .logo {
-        @apply w-14 h-14 max-h-14;
+        @apply w-16 h-16 max-h-16;
       }
     }
 
     .col {
       @apply w-4/5;
+
+      .form-check input {
+        @apply mr-3;
+      }
+
+      h3 {
+        @apply mb-2;
+      }
     }
   }
 
@@ -56,12 +64,22 @@
   }
 
   .equipment-group {
-    .col label {
-      @apply mb-0;
+    .col {
+      label {
+        @apply mb-0;
+
+        input {
+          @apply mr-3;
+        }
+      }
+
+      h3 {
+        @apply mb-2;
+      }
     }
 
     span {
-      @apply ml-6;
+      @apply ml-8;
     }
   }
 

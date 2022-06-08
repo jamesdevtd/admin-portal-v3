@@ -262,7 +262,7 @@ export const GeneralInfo = forwardRef(({ ...props }, ref) => {
       </FormProvider>
       <ContactDetails contacts={affiliateDetails.contactDetails} />
       <UserAccounts users={affiliateDetails.userAccounts} />
-      <FeesDetails divisions={divisionDetails} />
+      <FeesDetails divisions={affiliateDetails.divisionDetails} fees={affiliateDetails.subscriptionFee} />
     </>
   );
 });

@@ -17,6 +17,7 @@ import { useAppSelector } from '@/app/hooks';
 import { getCroppedImage, getCropperModal, getIsCropped } from '@/features/onboardingSteps/onboardingStepsSlice';
 import { GET, PATCH, POST } from '@/services/rest.service';
 import { continents } from '@/static/geolocation';
+import { formatLatLong } from '@/utils/customHooks';
 
 import StepsButtons from './stepsButtons/StepsButtons';
 
@@ -78,7 +79,7 @@ export default function AffiliateSetupPage() {
         setMailingAddress({ label: `${tempLeague?.mailingLocation?.line1 ?? ''} ${tempLeague?.mailingLocation?.line2 ?? ''} ${tempLeague?.mailingLocation?.state ?? ''} ${tempLeague?.mailingLocation?.country ?? ''}` });
         setVenueAddress({ label: `${tempLeague?.venueLocation?.line1 ?? ''} ${tempLeague?.venueLocation?.line2 ?? ''} ${tempLeague?.venueLocation?.state ?? ''} ${tempLeague?.venueLocation?.country ?? ''}` });
         reset(tempLeague);
-        if (tempLeague.venueName !== '') {
+        if (tempLeague.venueName !== '' && tempLeague.venueName !== null) {
           setStep(3);
         }
         else if (tempLeague.image !== '') {
@@ -114,8 +115,8 @@ export default function AffiliateSetupPage() {
           // id: mailingAddress?.value?.place_id,
           line1: mailingAddress?.value?.structured_formatting?.main_text || null,
           line2: mailingAddress?.value?.structured_formatting?.secondary_text || null,
-          latitude: address?.geometry?.location?.lat() || null,
-          longitude: address?.geometry?.location?.lng() || null,
+          latitude: formatLatLong(address?.geometry?.location?.lat()) || null,
+          longitude: formatLatLong(address?.geometry?.location?.lng()) || null,
         }
       })
       .catch(error => console.error(error));

@@ -105,3 +105,7 @@ export function useIsFirstRender(): boolean {
 
   return isFirst.current;
 }
+
+export function formatLatLong(val: number) {
+  return val.toFixed(7);
+}

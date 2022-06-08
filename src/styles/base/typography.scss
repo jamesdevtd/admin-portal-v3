@@ -11,7 +11,7 @@ h4 {
 
 ul {
   li {
-    > a {
+    >a {
       @apply font-title;
     }
   }
@@ -21,12 +21,14 @@ label {
   span {
     @apply font-title;
   }
+
   @apply font-body;
 }
 
 button,
 .button {
   @apply font-title;
+
   span {
     @apply font-title;
   }
@@ -39,17 +41,26 @@ button,
 .btn {
   @apply rounded-md py-1 px-10 uppercase text-white shadow-md;
   @extend .bg-blue-gradient;
+
   &.grey {
     @extend .bg-grey-gradient;
   }
+
   &.blue-outline {
     @apply bg-white border-blue-brand flex flex-row items-center bg-none border shadow-none text-blue-brand px-5;
+
     svg {
       @apply w-5 h-auto opacity-60 my-auto mr-3;
     }
+
     &:disabled {
       opacity: 0.5;
     }
+  }
+
+  &.red {
+    @apply flex flex-row items-center bg-none border shadow-none px-5;
+    @apply bg-red-warning;
   }
 }
 
@@ -58,18 +69,22 @@ input:focus {
 }
 
 .content {
+
   h1,
   h2,
   h2,
   h3 {
     @apply font-semibold text-blue-dark;
   }
+
   h1 {
     @apply text-2xl;
   }
+
   h2 {
     @apply text-xl;
   }
+
   h3 {
     @apply text-lg;
   }
@@ -80,18 +95,23 @@ input:focus {
   @apply text-black bg-green-light;
   left: 10px;
   top: 10px;
+
   &.gray {
     @apply bg-gray-200;
   }
+
   &.orange {
     @apply bg-orange;
   }
+
   &.peach {
     @apply bg-peach;
   }
+
   &.blue {
     @apply bg-blue-brand;
   }
+
   &.small {
     @apply text-xxs font-normal text-blue-dark;
   }

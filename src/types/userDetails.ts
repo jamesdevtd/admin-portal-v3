@@ -8,3 +8,8 @@ export default interface UserDetails {
   createdDate?: string;
   createdBy?: string;
 }
+
+export interface Role {
+  id: number;
+  name: string;
+}
