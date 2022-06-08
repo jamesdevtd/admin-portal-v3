@@ -1,5 +1,5 @@
 .formGroup :global {
-  @apply w-full max-w-full;
+  @apply w-full;
 
   h3 {
     @apply text-sm text-gray-light font-semibold;
@@ -82,7 +82,6 @@
       @apply ml-8;
     }
   }
-
 }
 
 .formGroup::after {
