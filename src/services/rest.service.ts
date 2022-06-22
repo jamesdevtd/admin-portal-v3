@@ -2,7 +2,8 @@ import axios, { Method } from 'axios';
 import Router from 'next/router';
 import { getSession } from 'next-auth/react';
 
-import { sleeper } from '@/utils/objectUtils';
+import { store } from '@/app/store';
+import { loaderSlice } from '@/features/loader/loaderSlice';
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -29,7 +30,7 @@ const request = (
     axios
       .request(request)
       // TODO: remove sleeper after all loader simulation is developed
-      .then(sleeper(4000))
+      // .then(sleeper(4000))
       .then((res) => resolve(res))
       .catch((err) => reject(err));
   });
@@ -49,7 +50,7 @@ export const UPLOAD = (path: string, payload: any) => {
   });
 };
 
-export const GET = (path: string, params: any) => {
+export const GET = (path: string, params: any | undefined = {}) => {
   return request('GET', path, {
     params,
     // TODO: add typed payload if possible
@@ -81,6 +82,7 @@ export const DELETE = (path: string) => {
 };
 
 axios.interceptors.request.use(async (request) => {
+  store.dispatch(loaderSlice.actions.showLoader());
   const headers: any = {};
   const session: any = await getSession();
 
@@ -98,10 +100,15 @@ axios.interceptors.request.use(async (request) => {
  */
 axios.interceptors.response.use(
   (response) => {
-    // Do something with response data
+    setTimeout(() => {
+      store.dispatch(loaderSlice.actions.hideLoader());
+    }, 700);
     return response.data;
   },
   (error) => {
+    setTimeout(() => {
+      store.dispatch(loaderSlice.actions.hideLoader());
+    }, 700);
     if (error.response?.status === 401) {
       Router.push('/');
     } else if (error.response?.status === 500) {

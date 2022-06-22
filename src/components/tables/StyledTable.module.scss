@@ -1,6 +1,7 @@
 .StyledTable :global {
   @apply relative pb-2 ml-4 max-w-7xl;
   min-width: 935px;
+  min-height: 120px;
 
   .behind {
     @apply rounded-xl bg-gradient-blue-2 pb-1;

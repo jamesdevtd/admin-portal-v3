@@ -7,6 +7,8 @@ import { Provider } from 'react-redux';
 import '../styles/globals.scss';
 import '../styles/styles.scss';
 
+import GenericLoader from '@/components/layout/GenericLoader';
+
 import { store } from '../app/store';
 
 /**
@@ -22,6 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       session={pageProps.session}
     >
       <Provider store={store}>
+        <GenericLoader />
         <Head>
           <link
             rel='icon'
@@ -35,9 +38,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           />
         </Head>
         <Component {...pageProps} />
-      </Provider>    
+      </Provider>
     </SessionProvider>
-    
+
   );
 }
 

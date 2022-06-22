@@ -29,7 +29,7 @@ const EventsTable = ({ events }: Props) => {
       <table className="table-auto w-full">
         <thead className='text-white'>
           <tr>
-            <th className="w-14">Type</th>
+            <th className="w-16">Type</th>
             <th>Name</th>
             <th className="w-24">League</th>
             <th className="w-16">Country</th>
@@ -46,7 +46,7 @@ const EventsTable = ({ events }: Props) => {
         <tbody>
           {events.map((event: any) => (
             <tr key={event?.id}>
-              <td><span className="tag capsule">{event.type}</span></td>
+              <td className='text-center'><span className="tag capsule inline-block w-auto">{event.type}</span></td>
               <td className="name">{event?.name}</td>
               <td className="league">{event.league}</td>
               <td><CircleFlag countryCode={event.country.toLowerCase()} className="h-4" /></td>

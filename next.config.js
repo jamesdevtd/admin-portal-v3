@@ -14,7 +14,15 @@ module.exports = {
   //     'res.cloudinary.com',
   //   ],
   // },
-
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/events',
+        permanent: true,
+      },
+    ]
+  },
   // SVGR
   webpack(config) {
     config.module.rules.push({

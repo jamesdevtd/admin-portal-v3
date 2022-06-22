@@ -49,6 +49,6 @@ describe('login', () => {
     cy.get(passwordLoginSelector).type(password);
     cy.get('[type="submit"]').click();
     //cy.wait('@login').then(({ response }) => expect(response.statusCode).to.equal(200));
-    cy.location('pathname').should('eq', '/dashboard');
+    cy.location('pathname').should('eq', '/events');
   });
 });

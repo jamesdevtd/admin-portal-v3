@@ -1,0 +1,12 @@
+.loader :global {
+  @apply bg-white w-full h-screen flex flex-col justify-center place-items-center z-30 gap-5 absolute;
+
+  .logo {
+    @apply h-12 w-96 self-center;
+  }
+
+  img {
+    @apply block;
+    max-width: 100px;
+  }
+}

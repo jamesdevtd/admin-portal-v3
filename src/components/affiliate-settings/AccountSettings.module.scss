@@ -1,0 +1,11 @@
+.formGroup :global {
+  @apply m-0 p-0 #{!important};
+
+  .fields-group {
+    @apply p-0 #{!important};
+  }
+}
+
+.formGroup::after {
+  @apply hidden;
+}

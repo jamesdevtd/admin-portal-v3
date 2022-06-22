@@ -1,6 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import moment from 'moment';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 import React, {
   forwardRef,
   useEffect,
@@ -38,14 +39,15 @@ import AffiliateDetails from './AffiliateDetails';
 import FeesDetails from './FeesDetails';
 import UserAccounts from './UserAccounts';
 
+import { AffiliateProps } from '@/types/affiliate';
 import ContactDetailsProps from '@/types/contactDetails';
 
 import LogoThumb from '~/images/mock/logo-thumb.png';
 
 const schema = yup
   .object({
-    leagueName: yup.string().required(),
-    primaryPlayingFacilityName: yup.string().required(),
+    name: yup.string().required(),
+    venueName: yup.string().required(),
     createdDate: yup.date().required(),
     primaryPlayingFacilityAddress: yup.array().required(),
     primaryPlayingFacilityAddressString: yup.string().required(),
@@ -58,13 +60,19 @@ const schema = yup
   })
   .required();
 
-export const GeneralInfo = forwardRef(({ ...props }, ref) => {
+type Props = {
+  affiliate: AffiliateProps;
+};
+
+
+export const GeneralInfo = forwardRef(({ affiliate, ...props }: Props, ref) => {
   const dispatch = useAppDispatch();
   const affiliateDetails = useAppSelector(getAffiliateDetails);
   const divisionDetails = useAppSelector(getStaticProps);
   const today = moment().toDate();
-  const addressPlaceHolder =
-    affiliateDetails.primaryPlayingFacilityAddressString || '';
+  const [addressPlaceHolder, setAddressPlaceHolder] = useState(affiliateDetails.primaryPlayingFacilityAddressString);
+  // const addressPlaceHolder = affiliateDetails.primaryPlayingFacilityAddressString || '';
+  const { data: session } = useSession();
 
   const [hasErrors, setHasErrors] = useState(false);
 
@@ -77,10 +85,10 @@ export const GeneralInfo = forwardRef(({ ...props }, ref) => {
   const formDefaultValues = {
     ...{
       contactDetails:
-        affiliateDetails.contactDetails || ([] as ContactDetailsProps[]),
-      leagueName: affiliateDetails.leagueName || '',
-      primaryPlayingFacilityName:
-        affiliateDetails.primaryPlayingFacilityName || '',
+        affiliateDetails.affiliateDetails || ({} as ContactDetailsProps),
+      name: affiliateDetails.name || '',
+      venueName:
+        affiliateDetails.venueName || '',
       primaryPlayingFacilityAddress:
         affiliateDetails.primaryPlayingFacilityAddress || ([] as number[]),
       primaryPlayingFacilityAddressString:
@@ -97,6 +105,10 @@ export const GeneralInfo = forwardRef(({ ...props }, ref) => {
     resolver: yupResolver(schema),
     mode: 'onSubmit',
     defaultValues: formDefaultValues,
+    // defaultValues: useMemo(() => {
+    //   console.log("User has changed", formDefaultValues);
+    //   return formDefaultValues;
+    // }, [formDefaultValues]),
   });
   const {
     handleSubmit,
@@ -105,7 +117,36 @@ export const GeneralInfo = forwardRef(({ ...props }, ref) => {
     getValues,
     setValue,
     formState,
+    reset,
   } = methods;
+  useEffect(() => {
+    const userDetails = {
+      phone: "",
+      firstName: session?.user?.name?.split(' ')?.[0] || "",
+      lastName: session?.user?.name?.split(' ')?.[1] || "",
+      email: session?.user?.email || "",
+    };
+    reset({
+      ...{
+        contactDetails:
+          userDetails || ({} as ContactDetailsProps),
+        name: affiliate.name || '',
+        venueName:
+          affiliate.venueName || '',
+        primaryPlayingFacilityAddress: (affiliate.venueLocation?.latitude && affiliate.venueLocation?.longitude) ?
+          [parseFloat(affiliate.venueLocation.latitude), parseFloat(affiliate.venueLocation.longitude)] : ([] as number[]),
+        primaryPlayingFacilityAddressString: `${affiliate.venueLocation?.line1 || ''} ${affiliate.venueLocation?.line2 || ''} ${affiliate.venueLocation?.city || ''} ${affiliate.venueLocation?.state || ''} ${affiliate.venueLocation?.country || ''}`,
+        createdDate: today as Date,
+        equipmentStatus: affiliate.equipmentStatus || false,
+      },
+      ...userDetails,
+      ...stringsToDates,
+    });
+    setAddressPlaceHolder(`${affiliate.venueLocation?.line1 || ''} ${affiliate.venueLocation?.line2 || ''} ${affiliate.venueLocation?.city || ''} ${affiliate.venueLocation?.state || ''} ${affiliate.venueLocation?.country || ''}`);
+    // setValue("name", formDefaultValues.name);
+  }, [affiliate])
+
+  // console.log("affiliateDetails", formDefaultValues);
 
   useEffect(() => {
     Object.keys(formState.errors).length
@@ -170,10 +211,10 @@ export const GeneralInfo = forwardRef(({ ...props }, ref) => {
               <div className='col full-width'>
                 <input
                   type='text'
-                  {...register('leagueName')}
-                  onChange={() => clearErrors('leagueName')}
+                  {...register('name')}
+                  onChange={() => clearErrors('name')}
                 />
-                {formState.errors.leagueName ? (
+                {formState.errors.name ? (
                   <span className='error'>League Name is required</span>
                 ) : (
                   <label>League Name</label>
@@ -182,10 +223,10 @@ export const GeneralInfo = forwardRef(({ ...props }, ref) => {
               <div className='col full-width'>
                 <input
                   type='text'
-                  {...register('primaryPlayingFacilityName')}
-                  onChange={() => clearErrors('primaryPlayingFacilityName')}
+                  {...register('venueName')}
+                  onChange={() => clearErrors('venueName')}
                 />
-                {formState.errors.primaryPlayingFacilityName ? (
+                {formState.errors.venueName ? (
                   <span className='error'>
                     Primary Playing Facility is required
                   </span>

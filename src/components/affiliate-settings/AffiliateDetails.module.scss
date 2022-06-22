@@ -1,0 +1,132 @@
+.affiliate {
+  :global {
+    @apply flex flex-col gap-3 overflow-auto bg-white py-4 px-5;
+    border-radius: 12px;
+    border-width: 1px;
+
+    h3 {
+      @apply block w-full text-md font-semibold text-blue-dark leading-tight flex flex-row cursor-pointer capitalize;
+
+      svg {
+        @apply ml-auto;
+        @apply block;
+      }
+    }
+
+    .buttons {
+      .wrap {
+        @apply gap-5 ml-auto;
+      }
+    }
+
+    .togglelable {
+      @apply pl-0 pr-4 #{!important};
+      position: unset;
+
+      .deny-button {
+        @apply shadow-none border-2 mr-3 #{!important};
+        background: white !important;
+        color: rgb(153 27 27);
+        border-color: rgb(153 27 27);
+      }
+
+      .location-group {
+        @apply w-full;
+        gap: 0;
+        padding-bottom: 0;
+      }
+
+      .form-check {
+        @apply text-blue-dark flex items-center col-span-1 my-1 font-bold text-base #{!important};
+
+        input {
+          @apply mr-1 border-gray-brand p-2 border-2 rounded-md;
+
+          &:checked {
+            @apply bg-blue-brand opacity-50;
+          }
+        }
+      }
+
+    }
+
+    .box-bg {
+      @apply drop-shadow-sm relative;
+    }
+
+    .full-width {
+      @apply w-full #{!important};
+    }
+
+    .logo-group {
+      .col:first-child {
+        @apply w-2/5;
+
+        .logo {
+          @apply w-16 h-16 max-h-16;
+        }
+      }
+
+      .col {
+        @apply w-4/5;
+
+        .form-check input {
+          @apply mr-3;
+        }
+
+        h3 {
+          @apply mb-2 text-gray-brand;
+        }
+      }
+    }
+
+
+  }
+
+  &.expanded {
+    h3 {
+      @apply capitalize;
+    }
+
+    h3 {
+      @apply flex;
+    }
+  }
+
+  &.collapsed :global {
+    h3 {
+      @apply uppercase;
+
+      svg {
+        @apply rotate-90;
+      }
+    }
+
+    h3+div {
+      @apply hidden;
+    }
+
+    .buttons {
+      @apply hidden;
+    }
+
+    .togglelable {
+      @apply hidden;
+    }
+  }
+
+  &.tab-container {
+    @apply border-0 shadow-none w-2/3 px-0 pr-5 ml-8;
+    // max-width: 800px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0px;
+
+    .togglelable {
+      @apply bg-blue-700 px-0 block #{!important};
+    }
+
+    h3 {
+      @apply text-blue-brand text-lg;
+    }
+  }
+}

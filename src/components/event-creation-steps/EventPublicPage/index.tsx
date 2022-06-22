@@ -35,7 +35,7 @@ type Props = {
 }
 
 const DraftEditor = dynamic(
-  () => import('@/components/forms/fields/DraftEditor'),
+  () => import('../../../components/forms/fields/DraftEditor'),
   { ssr: false }
 )
 

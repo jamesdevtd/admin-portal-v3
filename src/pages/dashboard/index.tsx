@@ -1,29 +1,27 @@
-import { getSession } from "next-auth/react";
+import { useSession } from "next-auth/react"
+
 
 import ContentWrap from "@/components/layout/ContentWrap";
 import Layout from "@/components/layout/Layout";
 
+
+
 export default function Dashboard() {
+  
+  const { data: session } = useSession();
+  if (session) {
+    console.log('session: ');
+    console.log(session);
+  } else {
+    console.log('NO SESSION');
+  }
+
   return (
     <Layout>
       <ContentWrap>
-        <h3>Dashboard</h3>
+
+        <h3>{session ? 'Dashboard' : 'NOT LOGGED IN'}</h3>
       </ContentWrap>
     </Layout>
   )
-}
-
-export async function getServerSideProps(context: any) {
-  const session = await getSession({ req: context.req });
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false
-      }
-    }
-  }
-  return {
-    props: { session }
-  }
 }

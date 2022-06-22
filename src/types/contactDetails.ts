@@ -4,4 +4,5 @@ export default interface ContactDetails {
   lastName: string;
   email: string;
   phone: string;
+  password?: string | undefined;
 }

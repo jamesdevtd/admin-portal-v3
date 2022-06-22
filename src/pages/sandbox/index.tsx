@@ -14,6 +14,11 @@ import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 import StyledTable from '@/components/tables/StyledTable';
 
+const LeaftletMap = dynamic(
+  () => import('../../components/leaflet/LeafletMap'),
+  { loading: () => <p>A map is loading</p>, ssr: false }
+);
+
 export default function RHFSandbox() {
   //#region  //*=========== Form ===========
   const methods = useForm({
@@ -29,11 +34,6 @@ export default function RHFSandbox() {
     return;
   };
   //#endregion  //*======== Form Submit ===========
-
-  const LeaftletMap = dynamic(
-    () => import('@/components/leaflet/LeafletMap'),
-    { loading: () => <p>A map is loading</p>, ssr: false }
-  );
 
   return (
     <Layout>

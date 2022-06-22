@@ -156,6 +156,17 @@ $sidebarCollapsedWidth: 65px;
     }
   }
 
+  .loader {
+    @apply bg-white w-full h-screen flex flex-col justify-center place-items-center z-30 gap-5 absolute;
+    .logo {
+      @apply h-12 w-96 self-center;
+    }
+    img {
+      @apply block;
+      max-width: 100px;
+    }
+  }
+
   @media (max-width: 768px) {
     .sidebar.outer {
       width: $sidebarCollapsedWidth;
@@ -229,6 +240,9 @@ $sidebarCollapsedWidth: 65px;
     }
     &.collapse-toggle {
       background-image: url(/icons/collapse-toggle.svg);
+    }
+    &.baseball {
+      background-image: url(/icons/baseball.svg);
     }
   }
 }

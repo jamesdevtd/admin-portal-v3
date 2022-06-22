@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://app.tagxinternational.com
+
+# Sitemaps
+Sitemap: https://app.tagxinternational.com/sitemap.xml

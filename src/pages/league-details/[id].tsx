@@ -1,5 +1,5 @@
 import { GetServerSideProps } from 'next';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { RiArrowGoBackLine } from 'react-icons/ri';
 
 import styles from './LeagueDetails.module.scss';
@@ -10,8 +10,11 @@ import Layout from '@/components/layout/Layout';
 import { GeneralInfo } from '@/components/league-details/GeneralInfo';
 import ButtonLink from '@/components/links/ButtonLink';
 
-import { useAppSelector } from '@/app/hooks';
-import { getIsEdited } from '@/features/affiliateDetails/affiliateDetailsSlice';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { getIsEdited, updateAffiliateDetails } from '@/features/affiliateDetails/affiliateDetailsSlice';
+import { GET } from '@/services/rest.service';
+
+import { AffiliateProps } from '@/types/affiliate';
 
 import CalendarIcon from '~/icons/blue/calendar.svg';
 
@@ -29,18 +32,24 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   }
 };
 
-export default function Events() {
+type Props = {
+  id: number
+}
+export default function LeagueDetails({ id }: Props) {
   const isFormEdited = useAppSelector(getIsEdited);
+  const dispatch = useAppDispatch();
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const affiliateFormRef = useRef<any>();
 
+  const [affiliate, setAffiliate] = useState<AffiliateProps>({} as AffiliateProps);
+
   useEffect(() => {
-    // TODO: create actual API request or redux middleware
-    // EXAMPLE:
-    // const loadEventData = async () => {
-    //   const { data } = await axios.get(`/api/events/${id}`);
-    //   console.log(data);
-    // };
+    const loadEventData = async () => {
+      const data = await GET(`/league/${id}`);
+      setAffiliate(data as AffiliateProps);
+      dispatch(updateAffiliateDetails(data as AffiliateProps));
+    };
+    loadEventData();
   }, []);
 
   const submitEventsForm = () => {
@@ -68,7 +77,7 @@ export default function Events() {
             </div> */}
 
             <div className='inner-content'>
-              <GeneralInfo ref={affiliateFormRef} />
+              <GeneralInfo ref={affiliateFormRef} affiliate={affiliate} />
             </div>
           </div>
         </ContentWrap>

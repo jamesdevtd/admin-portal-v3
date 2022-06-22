@@ -10,13 +10,17 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 import styles from '@/components/layout/Dashboard.module.scss';
 
 import Header from '@/components/Header';
 
+import { GET } from '@/services/rest.service';
 import mockMenuItems from '@/static/menuItems';
+
+import Loader from './Loader';
 
 import BottomWhiteCurve from '~/svg/bottom-white-curve.svg';
 import TagxLogoWhite from '~/svg/tagx-logo-white.svg';
@@ -25,6 +29,7 @@ interface MenuSubItems {
   icon: string;
   label: string;
   url: string;
+  active?: boolean;
 }
 interface MenuItems {
   heading: string;
@@ -40,8 +45,20 @@ type Props = {
 const Layout = (props: Props) => {
   const [menuItems, setMenuItems] = useState<MenuItems[]>([]);
   const [sidebarCollapse, setSidebarCollapse] = useState(false);
+  const { data: session } = useSession();
 
   const router = useRouter();
+  useEffect(() => {
+    async function checkIfAffiliateSetup() {
+      // TODO: need to change to league props.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const response: any = await GET(`/league`, { leagueManagerId: session?.user?.id });
+      if (response?.length <= 0) {
+        router.push('/affiliate-setup');
+      }
+    }
+    checkIfAffiliateSetup();
+  }, [session]);
 
   useEffect(() => {
     setMenuItems(mockMenuItems);
@@ -49,7 +66,9 @@ const Layout = (props: Props) => {
 
   return (
     <div className={`${styles.dashboardLayout} default-layout`}>
-
+      {!session &&
+        <Loader />
+      }
       <div className='wall-bg wall-blue-gradient'>
         <BottomWhiteCurve />
       </div>
@@ -72,7 +91,7 @@ const Layout = (props: Props) => {
                           }`}
                       >
                         <Link href={item.url}>
-                          <a>
+                          <a className={item.active ? ' ' : 'pointer-events-none opacity-50'}>
                             <div className={`icon-box ${item.icon}`}></div>
                             <span>{item.label}</span>
                           </a>

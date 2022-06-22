@@ -6,7 +6,6 @@ export interface EventCreationStepProps {
   isEdited: boolean;
   isValidated: boolean;
 }
-
 export interface EventProps {
   // TO DO: we might need more data like owner info, event type, event division etc.
   id: number;

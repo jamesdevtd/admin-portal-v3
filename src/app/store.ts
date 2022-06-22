@@ -11,7 +11,9 @@ import eventsFiltersSlice from '@/features/eventsListing/eventsFiltersSlice';
 import eventsListReducer from '@/features/eventsListing/eventsList';
 import leaguesFiltersSlice from '@/features/leaguesListing/leaguesFiltersSlice';
 import leaguesListReducer from '@/features/leaguesListing/leaguesList';
+import loaderReducer from '@/features/loader/loaderSlice';
 import onboardingStepReducer from '@/features/onboardingSteps/onboardingStepsSlice';
+import { eventCreationApi } from '@/services/eventCreationApi';
 
 export const store = configureStore({
   reducer: {
@@ -25,11 +27,13 @@ export const store = configureStore({
     clonedEvents: clonedEventsReducer,
     eventsFilters: eventsFiltersSlice,
     affiliateDetails: affiliateDetailsSlice,
-
-
     leaguesList: leaguesListReducer,
     leaguesFilters: leaguesFiltersSlice,
+    loader: loaderReducer,
+    [eventCreationApi.reducerPath]: eventCreationApi.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(eventCreationApi.middleware),
 });
 
 export type AppDispatch = typeof store.dispatch;

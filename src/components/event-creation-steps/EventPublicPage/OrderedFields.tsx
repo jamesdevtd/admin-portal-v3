@@ -18,7 +18,7 @@ import ImageIcon from '~/icons/blue/image.svg';
 import TextIcon from '~/icons/blue/text-t.svg';
 
 const DraftEditor = dynamic(
-  () => import('@/components/forms/fields/DraftEditor'),
+  () => import('../../../components/forms/fields/DraftEditor'),
   { loading: () => <p>Editor is loading</p>, ssr: false }
 );
 

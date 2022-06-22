@@ -2,6 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { LatLngTuple } from 'leaflet';
 import moment from 'moment';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import GooglePlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
@@ -14,6 +15,10 @@ import styles from '@/components/forms/styles/FormGroup.module.scss';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { getBasicInfo, updateBasicInfo } from '@/features/eventCreation/basicInfoSlice';
 import { setCurrentStep, setIsEditedById } from '@/features/eventCreation/eventCreationSlice';
+import {
+  useAddEventMutation,
+  useUpdateEventMutation
+} from "@/services/eventCreationApi";
 import { googleApiKey } from '@/static/geolocation';
 import seriesNames from '@/static/seriesNames';
 import { useIsFirstRender } from '@/utils/customHooks';
@@ -55,18 +60,27 @@ const schema = yup
 type Props = {
   step: number,
   eventStatus: { id: number, status: string }
+  editMode?: boolean;
 }
 
+const LeafletMap = dynamic(
+  () => import('../../../components/leaflet/LeafletMap'),
+  { loading: () => <p>A map is loading</p>, ssr: false }
+);
 
-export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref) => {
+export const BasicInfo = forwardRef(({ step, eventStatus, editMode, ...props }: Props, ref) => {
 
   const dispatch = useAppDispatch();
+  // TODO: user RTK query to get data from DB, then parse to match UI schema
   const basicInfo = useAppSelector(getBasicInfo);
+
+  // RTK queries
+  const [addEvent] = useAddEventMutation();
+  const [updateEvent] = useUpdateEventMutation();
 
   const isFirstRender = useIsFirstRender();
   // console.log('BasicInfo render...:', basicInfo);
   // console.log('isFirstRender:', isFirstRender);
-
 
   // TODO: get savedCoordinates from store set to null If none;
   // sample to test:  [-27.444320, 153.039660];
@@ -99,7 +113,8 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
   );
 
   const [availableSeries, setAvailableSeries] = useState<SeriesProps[]>(seriesNames);
-  // console.log('availableSeries: ', availableSeries);
+
+
   const setIsFormEdited = () => {
     dispatch(setIsEditedById(step));
   }
@@ -295,11 +310,80 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
   };
 
 
+  // TODO: convert dataForApi to actual form data after testing with dev API
+  const dataForApi = {
+    "additionalSeries": [6, 7],
+    "contacts": [
+      {
+        "emailId": "test@email.com",
+        "firstName": "string",
+        "lastName": "string",
+        "mobilePhoneNumber": "string",
+        "title": "string"
+      }
+    ],
+    "divisions": [
+      {
+        "competitionLevel": "COMPETITIVE",
+        "eventId": 0,
+        "free": true,
+        "makeup": "MENS",
+        "numberOfPools": 1,
+        "playerFeeAmount": 0,
+        "playerFeeCurrency": "string",
+        "pools": [
+          {
+            "numberOfTeams": 4,
+            "poolName": "sample 1"
+          }
+        ],
+        "teamsCapacity": 4,
+        "type": "YOUTH"
+      }
+    ],
+    "endDate": "2022-06-13T23:33:17.886Z",
+    "leagueId": 1,
+    "location": {
+      "city": "new city",
+      "continent": "string",
+      "country": "string",
+      "latitude": 23,
+      "line1": "string",
+      "line2": "string",
+      "longitude": 23,
+      "state": "string"
+    },
+    "locationName": "sample",
+    "locationNotes": "string",
+    "name": "Darth Vader's event",
+    "registrationEndDate": "2022-06-13T23:33:17.886Z",
+    "registrationStartDate": "2022-06-13T23:33:17.886Z",
+    "series": 5,
+    "startDate": "2022-06-13T23:33:17.886Z",
+    "status": "DRAFT",
+    "year": "2022"
+  }
+
+  const handleSubmitToApi = async () => {
+    if (editMode) {
+      console.log('FORM is in Create new event mode');
+      await addEvent(dataForApi);
+      console.log("New Event Added Successfully");
+    } else {
+      // TODO: apply below if form is in editMode
+      console.log('FORM is in EDIT event MODE');
+      await updateEvent(dataForApi);
+      // navigate("/");
+    }
+    handleNextStep();
+  }
+
   const onSubmit = (data: unknown) => {
     //TODO: send Redux state basicInfo to API through redux middleware
     console.log('POST: sending data...');
     console.log(data);
-    handleNextStep();
+    handleSubmitToApi();
+
   };
 
   const submitForm = () => {
@@ -317,11 +401,6 @@ export const BasicInfo = forwardRef(({ step, eventStatus, ...props }: Props, ref
   };
 
   useImperativeHandle(ref, () => ({ submitForm }));
-
-  const LeafletMap = dynamic(
-    () => import('@/components/leaflet/LeafletMap'),
-    { loading: () => <p>A map is loading</p>, ssr: false }
-  );
 
   return (
     <form

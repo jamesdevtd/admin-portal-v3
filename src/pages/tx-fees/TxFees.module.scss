@@ -1,0 +1,200 @@
+@import "../../styles/base/colors.scss";
+
+$sidebarWidth: 150px;
+
+.TxFees :global {
+  @apply flex flex-col gap-5;
+  // @apply max-w-6xl;
+  max-width: 1055px;
+
+  .content-header {
+    @apply flex flex-row items-center gap-3;
+
+    svg {
+      @apply h-5 w-5;
+    }
+
+    h2 {
+      @apply text-2xl font-bold text-blue-dark;
+    }
+
+    button.draft {
+      @apply rounded-xl py-1 px-5 uppercase text-white text-xxxs;
+      @apply bg-orange #{!important};
+      background-image: none;
+    }
+  }
+
+  .top-total {
+    @apply flex gap-3 rounded-md p-3 items-center;
+    @apply font-semibold;
+
+    * {
+      @apply font-normal font-title;
+    }
+
+    svg {
+      @apply w-3 h-auto mr-1;
+    }
+
+    .border-between>div:not(:last-child) {
+      @apply border-r-2;
+    }
+
+    .border-between {
+      div {
+        @apply font-semibold;
+      }
+    }
+
+    h3 {
+      @apply font-semibold #{!important};
+    }
+  }
+
+  .categories {
+    @apply grid grid-cols-4 gap-3 justify-center items-center -mt-2 mx-4;
+
+    button {
+      @apply w-full m-auto text-sm rounded-xl opacity-30;
+      max-width: 180px;
+
+      &.active {
+        @apply opacity-100;
+      }
+    }
+  }
+
+
+  .table {
+    @apply py-3 px-5 rounded-lg mb-3;
+
+    .row {
+      @apply grid grid-cols-2 gap-3 w-full;
+
+      &.heading {
+        @apply text-center text-blue-dark text-lg font-semibold;
+
+        .col {
+          @apply p-1;
+        }
+      }
+    }
+
+    >hr {
+      @apply mt-8 mb-4;
+    }
+
+    .disclaimer {
+      @apply text-center text-xs text-gray-400 mb-2;
+    }
+  }
+
+  .stripped {
+    padding-right: 7px;
+    padding-bottom: 15px;
+    min-width: auto !important;
+
+    table {
+      @apply border-collapse;
+    }
+  }
+
+  .header-1_5 {
+    .front {
+      top: 50px;
+      height: calc(100% - 56px);
+    }
+  }
+}
+
+.fields :global {
+  @apply flex flex-col gap-2;
+
+  .field {
+    @apply bg-gray-50 rounded-lg w-full px-4 items-center text-xs flex flex-row gap-2 justify-between;
+
+    label {
+      @apply text-blue-dark text-xs flex-1 block;
+      line-height: 1.2;
+
+      .currency {
+        @apply float-right;
+      }
+    }
+
+    input {
+      @apply border-none h-auto text-sm text-blue-brand text-right rounded-xl my-1;
+      max-width: 80px;
+      padding: 2px;
+
+      &:read-only {
+        @apply bg-gray-400 text-white;
+      }
+
+      &[type="text"] {
+        @apply bg-transparent text-blue-brand pr-4;
+      }
+
+      &[type="text"]:read-only {
+        @apply bg-gray-400 text-white pr-4;
+      }
+    }
+
+    &.blue {
+      @apply bg-blue-brand rounded-md py-2 pr-8;
+
+      * {
+        @apply text-white;
+      }
+
+      label {
+        @apply text-xs;
+      }
+
+      .amount {
+        @apply text-base;
+      }
+    }
+
+    &.green {
+      @apply bg-green-light py-3 pr-8;
+
+      h3 {
+        @apply flex flex-col gap-0;
+        line-height: 1em;
+
+        small {
+          @apply text-white font-normal;
+        }
+      }
+
+      .amount {
+        @apply text-lg text-blue-dark;
+      }
+    }
+
+    &.divider {
+      @apply text-center text-blue-brand font-semibold py-0 bg-transparent text-base;
+
+      span {
+        @apply w-full;
+      }
+    }
+
+    &.total {
+      @apply bg-off-white;
+    }
+
+    &.static,
+    &.total {
+      input:read-only {
+        @apply bg-transparent text-blue-brand;
+      }
+    }
+  }
+}
+
+.fields.revenue {
+  @apply gap-1;
+}

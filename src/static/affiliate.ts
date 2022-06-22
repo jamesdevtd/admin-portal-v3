@@ -1,6 +1,6 @@
 import { starterDivisions } from './division';
 
-import { AffiliateProps } from '@/types/affiliate';
+import { AffiliateProps, AffiliateStatementProps } from '@/types/affiliate';
 import ContactDetails from '@/types/contactDetails';
 import { SubscriptionFee } from '@/types/subscriptionFee';
 import UserDetails from '@/types/userDetails';
@@ -74,7 +74,13 @@ export const blankAffiliateInfo: AffiliateProps = {
   seriesPermission: [],
   equipmentStatus: '',
 
-  affiliateDetails: [],
+  affiliateDetails: {
+    id: 1,
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+  },
   isBlocked: false,
   createdDate: '', // string($date-time)
   createdBy: '',
@@ -85,4 +91,62 @@ export const blankAffiliateInfo: AffiliateProps = {
   userAccounts: userDetails,
   subscriptionFee: subscriptionFee,
   divisionDetails: starterDivisions,
+
+  name: "",
+  image: "",
+  imageContentType: "",
+  leagueManagerUserId: "",
+  venueName: "",
+  mailingLocation: null,
+  venueLocation: null,
+
+  lead: null,
+  licenseDate: null,
+  nextGearRenewalDate: null,
+  payoutAccountId: null,
+  payoutAccountOnboardingComplete: false,
+  referral: null,
 };
+
+export const staticStatements: AffiliateStatementProps[] = [
+  {
+    id: 1,
+    paymentDate: '1654843422', // date-time
+    amount: '50.00',
+    event: 'NY Sevens',
+    eventType: 'open',
+    description: 'Adult Mens Competitive, Youth Mixed U12',
+  },
+  {
+    id: 2,
+    paymentDate: '1654843422', // date-time
+    amount: '50.00',
+    event: 'NY Sevens',
+    eventType: 'pro',
+    description: 'Player fee for Open Series 2',
+  },
+  {
+    id: 3,
+    paymentDate: '1654843422', // date-time
+    amount: '50.00',
+    event: 'Thanksgiving Throwdown',
+    eventType: 'open',
+    description: 'Player fee for Open Series 3',
+  },
+  {
+    id: 4,
+    paymentDate: '1654843422', // date-time
+    amount: '50.00',
+    event: 'NY Sevens',
+    eventType: 'pro',
+    description: 'Player fee for Open Series 4',
+  },
+  {
+    id: 5,
+    paymentDate: '1654843422', // date-time
+    amount: '50.00',
+    event: 'St Patties Tournament',
+    eventType: 'open',
+    description: 'Player fee for Open Series 5',
+  }
+];

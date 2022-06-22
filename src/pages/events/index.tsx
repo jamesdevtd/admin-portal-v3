@@ -27,14 +27,22 @@ export default function Events() {
   // TODO: set user ID to actual session ID, once actual events for affiliate users are available
   const [userId, setUserId] = useState<number>(1);
 
-  const eventCategories = ['all', 'draft', 'published', 'active', 'past'];
+  // TODO: set as dynamic based on all events from GET
+  const eventCategories = [
+    ['all', 35],
+    ['draft', 20],
+    ['published', 3],
+    ['active', 5],
+    ['past', 2]
+  ];
+
   const router = useRouter();
   // TODO: replace mockEventsForCards with values from store fetched from API
   const events = mockEventsList;
 
   const createNewEventHandler = () => {
     // TODO: replace 1 with next available event id to be set as draft mode from API or just create a new url for event creation i,e, event-creation
-    router.push('/events/1');
+    router.push('/events/create-event');
   };
   useEffect(() => {
     // TODO: add interface for filtered events
@@ -80,17 +88,15 @@ export default function Events() {
               </button>
             </header>
             <div className='summary-cards'>
-              {eventCategories.map((eventCategory) => (
+              {eventCategories.map((item, i) => (
                 <div
-                  key={eventCategory}
+                  key={i}
                   className='card'
                 >
                   <div className='card-body space-y-2'>
-                    <p className='card-header'><CalendarWhiteIcon /> {eventCategory} Events</p>
+                    <p className='card-header'><CalendarWhiteIcon /> {item[0]} Events</p>
                     <div className='flex-end flex flex-row justify-between'>
-                      <p className='text-3xl'>
-                        {Math.floor(Math.random() * 100)}
-                      </p>
+                      <p className='text-3xl'>{item[1]}</p>
                       <span className='self-end'>Events</span>
                     </div>
                   </div>

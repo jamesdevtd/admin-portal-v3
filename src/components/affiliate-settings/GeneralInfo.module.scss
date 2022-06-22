@@ -1,0 +1,74 @@
+.formGroup :global {
+  @apply w-full max-w-full;
+
+  h3 {
+    @apply text-sm text-gray-light font-semibold;
+  }
+
+  .location-group {
+    @apply pb-1 #{!important};
+
+    .fields-group {
+      @apply w-full;
+    }
+  }
+
+  .fields-group {
+    @apply pb-1 #{!important};
+
+    &.full-width {
+      @apply pb-2;
+    }
+  }
+
+  .full-width {
+    @apply w-full #{!important};
+  }
+
+  .fields-group .col,
+  .location-group .fields-group .col {
+    @apply w-2/3;
+  }
+
+  .affiliate-group .togglelable .form-check,
+  .form-check {
+    @apply text-blue-dark flex items-center col-span-1 my-1 font-bold text-base;
+
+    input {
+      @apply mr-1 border-gray-light p-2 border-2 rounded-md;
+
+      &:checked {
+        @apply bg-blue-brand;
+      }
+    }
+  }
+
+  .equipment-group {
+    .col {
+      label {
+        @apply mb-0;
+
+        input {
+          @apply mr-3;
+        }
+      }
+
+      h3 {
+        @apply mb-2;
+      }
+    }
+
+    span {
+      @apply ml-8;
+    }
+  }
+
+}
+
+.formGroup::after {
+  border: none;
+}
+
+.main-form {
+  @apply pb-0 mb-0 #{!important};
+}

@@ -186,8 +186,7 @@ export default function AffiliateSetupPage() {
       console.log(_data);
     }
     if (step === 3) {
-      const APP_BASE_URL = 'http://localhost:3000';
-      GET(`/league/${league.id}/payout?returnUrl=${APP_BASE_URL}/affiliate-setup-success&refreshUrl=${APP_BASE_URL}`, {})
+      GET(`/league/${league.id}/payout?returnUrl=/affiliate-setup-success&refreshUrl=/affiliate-setup`, {})
         // TO-DO need to type cast response
         .then((res: any) => router.push(res.onboardingUrl))
         // eslint-disable-next-line no-console

@@ -16,12 +16,15 @@ const mockMenuItems = [
         icon: 'calendar',
         label: 'Events',
         url: '/events',
+        active: true,
       },
-      {
-        icon: 'baseball',
-        label: 'Leagues',
-        url: '/league-details',
-      },
+      // TODO: add leagues menu for ADMIN/HQ account ROLE
+      // {
+      //   icon: 'baseball',
+      //   label: 'Leagues',
+      //   url: '/league-details',
+      //   active: true,
+      // },
       {
         icon: 'reports',
         label: 'Reports',
@@ -31,6 +34,7 @@ const mockMenuItems = [
         icon: 'settings',
         label: 'Settings',
         url: '/settings',
+        active: true,
       },
     ],
   },
@@ -71,6 +75,7 @@ const mockMenuItems = [
         icon: 'calculator',
         label: 'Budget Calculator',
         url: '/budget-calculator',
+        active: true,
       },
     ],
   },

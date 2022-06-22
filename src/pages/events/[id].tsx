@@ -40,7 +40,7 @@ type Props = {
   id: number
 }
 
-export default function Events({ id }: Props) {
+export default function Event({ id }: Props) {
 
   const currentStep = useAppSelector(getCurrentStep);
   const isFormEdited = useAppSelector(getStepById(currentStep))?.isEdited;

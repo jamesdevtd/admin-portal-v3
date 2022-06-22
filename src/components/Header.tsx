@@ -1,7 +1,9 @@
-import { getSession, signOut } from 'next-auth/react';
+import { getSession, signIn } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 import styles from './Header.module.scss';
+
+import UserMenu from './navigation/UserMenu';
 
 import BellIcon from '~/icons/bell.svg';
 
@@ -9,10 +11,6 @@ import BellIcon from '~/icons/bell.svg';
 export default function Header() {
   const [userFullName, setUserFullName] = useState('');
   const [userInitials, setUserInitials] = useState('G');
-
-  function logoutHandler() {
-    signOut();
-  }
 
   const getInitials = (fullName: string) => {
     const allNames = fullName.trim().split(' ');
@@ -26,17 +24,19 @@ export default function Header() {
   }
 
   useEffect(() => {
-    getSession().then(session => {
+    getSession().then((session) => {
       if (!session) {
-        setUserFullName('Guest');
+        signIn("keycloak");
       } else {
-        setUserFullName(`${session?.user?.name}`);
+        setUserFullName(`${session?.user?.name || ''}`);
       }
     });
   }, []);
 
   useEffect(() => {
-    setUserInitials(getInitials(userFullName));
+    if (userFullName) {
+      setUserInitials(getInitials(userFullName));
+    }
   }, [userFullName])
 
 
@@ -60,20 +60,20 @@ export default function Header() {
           </svg>
           <input type='text' name='name' placeholder='Search' className='' />
         </div>
-        <nav className='ml-auto mr-0 block'>
-          <ul className='flex flex-row items-center justify-between space-x-4'>
-            <button>
-              <BellIcon />
-            </button>
-            <div className="m-1 mr-2 w-7 h-7 relative flex justify-center items-center rounded-full bg-red-500 border-2 border-white text-sm text-white uppercase">
-              {userInitials}
-            </div>
-            <button onClick={logoutHandler}>
-              <span className='user-name'>{userFullName}</span>
-            </button>
-          </ul>
-        </nav>
+
+        <div className='user-info'>
+          <button className='notifications'>
+            <BellIcon />
+          </button>
+          <div className="user-initials">
+            {userInitials}
+          </div>
+          <span className='user-name'>{userFullName}</span>
+
+          <UserMenu />
+        </div>
+
       </div>
-    </header>
+    </header >
   );
 }
